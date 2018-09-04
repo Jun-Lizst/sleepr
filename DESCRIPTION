@@ -1,0 +1,17 @@
+Package: sleepr
+Type: Package
+Title: Sleep analysis with R.
+Version: 0.1.0
+Author: Paul Bouchequet
+Maintainer: Paul Bouchequet <paul.bouchequet@frenchkpi.com>
+Description: Sleep analysis with R.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    jsonlite,
+    edfReader,
+    readxl,
+    utils
+Suggests: testthat
+RoxygenNote: 6.1.0
