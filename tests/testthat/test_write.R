@@ -24,6 +24,14 @@ test_that("Writing selected channels", {
   unlink(mdfPath,recursive = TRUE)
 })
 
+test_that("Do not write channels", {
+  sleepr::write.mdf(edfPath = file,
+                    mdfPath = mdfPath,
+                    channels = c())
+  expect_equal(length(list.dirs(mdfPath)), 1)
+  unlink(mdfPath,recursive = TRUE)
+})
+
 test_that("Writing events", {
   events <- sleepr::read.events.isruc(dir="data/1/", scoringNum=1)
   sleepr::write.mdf(edfPath = "data/1/1.rec",

@@ -3,7 +3,8 @@
 #' @param edfPath EDF file path.
 #' @param mdfPath MDF path.
 #' @param channels Channels to write.
-write.mdf <- function(edfPath, mdfPath, channels = c(), events = c()) {
+#' @param events Events dataframe to write.
+write.mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
 
   # Read EDF
   headers <- edfReader::readEdfHeader(edfPath)
@@ -27,9 +28,15 @@ write.mdf <- function(edfPath, mdfPath, channels = c(), events = c()) {
 
   # Write each channel
   edfchannels <- headers$sHeaders$label
+
   if (length(channels) > 0){
-    edfchannels <- edfchannels[edfchannels %in% channels]
+    if (!is.na(channels[1])){
+      edfchannels <- edfchannels[edfchannels %in% channels]
+    }
+  } else {
+    edfchannels <- c()
   }
+
   for(channel in edfchannels){
 
     signal <- signals[[channel]]
