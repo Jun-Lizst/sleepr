@@ -3,7 +3,7 @@
 #' @param edfPath EDF file path.
 #' @param mdfPath MDF path.
 #' @param channels Channels to write.
-write.mdf <- function(edfPath, mdfPath, channels = c()) {
+write.mdf <- function(edfPath, mdfPath, channels = c(), events = c()) {
 
   # Read EDF
   headers <- edfReader::readEdfHeader(edfPath)
@@ -55,6 +55,13 @@ write.mdf <- function(edfPath, mdfPath, channels = c()) {
         paste0("Signal ",channel," corrupted.")
       )
     }
+  }
+  
+  # Write events
+  if(length(events > 0)){
+    jsonlite::write_json(events,
+                         path = paste0(mdfPath,
+                                       "/events.json"))
   }
 }
 

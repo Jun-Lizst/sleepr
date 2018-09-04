@@ -24,6 +24,15 @@ test_that("Writing selected channels", {
   unlink(mdfPath,recursive = TRUE)
 })
 
-
+test_that("Writing events", {
+  events <- sleepr::read.events.isruc(dir="data/1/", scoringNum=1)
+  sleepr::write.mdf(edfPath = "data/1/1.rec",
+                    mdfPath = "data/1/mdf/",
+                    events = sleepr::read.events.isruc(dir="data/1/", scoringNum=1))
+  events.write <- jsonlite::read_json("data/1/mdf/events.json",simplifyVector = TRUE)
+  expect_equal(length(events.write), length(events))
+  expect_equal(nrow(events.write), nrow(events))
+  unlink("data/1/mdf/",recursive = TRUE)
+})
 
 
