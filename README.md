@@ -5,12 +5,12 @@ Sleep analysis with R.
 ## Installation
 
 ```
-devtools::install_github("boupetch/rmdf")
+devtools::install_github("boupetch/sleepr")
 ```
 
 ## Testing
 
-Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from various databases are downloaded first. 
+Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from open databases are downloaded first. 
 
 ## Usage
 
