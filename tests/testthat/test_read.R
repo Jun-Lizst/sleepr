@@ -12,16 +12,19 @@ if(!file.exists(file)){
 sleepr::write.mdf(edfPath = file,
                 mdfPath = mdfPath)
 
-mdf <- sleepr::read.mdf(mdfPath = mdfPath)
-
 test_that("Reading all channels", {
+  mdf <- sleepr::read.mdf(mdfPath = mdfPath)
   expect_equal(length(mdf[["channels"]]), 5)
 })
 
-mdf <- sleepr::read.mdf(mdfPath = mdfPath, channels = c("EEG Fpz-Cz","EOG horizontal"))
-
 test_that("Reading channels subset", {
+  mdf <- sleepr::read.mdf(mdfPath = mdfPath, channels = c("EEG Fpz-Cz","EOG horizontal"))
   expect_equal(length(mdf[["channels"]]), 2)
+})
+
+test_that("Reading no channels", {
+  mdf <- sleepr::read.mdf(mdfPath = mdfPath, channels = c())
+  expect_equal(length(mdf), 1)
 })
 
 unlink(mdfPath,recursive = TRUE)

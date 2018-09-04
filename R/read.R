@@ -3,12 +3,21 @@
 #' @param mdfPath MDF path.
 #' @param channels Channels to read.
 #' @return A (large) list containing signals and metadata.
-read.mdf <- function(mdfPath, channels = c()) {
+read.mdf <- function(mdfPath, channels = c(NA)) {
+  
+  # Init list
   mdf <- list()
+  
+  # Filter channels to read
   mdfchannels <- list.dirs(mdfPath,full.names = FALSE)[-1]
   if (length(channels) > 0){
-    mdfchannels <- mdfchannels[mdfchannels %in% channels]
+    if (!is.na(channels[1])){
+      mdfchannels <- mdfchannels[mdfchannels %in% channels]
+    }
+  } else {
+    mdfchannels <- c()
   }
+  
   for (channel in mdfchannels){
     mdf[["channels"]][[channel]][["metadata"]] <- jsonlite::read_json(
       paste0(mdfPath,"/",channel,"/metadata.json"))
