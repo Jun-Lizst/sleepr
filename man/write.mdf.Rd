@@ -4,7 +4,7 @@
 \alias{write.mdf}
 \title{Write a MDF from an EDF file. MDF directory is erased if it already exists.}
 \usage{
-write.mdf(edfPath, mdfPath, channels = c())
+write.mdf(edfPath, mdfPath, channels = c(NA), events = c())
 }
 \arguments{
 \item{edfPath}{EDF file path.}
@@ -12,6 +12,8 @@ write.mdf(edfPath, mdfPath, channels = c())
 \item{mdfPath}{MDF path.}
 
 \item{channels}{Channels to write.}
+
+\item{events}{Events dataframe to write.}
 }
 \description{
 Write a MDF from an EDF file. MDF directory is erased if it already exists.

@@ -14,6 +14,7 @@ Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from open
 
 ## Usage
 
+
 ### Formats
 
 MDF<sup>1</sup> is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
