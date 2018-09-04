@@ -10,7 +10,7 @@ devtools::install_github("boupetch/rmdf")
 
 ## Testing
 
-Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from various databases are downloaded first. 
+Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from open databases are downloaded first. 
 
 ## Usage
 
