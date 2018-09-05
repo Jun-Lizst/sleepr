@@ -12,6 +12,7 @@ Imports:
     jsonlite,
     edfReader,
     readxl,
-    utils
+    utils,
+    ggplot2
 Suggests: testthat
 RoxygenNote: 6.1.0
