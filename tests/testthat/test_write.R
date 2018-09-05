@@ -16,6 +16,13 @@ test_that("Writing all channels", {
   unlink(mdfPath,recursive = TRUE)
 })
 
+test_that("Writing from multiple EDFs", {
+  sleepr::write.mdf(edfPath = c(file,"data/1/1.rec"),
+                    mdfPath = mdfPath)
+  expect_equal(length(list.dirs(mdfPath)), 25)
+  unlink(mdfPath,recursive = TRUE)
+})
+
 test_that("Writing selected channels", {
   sleepr::write.mdf(edfPath = file,
                   mdfPath = mdfPath,

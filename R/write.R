@@ -5,16 +5,33 @@
 #' @param channels Channels to write.
 #' @param events Events dataframe to write.
 write.mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
-
-  # Read EDF
-  headers <- edfReader::readEdfHeader(edfPath)
-  signals <- edfReader::readEdfSignals(headers)
-
+  
   # Reset MDF directory
   if(dir.exists(mdfPath)){
     unlink(mdfPath, recursive = TRUE)
   } else {
     dir.create(mdfPath)
+  }
+  
+  for(edf in edfPath){
+    # Read EDF
+    headers <- edfReader::readEdfHeader(edf)
+    signals <- edfReader::readEdfSignals(headers)
+    
+    # Write each channel
+    edfchannels <- headers$sHeaders$label
+    
+    if (length(channels) > 0){
+      if (!is.na(channels[1])){
+        edfchannels <- edfchannels[edfchannels %in% channels]
+      }
+    } else {
+      edfchannels <- c()
+    }
+    
+    for(channel in edfchannels){
+      write.mdf.channel(channel, signals, headers, mdfPath)
+    }
   }
 
   # Write metadata
@@ -25,44 +42,6 @@ write.mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
                        path = paste0(mdfPath,
                                      "/metadata.json"),
                        auto_unbox = TRUE)
-
-  # Write each channel
-  edfchannels <- headers$sHeaders$label
-
-  if (length(channels) > 0){
-    if (!is.na(channels[1])){
-      edfchannels <- edfchannels[edfchannels %in% channels]
-    }
-  } else {
-    edfchannels <- c()
-  }
-
-  for(channel in edfchannels){
-
-    signal <- signals[[channel]]
-
-    if (!is.null(signal)){
-
-      # Create channel directory
-      channelPath <- paste0(mdfPath,"/",channel)
-      dir.create(channelPath)
-
-      # Write file
-      writeBin(signal$signal,
-               con = paste0(channelPath,"/data.bin"),
-               endian = "little", size = 4)
-
-      # Write metadata
-      metadata <- headers$sHeaders[headers$sHeaders$label == channel,]
-      jsonlite::write_json(as.list(metadata),
-                           path = paste0(channelPath,"/metadata.json"),
-                           auto_unbox = TRUE)
-    } else {
-      warning(
-        paste0("Signal ",channel," corrupted.")
-      )
-    }
-  }
   
   # Write events
   if(length(events > 0)){
@@ -72,6 +51,37 @@ write.mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
   }
 }
 
+#' Write a channel, MDF style.
+#'
+#' @param channel Channel name.
+#' @param signals signals list.
+#' @param headers headers.
+#' @param mdfPath mdf path
+write.mdf.channel <- function(channel, signals, headers, mdfPath){
+  signal <- signals[[channel]]
+  
+  if (!is.null(signal)){
+    
+    # Create channel directory
+    channelPath <- paste0(mdfPath,"/",channel)
+    dir.create(channelPath)
+    
+    # Write file
+    writeBin(signal$signal,
+             con = paste0(channelPath,"/data.bin"),
+             endian = "little", size = 4)
+    
+    # Write metadata
+    metadata <- headers$sHeaders[headers$sHeaders$label == channel,]
+    jsonlite::write_json(as.list(metadata),
+                         path = paste0(channelPath,"/metadata.json"),
+                         auto_unbox = TRUE)
+  } else {
+    warning(
+      paste0("Signal ",channel," corrupted.")
+    )
+  }
+}
 
 
 

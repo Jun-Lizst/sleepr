@@ -4,7 +4,7 @@
 \alias{read.mdf}
 \title{Read a MDF}
 \usage{
-read.mdf(mdfPath, channels = c())
+read.mdf(mdfPath, channels = c(NA))
 }
 \arguments{
 \item{mdfPath}{MDF path.}
