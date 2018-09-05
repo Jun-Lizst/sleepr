@@ -23,6 +23,9 @@ read.events.isruc <- function(dir,scoringNum){
   colnames(stages)[colnames(stages)=="Stage"] <- "event"
   stages$event[stages$event == "R"] <- "REM"
   stages$event[stages$event == "W"] <- "AWA"
+  
+  stages$begin <- as.POSIXlt(stages$begin,origin= "1970-01-01 00:00.00 UTC")
+  stages$end <-  as.POSIXlt(stages$end,origin= "1970-01-01 00:00.00 UTC")
 
   return(stages)
 }
