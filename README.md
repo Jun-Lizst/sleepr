@@ -4,21 +4,28 @@ Sleep analysis with R.
 
 ## Installation
 
+Sleepr latest version can be directly installed from Github using the `devtools` package.
+
 ```
 devtools::install_github("boupetch/sleepr")
 ```
 
-## Testing
-
-Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from open databases are downloaded first. 
-
 ## Usage
 
-
-### Formats
+### File manipulation
 
 MDF<sup>1</sup> is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
 MDF uses binary files for signals and JSON for metadata. Signals values are encoded in binary, 32 bits, little endian.
+
+### Events handling
+
+### Data visualisation
+
+### Statistics computing
+
+## Package Testing
+
+Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from open databases are downloaded first. 
 
 ## References
 
