@@ -24,3 +24,24 @@ get.hypnogram <- function(events){
   stages <- stages[order(stages$begin),]
   return(stages)
 }
+
+#' Split signal following hypnogram
+#'
+#' @param signal signal.
+#' @param hypnogram hypnogram df.
+#' @param sRate sRate sig.
+#' @return list.
+split_signal <- function(signal,hypnogram,sRate){
+  
+  hypnogram$begin <- as.numeric(hypnogram$begin)
+  hypnogram$end <- as.numeric(hypnogram$end)
+  hypstart <- min(hypnogram$begin)
+  hypnogram$begin <- (hypnogram$begin-hypstart)*sRate
+  hypnogram$end <- (hypnogram$end-hypstart)*sRate
+  
+  splitted_signal <- list()
+  for(i in c(1:nrow(hypnogram))){
+    splitted_signal[[i]] <- signal[(hypnogram$begin[i]):(hypnogram$end[i])]
+  }
+  return(splitted_signal)
+}

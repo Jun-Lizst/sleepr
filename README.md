@@ -23,6 +23,20 @@ MDF uses binary files for signals and JSON for metadata. Signals values are enco
 
 ### Statistics computing
 
+Exemple
+
+```
+sleepr::write.mdf(edfPath = "tests/testthat/data/1/1.rec",
+                  mdfPath = "tests/testthat/data/1/1",
+                  events = sleepr::read.events.isruc(dir = "tests/testthat/data/1/",
+                                                     scoringNum = 1))
+record <- sleepr::read.mdf("tests/testthat/data/1/1",channels = "C3-A2")
+
+res <- sleepr::hypnogram_band_powers(record,"C3-A2")
+
+unlink("tests/testthat/data/1/1")
+```
+
 ## Package Testing
 
 Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from open databases are downloaded first. 
