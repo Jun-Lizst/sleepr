@@ -9,6 +9,7 @@ write.mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
   # Reset MDF directory
   if(dir.exists(mdfPath)){
     unlink(mdfPath, recursive = TRUE)
+    dir.create(mdfPath)
   } else {
     dir.create(mdfPath)
   }
