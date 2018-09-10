@@ -1,14 +1,5 @@
 context("Computing stats")
 
-# Download files
-if(!file.exists(paste0("data/1/1.rar"))){
-  download.file("http://sleeptight.isr.uc.pt/ISRUC_Sleep/ISRUC_Sleep/subgroupI/1.rar",
-                destfile =  "data/1.rar")
-  system(paste0("unrar x ", "data/1.rar", " data/"))
-  file.copy("data/1.rar",to = "data/1/")
-  file.remove("data/1.rar")
-}
-
 sleepr::write.mdf(edfPath = "data/1/1.rec",
                   mdfPath = "data/1/1",
                   events = sleepr::read.events.isruc(dir="data/1/", scoringNum=1))

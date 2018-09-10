@@ -1,14 +1,7 @@
 context("Reading MDFs")
 
-url <- "https://physionet.org/pn4/sleep-edfx/ST7132J0-PSG.edf"
 file <- "data/ST7132J0-PSG.edf"
 mdfPath <- "data/ST7132J0-PSG"
-
-if(!file.exists(file)){
-  download.file(url,
-                destfile = file)
-}
-
 sleepr::write.mdf(edfPath = file,
                 mdfPath = mdfPath)
 

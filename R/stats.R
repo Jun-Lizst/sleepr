@@ -34,13 +34,13 @@ compute_all_stats <- function(records,
         }
       }
     }
-    print(df_record)
     if(nrow(df_record) == 1){
       df_record$record <- record
     } else {
       df_record <- data.frame(record <- record,stringsAsFactors = FALSE)
     }
     df_record$rem_minutes <- get_rem_minutes(l[["events"]])
+    #df_record$awa_minutes <- get_awa_minutes(l[["events"]])
     df <- dplyr::bind_rows(df,df_record)
   }
   return(df)
@@ -48,21 +48,52 @@ compute_all_stats <- function(records,
 
 #' Get total duration of REM sleep in minutes.
 #'
-#' @param events events dataframe.
+#' @param hypnogram Hypnogram dataframe.
 #' @return total duration of REM sleep in minutes.
-get_rem_minutes <- function(events){
-  rem_events <- events[events$event == "REM", c("begin","end")]
+get_rem_minutes <- function(hypnogram){
+  rem_events <- hypnogram[hypnogram$event == "REM", c("begin","end")]
   duration <- as.numeric(sum(rem_events$end - rem_events$begin))/60
   return(duration)
 }
 
 #' Get total duration of N1 sleep in minutes.
 #'
-#' @param events events dataframe.
+#' @param hypnogram Hypnogram dataframe.
 #' @return total duration of N1 sleep in minutes.
-get_n1_minutes <- function(events){
-  n1_events <- events[events$event == "N1", c("begin","end")]
+get_n1_minutes <- function(hypnogram){
+  n1_events <- hypnogram[hypnogram$event == "N1", c("begin","end")]
   duration <- as.numeric(sum(n1_events$end - n1_events$begin))/60
   return(duration)
 }
+
+#' Get total duration of N2 sleep in minutes.
+#'
+#' @param hypnogram Hypnogram dataframe.
+#' @return total duration of N2 sleep in minutes.
+get_n2_minutes <- function(hypnogram){
+  n2_events <- hypnogram[hypnogram$event == "N2", c("begin","end")]
+  duration <- as.numeric(sum(n2_events$end - n2_events$begin))/60
+  return(duration)
+}
+
+#' Get total duration of N3 sleep in minutes.
+#'
+#' @param hypnogram Hypnogram dataframe.
+#' @return total duration of N3 sleep in minutes.
+get_n3_minutes <- function(hypnogram){
+  n3_events <- hypnogram[hypnogram$event == "N3", c("begin","end")]
+  duration <- as.numeric(sum(n3_events$end - n3_events$begin))/60
+  return(duration)
+}
+
+#' Record total duration in minutes.
+#'
+#' @param hypnogram Hypnogram dataframe.
+#' @return total total duration in minutes.
+# get_recording_duration <- function(hypnogram){
+#   
+#   duration <- as.numeric(sum(n3_events$end - n3_events$begin))/60
+#   return(duration)
+# }
+
 

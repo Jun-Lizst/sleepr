@@ -47,7 +47,7 @@ hypnogram_band_powers <- function(record,
                                                 "denominator","broadband"),
                                   normalize = c(4,40)){
   sRate <- record[["channels"]][[channel]][["metadata"]][["sRate"]]
-  hypnogram <- sleepr::get.hypnogram(record[["events"]])
+  hypnogram <- hypnogram(record[["events"]])
   signal <- sleepr::split_signal(signal = record[["channels"]][[channel]][["signal"]],
                                  hypnogram = hypnogram,
                                  sRate = sRate)

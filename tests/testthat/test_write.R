@@ -3,14 +3,18 @@ context("Writing MDFs")
 file <- "data/ST7132J0-PSG.edf"
 mdfPath <- "data/ST7132J0-PSG"
 
-if(!file.exists(file)){
-  download.file("https://physionet.org/pn4/sleep-edfx/ST7132J0-PSG.edf",
-                destfile = file)
-}
-
 test_that("Writing all channels", {
   sleepr::write.mdf(edfPath = file,
                   mdfPath = mdfPath)
+  expect_equal(length(list.dirs(mdfPath)), 6)
+  unlink(mdfPath,recursive = TRUE)
+})
+
+test_that("Writing and overwriting", {
+  sleepr::write.mdf(edfPath = file,
+                    mdfPath = mdfPath)
+  sleepr::write.mdf(edfPath = file,
+                    mdfPath = mdfPath)
   expect_equal(length(list.dirs(mdfPath)), 6)
   unlink(mdfPath,recursive = TRUE)
 })

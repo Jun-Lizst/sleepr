@@ -13,6 +13,8 @@ Imports:
     edfReader,
     readxl,
     utils,
-    ggplot2
+    ggplot2,
+    dplyr,
+    eegkit
 Suggests: testthat
 RoxygenNote: 6.1.0
