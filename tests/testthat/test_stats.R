@@ -24,7 +24,7 @@ test_that("Computing REM minutes", {
 
 test_that("Computing all stats", {
   stats <- sleepr::compute_all_stats(c("data/1/1/",
-                                       "data/ST7132J0/"))
+                                       "data/ST7132J0-PSG/"))
   expect_equal(nrow(stats), 2)
 })
 

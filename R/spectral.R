@@ -1,4 +1,4 @@
-#' Campute bands powers.
+#' Compute bands powers.
 #'
 #' @param x signal vector.
 #' @param Fs Frequency.
@@ -10,15 +10,13 @@ bands_power <- function(x,
                                    c(3.5,8),
                                    c(8,12),
                                    c(12,30),
-                                   c(30,50),
-                                   c(50,100)),
+                                   c(30,40)),
                        bands_names = c("delta",
                                        "theta",
                                        "alpha",
                                        "beta",
-                                       "gamma1",
-                                       "gamma2"),
-                       normalize = c(0,99)
+                                       "gamma1"),
+                       normalize = c(10,90)
                        ){
   powers <- c()
   for(band in bands){
@@ -32,23 +30,31 @@ bands_power <- function(x,
   return(powers)
 }
 
+#' Compute bands powers from a full hypnogram.
+#'
+#' @param record record.
+#' @param channel channel to split and hyp.
+#' @param bands bands. Default "delta","theta","alpha","beta", "gamma1", "denominator", "broadband".
+#' @return a df.
 hypnogram_band_powers <- function(record,
                                   channel,
                                   bands=list(c(0.5,3.5),c(3.5,8),
                                              c(8,12),c(12,30),
-                                             c(30,50),c(50,99),
-                                             c(4,40),c(0.5,99)),
+                                             c(30,40),
+                                             c(4,40),c(0.5,40)),
                                   bands_names=c("delta","theta","alpha",
-                                                "beta","gamma1","gamma2",
-                                                "denominator","broadband")){
+                                                "beta","gamma1",
+                                                "denominator","broadband"),
+                                  normalize = c(4,40)){
   sRate <- record[["channels"]][[channel]][["metadata"]][["sRate"]]
   hypnogram <- sleepr::get.hypnogram(record[["events"]])
   signal <- sleepr::split_signal(signal = record[["channels"]][[channel]][["signal"]],
                                  hypnogram = hypnogram,
                                  sRate = sRate)
   pw <- plyr::ldply(lapply(signal,function(x){
-    sleepr::bands_power(x = x,Fs = sRate,bands = bands,
-                        bands_names = bands_names)
+    sleepr::bands_power(x = x, Fs = sRate, bands = bands,
+                        bands_names = bands_names,
+                        normalize = normalize)
   }))
   pw$stage <- hypnogram$event
   pw$epoch <- c(1:nrow(pw))
