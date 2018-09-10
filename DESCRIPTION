@@ -15,6 +15,7 @@ Imports:
     utils,
     ggplot2,
     dplyr,
-    eegkit
+    eegkit,
+    reshape2
 Suggests: testthat
 RoxygenNote: 6.1.0

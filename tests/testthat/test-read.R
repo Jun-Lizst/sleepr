@@ -2,7 +2,7 @@ context("Reading MDFs")
 
 file <- "data/ST7132J0-PSG.edf"
 mdfPath <- "data/ST7132J0-PSG"
-sleepr::write.mdf(edfPath = file,
+sleepr::write_mdf(edfPath = file,
                 mdfPath = mdfPath)
 
 test_that("Reading all channels", {

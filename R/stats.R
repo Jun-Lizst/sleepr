@@ -19,17 +19,18 @@ compute_all_stats <- function(records,
           hypnogram_band_powers$broadband <- NULL
           hypnogram_band_powers$epoch <- NULL
           
-          df_record <- hypnogram_band_powers %>%
-            dplyr::group_by(stage) %>%
-            dplyr::summarise(delta = mean(delta),
-                             theta = mean(theta),
-                             alpha = mean(alpha),
-                             beta = mean(beta),
-                             gamma1 = mean(gamma1)) %>%
-            reshape2::melt(id.vars = "stage") %>%
-            dplyr::mutate(id = 1) %>%
-            reshape2::dcast(id ~ stage+variable) %>%
-            dplyr::select(-id)
+          df_record <- hypnogram_band_powers
+          df_record <-   dplyr::group_by(df_record,stage)
+          df_record <-  dplyr::summarise(df_record,
+                                         delta = mean(delta),
+                                         theta = mean(theta),
+                                         alpha = mean(alpha),
+                                         beta = mean(beta),
+                                         gamma1 = mean(gamma1))
+          df_record <-  reshape2::melt(df_record,id.vars = "stage")
+          df_record <-  dplyr::mutate(df_record,id = 1)
+          df_record <-  reshape2::dcast(df_record,id ~ stage+variable)
+          df_record <- dplyr::select(df_record,-id)
           colnames(df_record) <- paste0(tolower(colnames(df_record)),"_mean_eeg")
         }
       }

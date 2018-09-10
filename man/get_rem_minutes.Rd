@@ -4,10 +4,10 @@
 \alias{get_rem_minutes}
 \title{Get total duration of REM sleep in minutes.}
 \usage{
-get_rem_minutes(events)
+get_rem_minutes(hypnogram)
 }
 \arguments{
-\item{events}{events dataframe.}
+\item{hypnogram}{Hypnogram dataframe.}
 }
 \value{
 total duration of REM sleep in minutes.

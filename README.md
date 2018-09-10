@@ -26,7 +26,7 @@ MDF uses binary files for signals and JSON for metadata. Signals values are enco
 Exemple
 
 ```
-sleepr::write.mdf(edfPath = "tests/testthat/data/1/1.rec",
+sleepr::write_mdf(edfPath = "tests/testthat/data/1/1.rec",
                   mdfPath = "tests/testthat/data/1/1",
                   events = sleepr::read.events.isruc(dir = "tests/testthat/data/1/",
                                                      scoringNum = 1))

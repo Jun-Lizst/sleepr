@@ -4,7 +4,7 @@
 #' @param mdfPath MDF path.
 #' @param channels Channels to write.
 #' @param events Events dataframe to write.
-write.mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
+write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
   
   # Reset MDF directory
   if(dir.exists(mdfPath)){
@@ -31,7 +31,7 @@ write.mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
     }
     
     for(channel in edfchannels){
-      write.mdf.channel(channel, signals, headers, mdfPath)
+      write_channel(channel, signals, headers, mdfPath)
     }
   }
 
@@ -58,7 +58,7 @@ write.mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
 #' @param signals signals list.
 #' @param headers headers.
 #' @param mdfPath mdf path
-write.mdf.channel <- function(channel, signals, headers, mdfPath){
+write_channel <- function(channel, signals, headers, mdfPath){
   signal <- signals[[channel]]
   
   if (!is.null(signal)){

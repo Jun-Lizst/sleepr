@@ -2,7 +2,7 @@
 #'
 #' @param events events dataframe.
 #' @return a ggplot.
-plot.hypnogram <- function(events){
+plot_hypnogram <- function(events){
   stages <- hypnogram(events)
   stages$begin <- as.POSIXct(stages$begin)
   hypnogram <- ggplot2::ggplot(stages,ggplot2::aes(x=begin,y=event, group=1)) +
