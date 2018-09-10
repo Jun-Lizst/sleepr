@@ -30,7 +30,6 @@ compute_all_stats <- function(records,
             dplyr::mutate(id = 1) %>%
             reshape2::dcast(id ~ stage+variable) %>%
             dplyr::select(-id)
-          print(df_record)
           colnames(df_record) <- paste0(tolower(colnames(df_record)),"_mean_eeg")
         }
       }
