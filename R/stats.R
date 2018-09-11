@@ -2,12 +2,14 @@
 #'
 #' @param record record paths.
 #' @param eeg_channels potential EEG channel names.
+#' @param metadata read metadata or not.
 #' @return df.
 compute_all_stats <- function(records, 
-                              eeg_channels = c("C3-A2","EEG Fpz-Cz")){
+                              eeg_channels = c("C3-A2","EEG Fpz-Cz"),
+                              metadata = TRUE){
   df <- data.frame(stringsAsFactors = FALSE)
   for(record in records){
-    l <- read_mdf(mdfPath = record)
+    l <- read_mdf(mdfPath = record,channels = eeg_channels,metadata = metadata)
     df_record <- data.frame(stringsAsFactors = FALSE)
     for(eeg_channel in eeg_channels){
       if(nrow(df_record) == 0){
