@@ -42,8 +42,24 @@ compute_all_stats <- function(records,
     } else {
       df_record <- data.frame(record <- record,stringsAsFactors = FALSE)
     }
-    df_record$rem_minutes <- rem_minutes(l[["events"]])
-    #df_record$awa_minutes <- get_awa_minutes(l[["events"]])
+    df_record$rem_minutes <- rem_minutes(hypnogram(l[["events"]]))
+    df_record$n1_minutes <- n1_minutes(hypnogram(l[["events"]]))
+    df_record$n2_minutes <- n2_minutes(hypnogram(l[["events"]]))
+    df_record$n3_minutes <- n3_minutes(hypnogram(l[["events"]]))
+    df_record$awa_minutes <- awa_minutes(hypnogram(l[["events"]]))
+    df_record$tts <- tts(hypnogram(l[["events"]]))
+    df_record$rem_tts <- rem_tts(hypnogram(l[["events"]]))
+    df_record$n3_tts <- n3_tts(hypnogram(l[["events"]]))
+    df_record$n2_tts <- n2_tts(hypnogram(l[["events"]]))
+    df_record$n1_tts <- n1_tts(hypnogram(l[["events"]]))
+    df_record$pts <- pts(hypnogram(l[["events"]]))
+    df_record$sleep_efficiency <- sleep_efficiency(hypnogram(l[["events"]]))
+    df_record$sleep_latency <- sleep_latency(hypnogram(l[["events"]]))
+    df_record$rem_latency <- rem_latency(hypnogram(l[["events"]]))
+    df_record$waso <- waso(hypnogram(l[["events"]]))
+    df_record$tts_pos_back <- tts_pos_back(l[["events"]])
+    df_record$tts_pos_back_pct <- tts_pos_back_pct(l[["events"]])
+    
     df <- dplyr::bind_rows(df,df_record)
   }
   return(df)
@@ -94,7 +110,7 @@ awa_minutes <- function(hypnogram){
   return(sum(as.numeric(difftime(awa_events$end,awa_events$begin,units="secs"))/60))
 }
 
-#' time to sleep
+#' Time To Sleep
 #'
 #' @param hypnogram Hypnogram dataframe.
 #' @return tts in minutes.
@@ -138,7 +154,7 @@ rem_latency <- function(hypnogram){
   return(as.numeric(difftime(min(rem$begin),min(hypnogram$begin),units="secs"))/60-sleep_latency(hypnogram))
 }
 
-wake_after_onset <- function(hypnogram){
+waso <- function(hypnogram){
   return(pts(hypnogram)-sleep_latency(hypnogram)-tts(hypnogram))
 }
 
@@ -166,14 +182,15 @@ tts_pos_back <- function(events){
   return(td/60)
 }
 
-# tts_pos_back_pct <- function(events){
-#   return(tts_pos_back(events)/tts(events))
-# }
-#   
+tts_pos_back_pct <- function(events){
+  return(tts_pos_back(events)/tts(events))
+}
+
+
 # tts_pos_back_pct(mdf[["events"]])
 # plot_hypnogram(hypnogram(mdf[["events"]]))
 # mdf <- read_mdf("/Users/paul/dariot/",channels = "C3-M2")
-# # stats <- sleepr::compute_all_stats("/Users/paul/20180718T013310/",
-# #                                    eeg_channels = "C3-M2",
-# #                                    metadata = TRUE)
+# stats <- sleepr::compute_all_stats("/Users/paul/dariot/",
+#                                    eeg_channels = "C3-M2",
+#                                    metadata = TRUE)
 #hypnogram <- hypnogram(mdf[["events"]])
