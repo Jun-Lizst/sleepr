@@ -9,8 +9,8 @@ sleepr::write_mdf(edfPath = "data/ST7132J0-PSG.edf",
                   events = sleepr::read_events_sleepedfx("data/ST7132JR-Hypnogram.edf"))
 
 test_that("Computing REM minutes", {
-  expect_equal(sleepr::get_rem_minutes(read_mdf("data/1/1",c())[["events"]]), 59)
-  expect_equal(sleepr::get_rem_minutes(read_mdf("data/ST7132J0",c())[["events"]]), 108)
+  expect_equal(rem_minutes(read_mdf("data/1/1",c())[["events"]]), 59)
+  expect_equal(rem_minutes(read_mdf("data/ST7132J0",c())[["events"]]), 108)
 })
 
 test_that("Computing all stats", {
