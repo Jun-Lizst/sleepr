@@ -30,7 +30,7 @@ sleepr::write_mdf(edfPath = "tests/testthat/data/1/1.rec",
                   mdfPath = "tests/testthat/data/1/1",
                   events = sleepr::read.events.isruc(dir = "tests/testthat/data/1/",
                                                      scoringNum = 1))
-record <- sleepr::read.mdf("tests/testthat/data/1/1",channels = "C3-A2")
+record <- sleepr::read_mdf("tests/testthat/data/1/1",channels = "C3-A2")
 
 res <- sleepr::hypnogram_band_powers(record,"C3-A2")
 

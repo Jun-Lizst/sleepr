@@ -1,9 +1,10 @@
 #' Read a MDF
 #'
-#' @param mdfPath MDF path.
-#' @param channels Channels to read.
-#' @return A (large) list containing signals and metadata.
-read.mdf <- function(mdfPath, channels = c(NA)) {
+#' @param mdfPath [String] MDF path.
+#' @param channels [String] Channels to read.
+#' @param metadata [Boolean] Read or not the metadata.
+#' @return A (large) list.
+read_mdf <- function(mdfPath, channels = c(NA), metadata = TRUE) {
   
   # Init list
   mdf <- list()
@@ -28,10 +29,15 @@ read.mdf <- function(mdfPath, channels = c(NA)) {
       n = mdf[["channels"]][[channel]][["metadata"]]$sLength,
       size = 4)
   }
-  metadataPath <- paste0(mdfPath,"/metadata.json")
-  if(file.exists(metadataPath)){
-    mdf[["metadata"]] <- jsonlite::read_json(metadataPath)
+  
+  # Read metadata
+  if(metadata){
+    metadataPath <- paste0(mdfPath,"/metadata.json")
+    if(file.exists(metadataPath)){
+      mdf[["metadata"]] <- jsonlite::read_json(metadataPath)
+    }
   }
+  
   
   eventsPath <- paste0(mdfPath,"/events.json")
   if(file.exists(eventsPath)){

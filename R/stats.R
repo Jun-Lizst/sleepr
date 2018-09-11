@@ -7,7 +7,7 @@ compute_all_stats <- function(records,
                               eeg_channels = c("C3-A2","EEG Fpz-Cz")){
   df <- data.frame(stringsAsFactors = FALSE)
   for(record in records){
-    l <- sleepr::read.mdf(mdfPath = record)
+    l <- read_mdf(mdfPath = record)
     df_record <- data.frame(stringsAsFactors = FALSE)
     for(eeg_channel in eeg_channels){
       if(nrow(df_record) == 0){
