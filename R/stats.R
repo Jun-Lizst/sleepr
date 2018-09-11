@@ -142,7 +142,38 @@ wake_after_onset <- function(hypnogram){
   return(pts(hypnogram)-sleep_latency(hypnogram)-tts(hypnogram))
 }
 
-# tts_pos_back <- function(events){
-#   es <- events[events$event == "Dos",] # [e]vents [s]ubset 
-#   h <- hypnogram(events)
+tts_pos_back <- function(events){
+  es <- events[events$event == "Dos",] # [e]vents [s]ubset 
+  h <- hypnogram(events)
+  td <- 0
+  for(i in c(1:nrow(es))){
+    ed <- 0
+    hes <- h[(h$begin<=es[i,]$begin & h$end>es[i,]$begin)
+             | (h$begin>=es[i,]$begin & h$end<=es[i,]$end)
+             | (h$begin<=es[i,]$end & h$end>=es[i,]$end),]
+    for(j in c(1:nrow(hes))){
+      if(hes$event[j] != "AWA"){
+        hi <- lubridate::interval(hes$begin[j], hes$end[j])
+        esi <- lubridate::interval(es$begin[i], es$end[i])
+        ed <- ed + as.numeric(
+          lubridate::as.duration(
+            lubridate::intersect(
+              hi, esi)),"seconds")
+      }
+    }
+    td <- td+ed
+  }
+  return(td/60)
+}
+
+# tts_pos_back_pct <- function(events){
+#   return(tts_pos_back(events)/tts(events))
 # }
+#   
+# tts_pos_back_pct(mdf[["events"]])
+# plot_hypnogram(hypnogram(mdf[["events"]]))
+# mdf <- read_mdf("/Users/paul/dariot/",channels = "C3-M2")
+# # stats <- sleepr::compute_all_stats("/Users/paul/20180718T013310/",
+# #                                    eeg_channels = "C3-M2",
+# #                                    metadata = TRUE)
+#hypnogram <- hypnogram(mdf[["events"]])
