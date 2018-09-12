@@ -59,11 +59,75 @@ compute_all_stats <- function(records,
     df_record$waso <- waso(hypnogram(l[["events"]]))
     df_record$tts_pos_back <- tts_pos_back(l[["events"]])
     df_record$tts_pos_back_pct <- tts_pos_back_pct(l[["events"]])
+    df_record$tts_pos_left <- tts_pos_left(l[["events"]])
+    df_record$tts_pos_left_pct <- tts_pos_left_pct(l[["events"]])
+    df_record$tts_pos_stomach <- tts_pos_stomach(l[["events"]])
+    df_record$tts_pos_stomach_pct <- tts_pos_stomach_pct(l[["events"]])
+    df_record$tts_pos_right <- tts_pos_right(l[["events"]])
+    df_record$tts_pos_right_pct <- tts_pos_right_pct(l[["events"]])
+    df_record$tts_pos_nonback <- tts_pos_nonback(l[["events"]])
+    df_record$tts_pos_nonback_pct <- tts_pos_nonback_pct(l[["events"]])
+    df_record$ah_count <- ah_count(l[["events"]])
+    df_record$ah_hour <- ah_hour(l[["events"]])
+    df_record$ah_back <- ah_back(l[["events"]])
+    df_record$ah_nonback <- ah_nonback(l[["events"]])
+    df_record$ah_rem <- ah_rem(l[["events"]])
+    df_record$ah_nonrem <- ah_nonrem(l[["events"]])
     
     df <- dplyr::bind_rows(df,df_record)
   }
   return(df)
 }
+
+# Get only x events that start during y events
+get_overlapping_events <- function(events, x, y){
+  x <- events[events$event %in% x,]
+  y <- events[events$event %in% y,]
+  
+  if(nrow(x) > 0 & nrow(y) > 0){
+    x$dummy <- TRUE
+    y$dummy <- TRUE
+    z <- merge(x,y,by="dummy")
+    z$dummy <- NULL
+    
+    z <- z[z$begin.x >= z$begin.y & 
+             z$begin.x < z$end.y,]
+    
+    return(z)
+  }
+  else {
+    return(data.frame())
+  }
+}
+
+
+events_stages_overlap <- function(label, stages, events){
+  es <- events[events$event %in% label,] # [e]vents [s]ubset 
+  h <- hypnogram(events)
+  td <- 0
+  for(i in c(1:nrow(es))){
+    ed <- 0
+    hes <- h[(h$begin<=es[i,]$begin & h$end>es[i,]$begin)
+             | (h$begin>=es[i,]$begin & h$end<=es[i,]$end)
+             | (h$begin<=es[i,]$end & h$end>=es[i,]$end),]
+    if(nrow(hes) > 0){
+      for(j in c(1:nrow(hes))){
+        if(hes$event[j] %in% stages){
+          hi <- lubridate::interval(hes$begin[j], hes$end[j])
+          esi <- lubridate::interval(es$begin[i], es$end[i])
+          ed <- ed + as.numeric(
+            lubridate::as.duration(
+              lubridate::intersect(
+                hi, esi)),"seconds")
+        }
+      }
+    }
+    td <- td+ed
+  }
+  return(td/60)
+}
+
+# Stages & scoring ----
 
 #' Get total duration of REM sleep in minutes.
 #'
@@ -158,39 +222,94 @@ waso <- function(hypnogram){
   return(pts(hypnogram)-sleep_latency(hypnogram)-tts(hypnogram))
 }
 
+# Position & activity ----
+
 tts_pos_back <- function(events){
-  es <- events[events$event == "Dos",] # [e]vents [s]ubset 
-  h <- hypnogram(events)
-  td <- 0
-  for(i in c(1:nrow(es))){
-    ed <- 0
-    hes <- h[(h$begin<=es[i,]$begin & h$end>es[i,]$begin)
-             | (h$begin>=es[i,]$begin & h$end<=es[i,]$end)
-             | (h$begin<=es[i,]$end & h$end>=es[i,]$end),]
-    for(j in c(1:nrow(hes))){
-      if(hes$event[j] != "AWA"){
-        hi <- lubridate::interval(hes$begin[j], hes$end[j])
-        esi <- lubridate::interval(es$begin[i], es$end[i])
-        ed <- ed + as.numeric(
-          lubridate::as.duration(
-            lubridate::intersect(
-              hi, esi)),"seconds")
-      }
-    }
-    td <- td+ed
-  }
-  return(td/60)
+  return(events_stages_overlap("Dos",c("N1","N2","N3","REM"),events))
 }
 
 tts_pos_back_pct <- function(events){
   return(tts_pos_back(events)/tts(events))
 }
 
+tts_pos_left <- function(events){
+  return(events_stages_overlap("Gauche",c("N1","N2","N3","REM"),events))
+}
 
-# tts_pos_back_pct(mdf[["events"]])
-# plot_hypnogram(hypnogram(mdf[["events"]]))
-# mdf <- read_mdf("/Users/paul/dariot/",channels = "C3-M2")
-# stats <- sleepr::compute_all_stats("/Users/paul/dariot/",
-#                                    eeg_channels = "C3-M2",
-#                                    metadata = TRUE)
-#hypnogram <- hypnogram(mdf[["events"]])
+tts_pos_left_pct <- function(events){
+  return(tts_pos_left(events)/tts(events))
+}
+
+tts_pos_stomach <- function(events){
+  return(events_stages_overlap("Ventre",c("N1","N2","N3","REM"),events))
+}
+
+tts_pos_stomach_pct <- function(events){
+  return(tts_pos_stomach(events)/tts(events))
+}
+
+tts_pos_right <- function(events){
+  return(events_stages_overlap("Droite",c("N1","N2","N3","REM"),events))
+}
+
+tts_pos_right_pct <- function(events){
+  return(tts_pos_right(events)/tts(events))
+}
+
+tts_pos_nonback <- function(events){
+  return(tts(hypnogram(events))-tts_pos_back(events))
+}
+
+tts_pos_nonback_pct <- function(events){
+  return(tts_pos_nonback(events)/tts(events))
+}
+
+# Respiratory indexes ----
+
+ah_count <- function(events){
+  return(nrow(events[events$event %in%
+                       c("A. Obstructive",
+                         "Hypopnée"),]))
+}
+
+ah_hour <- function(events){
+  return(ah_count(events)/(tts(hypnogram(events))/60))
+}
+
+ah_back <- function(events){
+  return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),"Dos"))/(tts_pos_back(events)/60))
+}
+
+ah_nonback <- function(events){
+  return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),
+                                     c("Droite","Gauche","Ventre")))/(tts_pos_nonback(events)/60))
+}
+
+ah_rem <- function(events){
+  return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),
+                                     c("REM")))/(rem_minutes(hypnogram(events))/60))
+}
+
+ah_nonrem <- function(events){
+  return(
+    nrow(
+      get_overlapping_events(
+        events,
+        c("Hypopnée",
+          "A. Obstructive"),
+        c("N1","N2","N3")))/
+      ((n1_minutes(hypnogram(events))+
+         n2_minutes(hypnogram(events))+
+         n3_minutes(hypnogram(events)))/60)
+    )
+}
+
+# Oxygen stauration ----
+
+# Pulse ----
+
+# Quality ----
+
+# PLM ----
+
+# Micro-arousals ----

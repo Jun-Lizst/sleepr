@@ -4,10 +4,13 @@
 \alias{compute_all_stats}
 \title{Call all available stats functions}
 \usage{
-compute_all_stats(records, eeg_channels = c("C3-A2", "EEG Fpz-Cz"))
+compute_all_stats(records, eeg_channels = c("C3-A2", "EEG Fpz-Cz"),
+  metadata = TRUE)
 }
 \arguments{
 \item{eeg_channels}{potential EEG channel names.}
+
+\item{metadata}{read metadata or not.}
 
 \item{record}{record paths.}
 }
