@@ -1,4 +1,4 @@
-#' Call all available stats functions
+#' Call and compile all statistics functions in a dataframe. 
 #'
 #' @param record record paths.
 #' @param eeg_channels potential EEG channel names.
@@ -268,7 +268,35 @@ tts_pos_nonback_pct <- function(events){
   return(tts_pos_nonback(events)/tts(events))
 }
 
+# Snoring ----
+
+# Number of snorings
+snoring_count <- function(events){
+  return(nrow(get_overlapping_events(events,
+                         x = c("Train de ronflements"),
+                         y = c("N1","N2","N3","REM"))
+  ))
+}
+
+# Snorings per hour
+snoring_index <- function(events){
+  return(snoring_count(events)/(tts(hypnogram(events))/60))
+}
+
+snoring_duration <- function(events){
+  s <- get_overlapping_events(events,
+                         x = c("Train de ronflements"),
+                         y = c("N1","N2","N3","REM"))
+  s$duration <- as.numeric(difftime(s$end.x,s$begin.x,units="secs"))/60
+  return(sum(s$duration))
+}
+
+snoring_duration_pct <- function(events){
+  return(snoring_duration(events)/tts(hypnogram(events)))
+}
+
 # Respiratory indexes ----
+
 
 ah_count <- function(events){
   return(nrow(events[events$event %in%
