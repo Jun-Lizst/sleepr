@@ -76,6 +76,10 @@ read_events_noxturnal <- function(path){
   events$event[events$event == "Micro-?veil"] <- "Micro-Éveil"
   events$event[events$event == "Hypopn?e"] <- "Hypopnée"
   events$event[events$event == "D?sat"] <- "Désat"
+  
+  if(nrow(events[events$event == "Début de l'analyse",]) > 0){
+    events <- events[events$begin >= min(events$begin[events$event == "Début de l'analyse"]),]
+  }
 
   return(events)
 }
