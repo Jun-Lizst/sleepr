@@ -6,7 +6,7 @@ test_that("Reading ISRUC events", {
 })
 
 test_that("Reading Noxturnal events", {
-  events <- sleepr::read.events.noxturnal("data/noxturnal_events_example_unicode.csv")
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
   expect_equal(nrow(events), 1411)
 })
 

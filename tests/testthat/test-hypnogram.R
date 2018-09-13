@@ -1,7 +1,7 @@
 context("Creating hypnograms")
 
 test_that("Noxturnal hypnogram", {
-  events <- read.events.noxturnal("data/noxturnal_events_example_unicode.csv")
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
   hypnogram <- hypnogram(events)
   hypnogram <- plot_hypnogram(events)
   expect_equal(class(hypnogram)[1], "gg")

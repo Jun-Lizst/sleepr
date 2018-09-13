@@ -34,7 +34,7 @@ read.events.isruc <- function(dir,scoringNum){
 #'
 #' @param path Noxturnal events file path.
 #' @return A dataframe of scored events.
-read.events.noxturnal <- function(path){
+read_events_noxturnal <- function(path){
 
   events <- tryCatch({
     read.csv(path,
