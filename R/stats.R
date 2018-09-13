@@ -11,72 +11,76 @@ compute_all_stats <- function(records,
   for(record in records){
     l <- read_mdf(mdfPath = record,channels = eeg_channels,metadata = metadata)
     df_record <- data.frame(stringsAsFactors = FALSE)
-    for(eeg_channel in eeg_channels){
-      if(nrow(df_record) == 0){
-        if(eeg_channel %in% names(l[["channels"]])){
-          
-          hypnogram_band_powers <- sleepr::hypnogram_band_powers(record = l,
-                                                                 channel = eeg_channel)
-          hypnogram_band_powers$denominator <- NULL
-          hypnogram_band_powers$broadband <- NULL
-          hypnogram_band_powers$epoch <- NULL
-          
-          df_record <- hypnogram_band_powers
-          df_record <-   dplyr::group_by(df_record,stage)
-          df_record <-  dplyr::summarise(df_record,
-                                         delta = mean(delta),
-                                         theta = mean(theta),
-                                         alpha = mean(alpha),
-                                         beta = mean(beta),
-                                         gamma1 = mean(gamma1))
-          df_record <-  reshape2::melt(df_record,id.vars = "stage")
-          df_record <-  dplyr::mutate(df_record,id = 1)
-          df_record <-  reshape2::dcast(df_record,id ~ stage+variable)
-          df_record <- dplyr::select(df_record,-id)
-          colnames(df_record) <- paste0(tolower(colnames(df_record)),"_mean_eeg")
+    if(length(l) > 0){
+      for(eeg_channel in eeg_channels){
+        
+        if(nrow(df_record) == 0){
+          if(eeg_channel %in% names(l[["channels"]])){
+            
+            hypnogram_band_powers <- sleepr::hypnogram_band_powers(record = l,
+                                                                   channel = eeg_channel)
+            hypnogram_band_powers$denominator <- NULL
+            hypnogram_band_powers$broadband <- NULL
+            hypnogram_band_powers$epoch <- NULL
+            
+            df_record <- hypnogram_band_powers
+            df_record <-   dplyr::group_by(df_record,stage)
+            df_record <-  dplyr::summarise(df_record,
+                                           delta = mean(delta),
+                                           theta = mean(theta),
+                                           alpha = mean(alpha),
+                                           beta = mean(beta),
+                                           gamma1 = mean(gamma1))
+            df_record <-  reshape2::melt(df_record,id.vars = "stage")
+            df_record <-  dplyr::mutate(df_record,id = 1)
+            df_record <-  reshape2::dcast(df_record,id ~ stage+variable)
+            df_record <- dplyr::select(df_record,-id)
+            colnames(df_record) <- paste0(tolower(colnames(df_record)),"_mean_eeg")
+          }
         }
       }
+      if(nrow(df_record) == 1){
+        df_record$record <- record
+      } else {
+        df_record <- data.frame(record <- record,stringsAsFactors = FALSE)
+      }
+      df_record$rem_minutes <- rem_minutes(hypnogram(l[["events"]]))
+      df_record$n1_minutes <- n1_minutes(hypnogram(l[["events"]]))
+      df_record$n2_minutes <- n2_minutes(hypnogram(l[["events"]]))
+      df_record$n3_minutes <- n3_minutes(hypnogram(l[["events"]]))
+      df_record$awa_minutes <- awa_minutes(hypnogram(l[["events"]]))
+      df_record$tts <- tts(hypnogram(l[["events"]]))
+      df_record$rem_tts <- rem_tts(hypnogram(l[["events"]]))
+      df_record$n3_tts <- n3_tts(hypnogram(l[["events"]]))
+      df_record$n2_tts <- n2_tts(hypnogram(l[["events"]]))
+      df_record$n1_tts <- n1_tts(hypnogram(l[["events"]]))
+      df_record$pts <- pts(hypnogram(l[["events"]]))
+      df_record$sleep_efficiency <- sleep_efficiency(hypnogram(l[["events"]]))
+      df_record$sleep_latency <- sleep_latency(hypnogram(l[["events"]]))
+      df_record$rem_latency <- rem_latency(hypnogram(l[["events"]]))
+      df_record$waso <- waso(hypnogram(l[["events"]]))
+      df_record$tts_pos_back <- tts_pos_back(l[["events"]])
+      df_record$tts_pos_back_pct <- tts_pos_back_pct(l[["events"]])
+      df_record$tts_pos_left <- tts_pos_left(l[["events"]])
+      df_record$tts_pos_left_pct <- tts_pos_left_pct(l[["events"]])
+      df_record$tts_pos_stomach <- tts_pos_stomach(l[["events"]])
+      df_record$tts_pos_stomach_pct <- tts_pos_stomach_pct(l[["events"]])
+      df_record$tts_pos_right <- tts_pos_right(l[["events"]])
+      df_record$tts_pos_right_pct <- tts_pos_right_pct(l[["events"]])
+      df_record$tts_pos_nonback <- tts_pos_nonback(l[["events"]])
+      df_record$tts_pos_nonback_pct <- tts_pos_nonback_pct(l[["events"]])
+      df_record$ah_count <- ah_count(l[["events"]])
+      df_record$ah_hour <- ah_hour(l[["events"]])
+      df_record$ah_back <- ah_back(l[["events"]])
+      df_record$ah_nonback <- ah_nonback(l[["events"]])
+      df_record$ah_rem <- ah_rem(l[["events"]])
+      df_record$ah_nonrem <- ah_nonrem(l[["events"]])
     }
-    if(nrow(df_record) == 1){
-      df_record$record <- record
-    } else {
-      df_record <- data.frame(record <- record,stringsAsFactors = FALSE)
-    }
-    df_record$rem_minutes <- rem_minutes(hypnogram(l[["events"]]))
-    df_record$n1_minutes <- n1_minutes(hypnogram(l[["events"]]))
-    df_record$n2_minutes <- n2_minutes(hypnogram(l[["events"]]))
-    df_record$n3_minutes <- n3_minutes(hypnogram(l[["events"]]))
-    df_record$awa_minutes <- awa_minutes(hypnogram(l[["events"]]))
-    df_record$tts <- tts(hypnogram(l[["events"]]))
-    df_record$rem_tts <- rem_tts(hypnogram(l[["events"]]))
-    df_record$n3_tts <- n3_tts(hypnogram(l[["events"]]))
-    df_record$n2_tts <- n2_tts(hypnogram(l[["events"]]))
-    df_record$n1_tts <- n1_tts(hypnogram(l[["events"]]))
-    df_record$pts <- pts(hypnogram(l[["events"]]))
-    df_record$sleep_efficiency <- sleep_efficiency(hypnogram(l[["events"]]))
-    df_record$sleep_latency <- sleep_latency(hypnogram(l[["events"]]))
-    df_record$rem_latency <- rem_latency(hypnogram(l[["events"]]))
-    df_record$waso <- waso(hypnogram(l[["events"]]))
-    df_record$tts_pos_back <- tts_pos_back(l[["events"]])
-    df_record$tts_pos_back_pct <- tts_pos_back_pct(l[["events"]])
-    df_record$tts_pos_left <- tts_pos_left(l[["events"]])
-    df_record$tts_pos_left_pct <- tts_pos_left_pct(l[["events"]])
-    df_record$tts_pos_stomach <- tts_pos_stomach(l[["events"]])
-    df_record$tts_pos_stomach_pct <- tts_pos_stomach_pct(l[["events"]])
-    df_record$tts_pos_right <- tts_pos_right(l[["events"]])
-    df_record$tts_pos_right_pct <- tts_pos_right_pct(l[["events"]])
-    df_record$tts_pos_nonback <- tts_pos_nonback(l[["events"]])
-    df_record$tts_pos_nonback_pct <- tts_pos_nonback_pct(l[["events"]])
-    df_record$ah_count <- ah_count(l[["events"]])
-    df_record$ah_hour <- ah_hour(l[["events"]])
-    df_record$ah_back <- ah_back(l[["events"]])
-    df_record$ah_nonback <- ah_nonback(l[["events"]])
-    df_record$ah_rem <- ah_rem(l[["events"]])
-    df_record$ah_nonrem <- ah_nonrem(l[["events"]])
-    
-    df <- dplyr::bind_rows(df,df_record)
+      df <- dplyr::bind_rows(df,df_record)
+       
   }
   return(df)
+    
 }
 
 # Get only x events that start during y events
@@ -110,7 +114,7 @@ events_stages_overlap <- function(label, stages, events){
     hes <- h[(h$begin<=es[i,]$begin & h$end>es[i,]$begin)
              | (h$begin>=es[i,]$begin & h$end<=es[i,]$end)
              | (h$begin<=es[i,]$end & h$end>=es[i,]$end),]
-    if(nrow(hes) > 0){
+    if(nrow(hes) > 0 & nrow(h) > 0){
       for(j in c(1:nrow(hes))){
         if(hes$event[j] %in% stages){
           hi <- lubridate::interval(hes$begin[j], hes$end[j])

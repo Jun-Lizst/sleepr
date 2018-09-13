@@ -13,6 +13,12 @@ test_that("Computing REM minutes", {
   expect_equal(rem_minutes(read_mdf("data/ST7132J0",c())[["events"]]), 108)
 })
 
+test_that("Computing 1 stats", {
+  stats <- compute_all_stats(c("data/1/1/"))
+  expect_equal(nrow(stats), 1)
+})
+
+
 test_that("Computing all stats", {
   stats <- compute_all_stats(c("data/1/1/",
                                "data/ST7132J0/"))
