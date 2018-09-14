@@ -14,27 +14,34 @@ devtools::install_github("boupetch/sleepr")
 
 ### File manipulation
 
-MDF<sup>1</sup> is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
+In Sleepr, `write_mdf()` and `read_mdf()` are used to write and read records from disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format (MDF). MDF<sup>1</sup> is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
 MDF uses binary files for signals and JSON for metadata. Signals values are encoded in binary, 32 bits, little endian.
 
 ### Events handling
 
 ### Data visualisation
 
+Hypnogram plotting
+
+![hypnogram](img/hypnogram.jpeg)
+
 ### Statistics computing
 
 Exemple
 
-```
-sleepr::write_mdf(edfPath = "tests/testthat/data/1/1.rec",
-                  mdfPath = "tests/testthat/data/1/1",
-                  events = sleepr::read.events.isruc(dir = "tests/testthat/data/1/",
-                                                     scoringNum = 1))
-record <- sleepr::read_mdf("tests/testthat/data/1/1",channels = "C3-A2")
+```R
+library(sleepr)
 
-res <- sleepr::hypnogram_band_powers(record,"C3-A2")
+write_mdf(edfPath = "tests/testthat/data/1/1.rec",
+          mdfPath = "tests/testthat/data/1/1",
+          events = sleepr::read.events.isruc(
+            dir = "tests/testthat/data/1/",
+            scoringNum = 1))
+            
+record <- read_mdf("tests/testthat/data/1/1",
+                   channels = "C3-A2")
 
-unlink("tests/testthat/data/1/1")
+hypnogram_band_powers(record,"C3-A2")
 ```
 
 ## Package Testing

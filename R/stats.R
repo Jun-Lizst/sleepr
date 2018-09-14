@@ -44,7 +44,7 @@ compute_all_stats <- function(records,
       } else {
         df_record <- data.frame(record <- record,stringsAsFactors = FALSE)
       }
-      df_record$rem_minutes <- rem_minutes(hypnogram(l[["events"]]))
+      df_record$rem_duration <- rem_duration(l[["events"]])
       df_record$n1_minutes <- n1_minutes(hypnogram(l[["events"]]))
       df_record$n2_minutes <- n2_minutes(hypnogram(l[["events"]]))
       df_record$n3_minutes <- n3_minutes(hypnogram(l[["events"]]))
@@ -137,7 +137,8 @@ events_stages_overlap <- function(label, stages, events){
 #'
 #' @param hypnogram Hypnogram dataframe.
 #' @return total duration of REM sleep in minutes.
-rem_minutes <- function(hypnogram){
+rem_duration <- function(hypnogram){
+  
   rem_events <- hypnogram[hypnogram$event == "REM", c("begin","end")]
   return(sum(as.numeric(difftime(rem_events$end,rem_events$begin,units="secs"))/60))
 }
@@ -188,7 +189,7 @@ tts <- function(hypnogram){
 }
 
 rem_tts <- function(hypnogram){
-  return(rem_minutes(hypnogram)/tts(hypnogram))
+  return(rem_duration(hypnogram)/tts(hypnogram))
 }
 
 n3_tts <- function(hypnogram){
@@ -319,7 +320,7 @@ ah_nonback <- function(events){
 
 ah_rem <- function(events){
   return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),
-                                     c("REM")))/(rem_minutes(hypnogram(events))/60))
+                                     c("REM")))/(rem_duration(hypnogram(events))/60))
 }
 
 ah_nonrem <- function(events){
