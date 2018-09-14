@@ -58,7 +58,7 @@ write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
 #' @param signals signals list.
 #' @param headers headers.
 #' @param mdfPath mdf path
-write_channel <- function(channel, signals, headers, mdfPath){
+write_channel <- function(channel, signals, headers, mdfPath, endian="little"){
   signal <- signals[[channel]]
   
   if (!is.null(signal)){
@@ -70,7 +70,7 @@ write_channel <- function(channel, signals, headers, mdfPath){
     # Write file
     writeBin(signal$signal,
              con = paste0(channelPath,"/data.bin"),
-             endian = "little", size = 4)
+             endian = endian, size = 4)
     
     # Write metadata
     metadata <- headers$sHeaders[headers$sHeaders$label == channel,]
