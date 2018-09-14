@@ -39,4 +39,11 @@ test_that("Do not write channels", {
   unlink(mdfPath,recursive = TRUE)
 })
 
+# test_that("Invalid EDF path", {
+#   expect_error(
+#     write_mdf(edfPath = "An invalid path",
+#               mdfPath = "",
+#               channels = c()))
+# })
+
 
