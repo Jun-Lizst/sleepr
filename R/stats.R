@@ -133,17 +133,21 @@ events_stages_overlap <- function(label, stages, events){
 
 # Stages & scoring ----
 
-#' Get total duration of REM sleep in minutes.
+#' Sums up REM stages duration from events dataframe to get total REM duration in minutes.
 #'
-#' @param hypnogram Hypnogram dataframe.
+#' @param events events dataframe.
 #' @return total duration of REM sleep in minutes.
-rem_duration <- function(hypnogram){
-  
-  rem_events <- hypnogram[hypnogram$event == "REM", c("begin","end")]
-  return(sum(as.numeric(difftime(rem_events$end,rem_events$begin,units="secs"))/60))
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("REM","REM")
+#' rem_duration(events)
+rem_duration <- function(events){
+  events <- events[events$event == "REM", c("begin","end")]
+  return(sum(as.numeric(difftime(events$end,events$begin,units="min"))))
 }
 
-#' Get total duration of N1 sleep in minutes.
+#' Sums up N1 stages duration from events dataframe to get total N1 duration in minutes.
 #'
 #' @param hypnogram Hypnogram dataframe.
 #' @return total duration of N1 sleep in minutes.

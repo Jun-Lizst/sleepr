@@ -1,7 +1,7 @@
 context("Reading events")
 
 test_that("Reading ISRUC events", {
-  events <- sleepr::read.events.isruc(dir="data/1/", scoringNum=1)
+  events <- read_events_isruc(dir="data/1/", scoringNum=1)
   expect_equal(nrow(events), 880)
 })
 

@@ -32,7 +32,7 @@ library(sleepr)
 
 write_mdf(edfPath = "tests/testthat/data/1/1.rec",
           mdfPath = "tests/testthat/data/1/1",
-          events = sleepr::read.events.isruc(
+          events = read_events_isruc(
             dir = "tests/testthat/data/1/",
             scoringNum = 1))
             

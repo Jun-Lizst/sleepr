@@ -1,8 +1,9 @@
 context("Computing stats")
 
+# Setup ----
 write_mdf(edfPath = "data/1/1.rec",
                   mdfPath = "data/1/1",
-                  events = sleepr::read.events.isruc(dir="data/1/", scoringNum=1))
+                  events = read_events_isruc(dir="data/1/", scoringNum=1))
 
 write_mdf(edfPath = "data/ST7132J0-PSG.edf",
           mdfPath = "data/ST7132J0",
@@ -20,7 +21,7 @@ test_that("Computing all stats", {
   expect_equal(nrow(stats), 2)
 })
 
-test_that("REM minutes", {
+test_that("REM duration", {
   expect_equal(rem_duration(read_mdf("data/1/1",c())[["events"]]), 59)
   expect_equal(rem_duration(read_mdf("data/ST7132J0",c())[["events"]]), 108)
 })
@@ -33,6 +34,6 @@ test_that("N1 duration", {
 
 
 
-# Cleanup
+# Cleanup ---- 
 unlink("data/1/1",recursive = TRUE)
 unlink("data/ST7132J0",recursive = TRUE)

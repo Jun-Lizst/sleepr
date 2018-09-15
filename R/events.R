@@ -3,7 +3,7 @@
 #' @param dir ISRUC record directory.
 #' @param scoringNum Scoring number in database.
 #' @return A dataframe of scored events.
-read.events.isruc <- function(dir,scoringNum){
+read_events_isruc <- function(dir,scoringNum){
   xlsxPath <- list.files(dir,
                          pattern = paste0("_",scoringNum,".xlsx"),
                          full.names = TRUE)[1]

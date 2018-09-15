@@ -9,7 +9,7 @@ test_that("Noxturnal hypnogram", {
 })
 
 test_that("ISRUC hypnogram", {
-  events <- read.events.isruc("data/1/",scoringNum = 1)
+  events <- read_events_isruc("data/1/",scoringNum = 1)
   hypnogram <- hypnogram(events)
   phypnogram <- plot_hypnogram(events)
   expect_equal(class(phypnogram)[1], "gg")

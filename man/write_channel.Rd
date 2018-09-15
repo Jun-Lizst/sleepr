@@ -4,7 +4,7 @@
 \alias{write_channel}
 \title{Write a channel, MDF style.}
 \usage{
-write_channel(channel, signals, headers, mdfPath)
+write_channel(channel, signals, headers, mdfPath, endian = "little")
 }
 \arguments{
 \item{channel}{Channel name.}

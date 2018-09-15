@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{n1_minutes}
 \alias{n1_minutes}
-\title{Get total duration of N1 sleep in minutes.}
+\title{Sums up N1 stages duration from events dataframe to get total N1 duration in minutes.}
 \usage{
 n1_minutes(hypnogram)
 }
@@ -13,5 +13,5 @@ n1_minutes(hypnogram)
 total duration of N1 sleep in minutes.
 }
 \description{
-Get total duration of N1 sleep in minutes.
+Sums up N1 stages duration from events dataframe to get total N1 duration in minutes.
 }

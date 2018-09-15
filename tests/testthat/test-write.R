@@ -11,11 +11,11 @@ test_that("Writing all channels and overwriting with events", {
   expect_equal(length(list.dirs(mdfPath)), 6)
   
   # Overwrite
-  events <- sleepr::read.events.isruc(dir="data/1/", scoringNum=1)
+  events <- read_events_isruc(dir="data/1/", scoringNum=1)
   write_mdf(edfPath = file,
             mdfPath = mdfPath,
             channels = c("EEG Fpz-Cz","EOG horizontal"),
-            events = read.events.isruc(dir="data/1/", scoringNum=1))
+            events = read_events_isruc(dir="data/1/", scoringNum=1))
   expect_equal(length(list.dirs(mdfPath)), 3)
   
   events.write <- jsonlite::read_json("data/ST7132J0-PSG/events.json",simplifyVector = TRUE)

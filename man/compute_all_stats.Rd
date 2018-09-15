@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{compute_all_stats}
 \alias{compute_all_stats}
-\title{Call all available stats functions}
+\title{Call and compile all statistics functions in a dataframe.}
 \usage{
 compute_all_stats(records, eeg_channels = c("C3-A2", "EEG Fpz-Cz"),
   metadata = TRUE)
@@ -18,5 +18,5 @@ compute_all_stats(records, eeg_channels = c("C3-A2", "EEG Fpz-Cz"),
 df.
 }
 \description{
-Call all available stats functions
+Call and compile all statistics functions in a dataframe.
 }
