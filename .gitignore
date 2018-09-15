@@ -7,3 +7,4 @@
 .RDataTmp
 .Rbuildignore
 tests.R
+sleepr.pdf

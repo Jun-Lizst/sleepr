@@ -44,7 +44,13 @@ hypnogram_band_powers(record,"C3-A2")
 
 ## Package Testing
 
-Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from open databases are downloaded first. 
+Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from open databases are downloaded first.
+
+### Generating reference manual
+
+```
+R CMD Rd2pdf . && mv ..pdf sleepr.pdf && rm -r .Rd2pdf*
+```
 
 ## References
 
