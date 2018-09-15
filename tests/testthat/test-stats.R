@@ -27,8 +27,8 @@ test_that("REM duration", {
 })
 
 test_that("N1 duration", {
-  expect_equal(n1_minutes(hypnogram(read_mdf("data/1/1",c())[["events"]])), 36.5)
-  expect_equal(n1_minutes(hypnogram(read_mdf("data/ST7132J0",c())[["events"]])), 44.5)
+  expect_equal(n1_duration(hypnogram(read_mdf("data/1/1",c())[["events"]])), 36.5)
+  expect_equal(n1_duration(hypnogram(read_mdf("data/ST7132J0",c())[["events"]])), 44.5)
 })
 
 

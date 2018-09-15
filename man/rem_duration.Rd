@@ -7,7 +7,7 @@
 rem_duration(events)
 }
 \arguments{
-\item{events}{events dataframe.}
+\item{events}{events dataframe. Must have begin, end and event variables.}
 }
 \value{
 total duration of REM sleep in minutes.
