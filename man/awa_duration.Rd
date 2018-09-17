@@ -4,7 +4,7 @@
 \alias{awa_duration}
 \title{Sums up AWA stages duration from an events dataframe to get total AWA duration in minutes.}
 \usage{
-awa_duration(hypnogram)
+awa_duration(events)
 }
 \arguments{
 \item{events}{Events dataframe.}

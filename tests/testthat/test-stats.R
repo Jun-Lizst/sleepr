@@ -34,6 +34,11 @@ test_that("AWA duration", {
   expect_equal(awa_duration(events), 106.5)
 })
 
+test_that("Time To Sleep", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  expect_equal(tts(events), 572.5)
+})
+
 test_that("Sleep latency", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
   expect_equal(sleep_latency(events), 54.5)

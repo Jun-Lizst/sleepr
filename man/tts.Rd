@@ -2,16 +2,16 @@
 % Please edit documentation in R/stats.R
 \name{tts}
 \alias{tts}
-\title{Time To Sleep}
+\title{Sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.}
 \usage{
-tts(hypnogram)
+tts(events)
 }
 \arguments{
-\item{hypnogram}{Hypnogram dataframe.}
+\item{events}{Events dataframe. Must contain `begin`, `end` and `events`.}
 }
 \value{
-tts in minutes.
+Time To Sleep in minutes.
 }
 \description{
-Time To Sleep
+Sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.
 }

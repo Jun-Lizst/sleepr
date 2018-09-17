@@ -4,7 +4,7 @@
 \alias{n3_duration}
 \title{Sums up N3 stages duration from an events dataframe to get total N3 duration in minutes.}
 \usage{
-n3_duration(hypnogram)
+n3_duration(events)
 }
 \arguments{
 \item{events}{Events dataframe.}

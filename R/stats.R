@@ -170,8 +170,8 @@ n1_duration <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N2","N2")
 #' n2_duration(events)
-n2_duration <- function(hypnogram){
-  n2_events <- hypnogram[hypnogram$event == "N2", c("begin","end")]
+n2_duration <- function(events){
+  n2_events <- events[events$event == "N2", c("begin","end")]
   return(sum(as.numeric(difftime(n2_events$end,n2_events$begin,units="secs"))/60))
 }
 
@@ -184,8 +184,8 @@ n2_duration <- function(hypnogram){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N3","N3")
 #' n3_duration(events)
-n3_duration <- function(hypnogram){
-  n3_events <- hypnogram[hypnogram$event == "N3", c("begin","end")]
+n3_duration <- function(events){
+  n3_events <- events[events$event == "N3", c("begin","end")]
   return(sum(as.numeric(difftime(n3_events$end,n3_events$begin,units="secs"))/60))
 }
 
@@ -198,17 +198,17 @@ n3_duration <- function(hypnogram){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("AWA","AWA")
 #' awa_duration(events)
-awa_duration <- function(hypnogram){
-  awa_events <- hypnogram[hypnogram$event == "AWA", c("begin","end")]
+awa_duration <- function(events){
+  awa_events <- events[events$event == "AWA", c("begin","end")]
   return(sum(as.numeric(difftime(awa_events$end,awa_events$begin,units="secs"))/60))
 }
 
-#' Time To Sleep
+#' Sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.
 #'
-#' @param hypnogram Hypnogram dataframe.
-#' @return tts in minutes.
-tts <- function(hypnogram){
-  events <- hypnogram[hypnogram$event %in% c("N1","N2","N3","REM"), c("begin","end")]
+#' @param events Events dataframe. Must contain `begin`, `end` and `events`.
+#' @return Time To Sleep in minutes.
+tts <- function(events){
+  events <- events[events$event %in% c("N1","N2","N3","REM"), c("begin","end")]
   return(sum(as.numeric(difftime(events$end,events$begin,units="secs"))/60))
 }
 
