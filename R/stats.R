@@ -56,7 +56,7 @@ compute_all_stats <- function(records,
       df_record$n3_tts <- n3_tts(hypnogram(l[["events"]]))
       df_record$n2_tts <- n2_tts(hypnogram(l[["events"]]))
       df_record$n1_tts <- n1_tts(hypnogram(l[["events"]]))
-      df_record$pts <- pts(hypnogram(l[["events"]]))
+      df_record$tsp <- tsp(hypnogram(l[["events"]]))
       df_record$sleep_efficiency <- sleep_efficiency(hypnogram(l[["events"]]))
       df_record$sleep_latency <- sleep_latency(hypnogram(l[["events"]]))
       df_record$rem_latency <- rem_latency(hypnogram(l[["events"]]))
@@ -106,6 +106,7 @@ compute_all_stats <- function(records,
   return(df)
     
 }
+
 
 #' Filter events overlapping specified events.
 #'
@@ -160,6 +161,30 @@ events_stages_overlap <- function(label, stages, events){
   return(td/60)
 }
 
+check_events_integrity <- function(events){
+  if(!("begin" %in% colnames(events))){
+    warning("Events dataframe must contain a 'begin' column.")
+    return(FALSE)
+  } else if(!("end" %in% colnames(events))){
+    warning("Events dataframe must contain a 'end' column.")
+    return(FALSE)
+  } else  if(!("event" %in% colnames(events))){
+    warning("Events dataframe must contain a 'event' column.")
+    return(FALSE)
+  } else if(!("POSIXt" %in% class(events$begin))){
+    warning("'begin' column must be a datetime.")
+    return(FALSE)
+  } else if(!("POSIXt" %in% class(events$end))){
+    warning("'end' column must be a datetime.")
+    return(FALSE)
+  } else if(!("character" %in% class(events$event))){
+    events$event <- as.character(events$event)
+    return(TRUE)
+  } else {
+    return(TRUE)
+  }
+}
+
 # Stages & scoring ----
 
 #' Sums up REM stages duration from an events dataframe to get total REM duration in minutes.
@@ -172,6 +197,7 @@ events_stages_overlap <- function(label, stages, events){
 #' events$event = c("REM","REM")
 #' rem_duration(events)
 rem_duration <- function(events){
+  if(!check_events_integrity(events)){ return(0) }
   events <- events[events$event == "REM", c("begin","end")]
   return(sum(as.numeric(difftime(events$end,events$begin,units="min"))))
 }
@@ -186,6 +212,7 @@ rem_duration <- function(events){
 #' events$event = c("N1","N1")
 #' n1_duration(events)
 n1_duration <- function(events){
+  if(!check_events_integrity(events)){ return(0) }
   events <- events[events$event == "N1", c("begin","end")]
   return(sum(as.numeric(difftime(events$end,events$begin,units="min"))))
 }
@@ -200,6 +227,7 @@ n1_duration <- function(events){
 #' events$event = c("N2","N2")
 #' n2_duration(events)
 n2_duration <- function(events){
+  if(!check_events_integrity(events)){ return(0) }
   n2_events <- events[events$event == "N2", c("begin","end")]
   return(sum(as.numeric(difftime(n2_events$end,n2_events$begin,units="mins"))))
 }
@@ -214,6 +242,7 @@ n2_duration <- function(events){
 #' events$event = c("N3","N3")
 #' n3_duration(events)
 n3_duration <- function(events){
+  if(!check_events_integrity(events)){ return(0) }
   n3_events <- events[events$event == "N3", c("begin","end")]
   return(sum(as.numeric(difftime(n3_events$end,n3_events$begin,units="mins"))))
 }
@@ -228,6 +257,7 @@ n3_duration <- function(events){
 #' events$event = c("AWA","AWA")
 #' awa_duration(events)
 awa_duration <- function(events){
+  if(!check_events_integrity(events)){ return(0) }
   awa_events <- events[events$event == "AWA", c("begin","end")]
   return(sum(as.numeric(difftime(awa_events$end,awa_events$begin,units="mins"))))
 }
@@ -235,40 +265,86 @@ awa_duration <- function(events){
 #' Sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.
 #'
 #' @param events Events dataframe. Must contain begin, end and events.
-#' @return Time To Sleep in minutes.
+#' @return Time To Sleep (N1+N2+N3+REM durations) in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N1","REM")
 #' tts(events)
 tts <- function(events){
+  if(!check_events_integrity(events)){ return(0) }
   events <- events[events$event %in% c("N1","N2","N3","REM"), c("begin","end")]
   return(sum(as.numeric(difftime(events$end,events$begin,units="mins"))))
 }
 
-
-rem_tts <- function(hypnogram){
-  return(rem_duration(hypnogram)/tts(hypnogram))
+#' Divides REM duration by TTS duration from an events dataframe.
+#'
+#' @param events Events dataframe. Must contain begin, end and events.
+#' @return REM over TTS durations ratio.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N1","REM")
+#' rem_tts(events)
+rem_tts <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
+  return(rem_duration(events)/tts(events))
 }
 
-n3_tts <- function(hypnogram){
-  return(n3_duration(hypnogram)/tts(hypnogram))
+#' Divides N3 duration by TTS duration from an events dataframe.
+#'
+#' @param events Events dataframe. Must contain begin, end and events.
+#' @return N3 over TTS durations ratio.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N3","REM")
+#' n3_tts(events)
+n3_tts <- function(events){
+  return(n3_duration(events)/tts(events))
 }
 
-n2_tts <- function(hypnogram){
-  return(n2_duration(hypnogram)/tts(hypnogram))
+#' Divides N2 duration by TTS duration from an events dataframe.
+#'
+#' @param events Events dataframe. Must contain begin, end and events.
+#' @return N2 over TTS durations ratio.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N3","N2")
+#' n2_tts(events)
+n2_tts <- function(events){
+  return(n2_duration(events)/tts(events))
 }
 
+#' Divides N1 duration by TTS duration from an events dataframe.
+#'
+#' @param events Events dataframe. Must contain begin, end and events.
+#' @return N1 over TTS durations ratio.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N3","N1")
+#' n1_tts(events)
 n1_tts <- function(hypnogram){
   return(n1_duration(hypnogram)/tts(hypnogram))
 }
 
-pts <- function(hypnogram){
-  return(as.numeric(difftime(max(hypnogram$end),min(hypnogram$begin),units="secs"))/60)
+#' D
+#'
+#' @param events Events dataframe. Must contain begin, end and events.
+#' @return N1 over TTS durations ratio.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N3","N1")
+#' tsp(events)
+tsp <- function(events){
+  return(as.numeric(difftime(max(events$end),min(events$begin),units="mins")))
 }
 
-sleep_efficiency <- function(hypnogram){
-  return(tts(hypnogram)/pts(hypnogram))
+sleep_efficiency <- function(events){
+  return(tts(events)/tsp(events))
 }
 
 
@@ -284,7 +360,7 @@ rem_latency <- function(hypnogram){
 }
 
 waso <- function(hypnogram){
-  return(pts(hypnogram)-sleep_latency(hypnogram)-tts(hypnogram))
+  return(tsp(hypnogram)-sleep_latency(hypnogram)-tts(hypnogram))
 }
 
 # Position & activity ----
@@ -533,17 +609,38 @@ rem_index <- function(events){
 }
 
 rem_avg_duration <- function(events){
-  if(!("begin" %in% colnames(events))){
-    warning("Non compliant events dataframe.")
-    return(0)
-  }
+  
+  
   events <- get_overlapping_events(events,
                                    x = c("Rapide"),
                                    y = c("REM"))
   if(nrow(events) == 0){
     return(0)
-  } 
+  }
   return(mean(as.numeric(difftime(events$end.x,events$begin.x,units="secs"))))
 }
 
 # Cycles ----
+
+normalize_cycles <- function(events){
+  events <- events[events$event %in% c("Activity-CLASSICstart",
+                                       "Activity-CLASSICend",
+                                       "Activity-REMstart",
+                                       "Activity-REMend",
+                                       "Activity-ENstart",
+                                       "Activity-ENend"),]
+  events <- events[order(events$begin),]
+}
+
+
+
+
+
+
+
+
+
+
+
+events <- read_events_noxturnal("tests/testthat/data/noxturnal_events_example_unicode_3.csv")
+unique(events$event)

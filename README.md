@@ -32,12 +32,12 @@ Various statistics can be computed from the polysomnographic data.
   * `n2_duration`: Total duration of N2 sleep in minutes.
   * `n3_duration`: Total duration of N3 sleep in minutes.
   * `awa_duration`: Total duration of wake in minutes.
-  * `tts`:
-  * `rem_tts`:
-  * `n3_tts`:
-  * `n2_tts`:
-  * `n1_tts`:
-  * `pts`:
+  * `tts`: Time To Sleep (N1+N2+N3+REM durations) in minutes.
+  * `rem_tts`: REM over TTS durations ratio.
+  * `n3_tts`: N3 over TTS durations ratio.
+  * `n2_tts`: N2 over TTS durations ratio.
+  * `n1_tts`: N1 over TTS durations ratio.
+  * `tsp`:
   * `sleep_efficiency`:
   * `sleep_latency`:
   * `rem_latency`:
