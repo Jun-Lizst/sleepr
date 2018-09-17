@@ -10,7 +10,7 @@ rem_duration(events)
 \item{events}{events dataframe. Must have begin, end and event variables.}
 }
 \value{
-total duration of REM sleep in minutes.
+Total duration of REM sleep in minutes.
 }
 \description{
 Sums up REM stages duration from an events dataframe to get total REM duration in minutes.

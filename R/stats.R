@@ -77,6 +77,7 @@ compute_all_stats <- function(records,
       df_record$ah_nonback <- ah_nonback(l[["events"]])
       df_record$ah_rem <- ah_rem(l[["events"]])
       df_record$ah_nonrem <- ah_nonrem(l[["events"]])
+      
       # Micro-arousals
       df_record$ma_count <- ma_count(e)
       df_record$ma_index <- ma_index(e)
@@ -93,6 +94,11 @@ compute_all_stats <- function(records,
       df_record$ma_n2_index <- ma_n2_index(e)
       df_record$ma_n3_index <- ma_n3_index(e)
       df_record$ma_rem_index <- ma_rem_index(e)
+      
+      # Rapid Eye Movements
+      df_record$rem_count <- rem_count(e)
+      df_record$rem_index <- rem_index(e)
+      df_record$rem_avg_duration <- rem_avg_duration(e)
     }
       df <- dplyr::bind_rows(df,df_record)
        
@@ -101,7 +107,12 @@ compute_all_stats <- function(records,
     
 }
 
-# Get only x events that start during y events
+#' Filter events overlapping specified events.
+#'
+#' @param events Events.
+#' @param x Events labels overlapping.
+#' @param y Events labels to be overlapped.
+#' @return Dataframe of x events overlapping y events.
 get_overlapping_events <- function(events, x, y){
   x <- events[events$event %in% x,]
   y <- events[events$event %in% y,]
@@ -154,7 +165,7 @@ events_stages_overlap <- function(label, stages, events){
 #' Sums up REM stages duration from an events dataframe to get total REM duration in minutes.
 #'
 #' @param events events dataframe. Must have begin, end and event variables.
-#' @return total duration of REM sleep in minutes.
+#' @return Total duration of REM sleep in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
@@ -168,7 +179,7 @@ rem_duration <- function(events){
 #' Sums up N1 stages duration from an events dataframe to get total N1 duration in minutes.
 #'
 #' @param events Events dataframe.
-#' @return total duration of N1 sleep in minutes.
+#' @return Total duration of N1 sleep in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
@@ -413,6 +424,9 @@ ma_duration <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
                                y = c("N1","N2","N3","REM"))
+  if(nrow(events) == 0){
+    return(0)
+  } 
   duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
   return(duration)
 }
@@ -421,6 +435,9 @@ ma_n1_duration <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
                                    y = c("N1"))
+  if(nrow(events) == 0){
+    return(0)
+  } 
   duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
   return(duration)
 }
@@ -429,6 +446,9 @@ ma_n2_duration <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
                                    y = c("N2"))
+  if(nrow(events) == 0){
+    return(0)
+  } 
   duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
   return(duration)
 }
@@ -437,6 +457,9 @@ ma_n3_duration <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
                                    y = c("N3"))
+  if(nrow(events) == 0){
+    return(0)
+  } 
   duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
   return(duration)
 }
@@ -445,6 +468,9 @@ ma_rem_duration <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
                                    y = c("REM"))
+  if(nrow(events) == 0){
+    return(0)
+  } 
   duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
   return(duration)
 }
@@ -494,5 +520,30 @@ ma_rem_index <- function(events){
 }
 
 # Rapid Eye Movements ----
+
+rem_count <- function(events){
+  events <- get_overlapping_events(events,
+                                   x = c("Rapide"),
+                                   y = c("REM"))
+  return(nrow(events))
+}
+
+rem_index <- function(events){
+  return(rem_count(events)/(rem_duration(events)/60))
+}
+
+rem_avg_duration <- function(events){
+  if(!("begin" %in% colnames(events))){
+    warning("Non compliant events dataframe.")
+    return(0)
+  }
+  events <- get_overlapping_events(events,
+                                   x = c("Rapide"),
+                                   y = c("REM"))
+  if(nrow(events) == 0){
+    return(0)
+  } 
+  return(mean(as.numeric(difftime(events$end.x,events$begin.x,units="secs"))))
+}
 
 # Cycles ----

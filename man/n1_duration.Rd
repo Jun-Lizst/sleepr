@@ -10,7 +10,7 @@ n1_duration(events)
 \item{events}{Events dataframe.}
 }
 \value{
-total duration of N1 sleep in minutes.
+Total duration of N1 sleep in minutes.
 }
 \description{
 Sums up N1 stages duration from an events dataframe to get total N1 duration in minutes.
