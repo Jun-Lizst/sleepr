@@ -44,6 +44,8 @@ compute_all_stats <- function(records,
       } else {
         df_record <- data.frame(record <- record,stringsAsFactors = FALSE)
       }
+      
+      e <- l[["events"]]
       df_record$rem_duration <- rem_duration(l[["events"]])
       df_record$n1_duration <- n1_duration(l[["events"]])
       df_record$n2_duration <- n2_duration(hypnogram(l[["events"]]))
@@ -75,6 +77,22 @@ compute_all_stats <- function(records,
       df_record$ah_nonback <- ah_nonback(l[["events"]])
       df_record$ah_rem <- ah_rem(l[["events"]])
       df_record$ah_nonrem <- ah_nonrem(l[["events"]])
+      # Micro-arousals
+      df_record$ma_count <- ma_count(e)
+      df_record$ma_index <- ma_index(e)
+      df_record$ma_duration <- ma_duration(e)
+      df_record$ma_n1_duration <- ma_n1_duration(e)
+      df_record$ma_n2_duration <- ma_n2_duration(e)
+      df_record$ma_n3_duration <- ma_n3_duration(e)
+      df_record$ma_rem_duration <- ma_rem_duration(e)
+      df_record$ma_n1_count <- ma_n1_count(e)
+      df_record$ma_n2_count <- ma_n2_count(e)
+      df_record$ma_n3_count <- ma_n3_count(e)
+      df_record$ma_rem_count <- ma_rem_count(e)
+      df_record$ma_n1_index <- ma_n1_index(e)
+      df_record$ma_n2_index <- ma_n2_index(e)
+      df_record$ma_n3_index <- ma_n3_index(e)
+      df_record$ma_rem_index <- ma_rem_index(e)
     }
       df <- dplyr::bind_rows(df,df_record)
        
@@ -380,7 +398,10 @@ ah_nonrem <- function(events){
 
 # Count
 ma_count <- function(events){
-  return(nrow(events[events$event == "micro-arousal",]))
+  return(nrow(get_overlapping_events(events,
+                                     x = c("micro-arousal"),
+                                     y = c("N1","N2","N3","REM"))
+  ))
 }
 
 # Per hour of tts
@@ -388,14 +409,90 @@ ma_index <- function(events){
   return(ma_count(events)/(tts(events)/60))
 }
 
-# ma_duration <- function(events){
-#   ma <- events[events$event == "micro-arousal",]
-#   
-#   return(ma_count(events)/(tts(events)/60))
-# }
+ma_duration <- function(events){
+  events <- get_overlapping_events(events,
+                                   x = c("micro-arousal"),
+                               y = c("N1","N2","N3","REM"))
+  duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
+  return(duration)
+}
+
+ma_n1_duration <- function(events){
+  events <- get_overlapping_events(events,
+                                   x = c("micro-arousal"),
+                                   y = c("N1"))
+  duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
+  return(duration)
+}
+
+ma_n2_duration <- function(events){
+  events <- get_overlapping_events(events,
+                                   x = c("micro-arousal"),
+                                   y = c("N2"))
+  duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
+  return(duration)
+}
+
+ma_n3_duration <- function(events){
+  events <- get_overlapping_events(events,
+                                   x = c("micro-arousal"),
+                                   y = c("N3"))
+  duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
+  return(duration)
+}
+
+ma_rem_duration <- function(events){
+  events <- get_overlapping_events(events,
+                                   x = c("micro-arousal"),
+                                   y = c("REM"))
+  duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
+  return(duration)
+}
+
+ma_n1_count <- function(events){
+  return(nrow(get_overlapping_events(events,
+                                     x = c("micro-arousal"),
+                                     y = c("N1"))
+  ))
+}
+
+ma_n2_count <- function(events){
+  return(nrow(get_overlapping_events(events,
+                                     x = c("micro-arousal"),
+                                     y = c("N2"))
+  ))
+}
+
+ma_n3_count <- function(events){
+  return(nrow(get_overlapping_events(events,
+                                     x = c("micro-arousal"),
+                                     y = c("N3"))
+  ))
+}
+
+ma_rem_count <- function(events){
+  return(nrow(get_overlapping_events(events,
+                                     x = c("micro-arousal"),
+                                     y = c("REM"))
+  ))
+}
+
+ma_n1_index <- function(events){
+  return(ma_n1_count(events)/(n1_duration(events)/60))
+}
+
+ma_n2_index <- function(events){
+  return(ma_n2_count(events)/(n2_duration(events)/60))
+}
+
+ma_n3_index <- function(events){
+  return(ma_n3_count(events)/(n3_duration(events)/60))
+}
+
+ma_rem_index <- function(events){
+  return(ma_rem_count(events)/(rem_duration(events)/60))
+}
 
 # Rapid Eye Movements ----
 
 # Cycles ----
-
-
