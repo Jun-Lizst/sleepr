@@ -1,39 +1,20 @@
 context("Computing stats")
 
-# Setup ----
-write_mdf(edfPath = "data/1/1.rec",
-                  mdfPath = "data/1/1",
-                  events = read_events_isruc(dir="data/1/", scoringNum=1))
-
-write_mdf(edfPath = "data/ST7132J0-PSG.edf",
-          mdfPath = "data/ST7132J0",
-          events = sleepr::read_events_sleepedfx("data/ST7132JR-Hypnogram.edf"))
-
-test_that("Computing 1 stats", {
-  stats <- compute_all_stats(c("data/1/1/"))
+test_that("Computing statistics from one record", {
+  write_mdf(edfPath = "data/sample.edf",
+            mdfPath = "data/sample",
+            events = read_events_noxturnal("data/noxturnal_events_example_unicode.csv"))
+  stats <- compute_all_stats(c("data/sample"))
   expect_equal(nrow(stats), 1)
-})
-
-
-test_that("Computing all stats", {
-  stats <- compute_all_stats(c("data/1/1/",
-                               "data/ST7132J0/"))
-  expect_equal(nrow(stats), 2)
+  unlink("data/sample", recursive = TRUE)
 })
 
 test_that("REM duration", {
-  expect_equal(rem_duration(read_mdf("data/1/1",c())[["events"]]), 59)
-  expect_equal(rem_duration(read_mdf("data/ST7132J0",c())[["events"]]), 108)
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  expect_equal(rem_duration(events), 124.5)
 })
 
 test_that("N1 duration", {
-  expect_equal(n1_duration(hypnogram(read_mdf("data/1/1",c())[["events"]])), 36.5)
-  expect_equal(n1_duration(hypnogram(read_mdf("data/ST7132J0",c())[["events"]])), 44.5)
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  expect_equal(n1_duration(events), 33)
 })
-
-
-
-
-# Cleanup ---- 
-unlink("data/1/1",recursive = TRUE)
-unlink("data/ST7132J0",recursive = TRUE)

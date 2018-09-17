@@ -46,7 +46,7 @@ compute_all_stats <- function(records,
       }
       df_record$rem_duration <- rem_duration(l[["events"]])
       df_record$n1_duration <- n1_duration(l[["events"]])
-      df_record$n2_minutes <- n2_minutes(hypnogram(l[["events"]]))
+      df_record$n2_duration <- n2_duration(hypnogram(l[["events"]]))
       df_record$n3_minutes <- n3_minutes(hypnogram(l[["events"]]))
       df_record$awa_minutes <- awa_minutes(hypnogram(l[["events"]]))
       df_record$tts <- tts(hypnogram(l[["events"]]))
@@ -133,7 +133,7 @@ events_stages_overlap <- function(label, stages, events){
 
 # Stages & scoring ----
 
-#' Sums up REM stages duration from events dataframe to get total REM duration in minutes.
+#' Sums up REM stages duration from an events dataframe to get total REM duration in minutes.
 #'
 #' @param events events dataframe. Must have begin, end and event variables.
 #' @return total duration of REM sleep in minutes.
@@ -147,7 +147,7 @@ rem_duration <- function(events){
   return(sum(as.numeric(difftime(events$end,events$begin,units="min"))))
 }
 
-#' Sums up N1 stages duration from events dataframe to get total N1 duration in minutes.
+#' Sums up N1 stages duration from an events dataframe to get total N1 duration in minutes.
 #'
 #' @param events Events dataframe.
 #' @return total duration of N1 sleep in minutes.
@@ -155,17 +155,22 @@ rem_duration <- function(events){
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N1","N1")
-#' rem_duration(events)
+#' n1_duration(events)
 n1_duration <- function(events){
   events <- events[events$event == "N1", c("begin","end")]
   return(sum(as.numeric(difftime(events$end,events$begin,units="min"))))
 }
 
-#' Get total duration of N2 sleep in minutes.
+#' Sums up N2 stages duration from an events dataframe to get total N2 duration in minutes.
 #'
-#' @param hypnogram Hypnogram dataframe.
+#' @param events Events dataframe.
 #' @return total duration of N2 sleep in minutes.
-n2_minutes <- function(hypnogram){
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N2","N2")
+#' n2_duration(events)
+n2_duration <- function(hypnogram){
   n2_events <- hypnogram[hypnogram$event == "N2", c("begin","end")]
   return(sum(as.numeric(difftime(n2_events$end,n2_events$begin,units="secs"))/60))
 }
@@ -206,7 +211,7 @@ n3_tts <- function(hypnogram){
 }
 
 n2_tts <- function(hypnogram){
-  return(n2_minutes(hypnogram)/tts(hypnogram))
+  return(n2_duration(hypnogram)/tts(hypnogram))
 }
 
 n1_tts <- function(hypnogram){
@@ -341,7 +346,7 @@ ah_nonrem <- function(events){
           "A. Obstructive"),
         c("N1","N2","N3")))/
       ((n1_duration(hypnogram(events))+
-         n2_minutes(hypnogram(events))+
+          n2_duration(hypnogram(events))+
          n3_minutes(hypnogram(events)))/60)
     )
 }
