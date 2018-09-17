@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{rem_duration}
 \alias{rem_duration}
-\title{Sums up REM stages duration from events dataframe to get total REM duration in minutes.}
+\title{Sums up REM stages duration from an events dataframe to get total REM duration in minutes.}
 \usage{
 rem_duration(events)
 }
@@ -13,7 +13,7 @@ rem_duration(events)
 total duration of REM sleep in minutes.
 }
 \description{
-Sums up REM stages duration from events dataframe to get total REM duration in minutes.
+Sums up REM stages duration from an events dataframe to get total REM duration in minutes.
 }
 \examples{
 events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))

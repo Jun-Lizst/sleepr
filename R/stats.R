@@ -47,8 +47,8 @@ compute_all_stats <- function(records,
       df_record$rem_duration <- rem_duration(l[["events"]])
       df_record$n1_duration <- n1_duration(l[["events"]])
       df_record$n2_duration <- n2_duration(hypnogram(l[["events"]]))
-      df_record$n3_minutes <- n3_minutes(hypnogram(l[["events"]]))
-      df_record$awa_minutes <- awa_minutes(hypnogram(l[["events"]]))
+      df_record$n3_duration <- n3_duration(hypnogram(l[["events"]]))
+      df_record$awa_duration <- awa_duration(hypnogram(l[["events"]]))
       df_record$tts <- tts(hypnogram(l[["events"]]))
       df_record$rem_tts <- rem_tts(hypnogram(l[["events"]]))
       df_record$n3_tts <- n3_tts(hypnogram(l[["events"]]))
@@ -175,20 +175,30 @@ n2_duration <- function(hypnogram){
   return(sum(as.numeric(difftime(n2_events$end,n2_events$begin,units="secs"))/60))
 }
 
-#' Get total duration of N3 sleep in minutes.
+#' Sums up N3 stages duration from an events dataframe to get total N3 duration in minutes.
 #'
-#' @param hypnogram Hypnogram dataframe.
+#' @param events Events dataframe.
 #' @return total duration of N3 sleep in minutes.
-n3_minutes <- function(hypnogram){
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N3","N3")
+#' n3_duration(events)
+n3_duration <- function(hypnogram){
   n3_events <- hypnogram[hypnogram$event == "N3", c("begin","end")]
   return(sum(as.numeric(difftime(n3_events$end,n3_events$begin,units="secs"))/60))
 }
 
-#' Get total duration of AWA in minutes.
+#' Sums up AWA stages duration from an events dataframe to get total AWA duration in minutes.
 #'
-#' @param hypnogram Hypnogram dataframe.
-#' @return total duration of N3 sleep in minutes.
-awa_minutes <- function(hypnogram){
+#' @param events Events dataframe.
+#' @return total duration of AWA sleep in minutes.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("AWA","AWA")
+#' awa_duration(events)
+awa_duration <- function(hypnogram){
   awa_events <- hypnogram[hypnogram$event == "AWA", c("begin","end")]
   return(sum(as.numeric(difftime(awa_events$end,awa_events$begin,units="secs"))/60))
 }
@@ -207,7 +217,7 @@ rem_tts <- function(hypnogram){
 }
 
 n3_tts <- function(hypnogram){
-  return(n3_minutes(hypnogram)/tts(hypnogram))
+  return(n3_duration(hypnogram)/tts(hypnogram))
 }
 
 n2_tts <- function(hypnogram){
@@ -225,6 +235,7 @@ pts <- function(hypnogram){
 sleep_efficiency <- function(hypnogram){
   return(tts(hypnogram)/pts(hypnogram))
 }
+
 
 sleep_latency <- function(hypnogram){
   sleep <- hypnogram[hypnogram$event %in% c("N1","N2","N3","REM"),]
@@ -347,7 +358,7 @@ ah_nonrem <- function(events){
         c("N1","N2","N3")))/
       ((n1_duration(hypnogram(events))+
           n2_duration(hypnogram(events))+
-         n3_minutes(hypnogram(events)))/60)
+          n3_duration(hypnogram(events)))/60)
     )
 }
 
@@ -360,3 +371,5 @@ ah_nonrem <- function(events){
 # PLM ----
 
 # Micro-arousals ----
+
+
