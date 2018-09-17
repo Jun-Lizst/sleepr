@@ -172,7 +172,7 @@ n1_duration <- function(events){
 #' n2_duration(events)
 n2_duration <- function(events){
   n2_events <- events[events$event == "N2", c("begin","end")]
-  return(sum(as.numeric(difftime(n2_events$end,n2_events$begin,units="secs"))/60))
+  return(sum(as.numeric(difftime(n2_events$end,n2_events$begin,units="mins"))))
 }
 
 #' Sums up N3 stages duration from an events dataframe to get total N3 duration in minutes.
@@ -186,7 +186,7 @@ n2_duration <- function(events){
 #' n3_duration(events)
 n3_duration <- function(events){
   n3_events <- events[events$event == "N3", c("begin","end")]
-  return(sum(as.numeric(difftime(n3_events$end,n3_events$begin,units="secs"))/60))
+  return(sum(as.numeric(difftime(n3_events$end,n3_events$begin,units="mins"))))
 }
 
 #' Sums up AWA stages duration from an events dataframe to get total AWA duration in minutes.
@@ -200,17 +200,23 @@ n3_duration <- function(events){
 #' awa_duration(events)
 awa_duration <- function(events){
   awa_events <- events[events$event == "AWA", c("begin","end")]
-  return(sum(as.numeric(difftime(awa_events$end,awa_events$begin,units="secs"))/60))
+  return(sum(as.numeric(difftime(awa_events$end,awa_events$begin,units="mins"))))
 }
 
 #' Sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.
 #'
-#' @param events Events dataframe. Must contain `begin`, `end` and `events`.
+#' @param events Events dataframe. Must contain begin, end and events.
 #' @return Time To Sleep in minutes.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N1","REM")
+#' tts(events)
 tts <- function(events){
   events <- events[events$event %in% c("N1","N2","N3","REM"), c("begin","end")]
-  return(sum(as.numeric(difftime(events$end,events$begin,units="secs"))/60))
+  return(sum(as.numeric(difftime(events$end,events$begin,units="mins"))))
 }
+
 
 rem_tts <- function(hypnogram){
   return(rem_duration(hypnogram)/tts(hypnogram))
@@ -371,5 +377,25 @@ ah_nonrem <- function(events){
 # PLM ----
 
 # Micro-arousals ----
+
+# Count
+ma_count <- function(events){
+  return(nrow(events[events$event == "micro-arousal",]))
+}
+
+# Per hour of tts
+ma_index <- function(events){
+  return(ma_count(events)/(tts(events)/60))
+}
+
+# ma_duration <- function(events){
+#   ma <- events[events$event == "micro-arousal",]
+#   
+#   return(ma_count(events)/(tts(events)/60))
+# }
+
+# Rapid Eye Movements ----
+
+# Cycles ----
 
 

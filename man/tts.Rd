@@ -7,11 +7,17 @@
 tts(events)
 }
 \arguments{
-\item{events}{Events dataframe. Must contain `begin`, `end` and `events`.}
+\item{events}{Events dataframe. Must contain begin, end and events.}
 }
 \value{
 Time To Sleep in minutes.
 }
 \description{
 Sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.
+}
+\examples{
+events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+events$event = c("N1","REM")
+tts(events)
 }

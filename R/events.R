@@ -80,7 +80,11 @@ read_events_noxturnal <- function(path){
   if(nrow(events[events$event == "Début de l'analyse",]) > 0){
     events <- events[events$begin >= min(events$begin[events$event == "Début de l'analyse"]),]
   }
-
+  
+  # Normalize events names
+  events$event[events$event == "Micro-Éveil"] <- "micro-arousal"
+  events$event[events$event == "Micro-éveil"] <- "micro-arousal"
+  
   return(events)
 }
 
