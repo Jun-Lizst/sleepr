@@ -9,6 +9,8 @@ test_that("Computing statistics from one record", {
   unlink("data/sample", recursive = TRUE)
 })
 
+# Stages and scoring ----
+
 test_that("REM duration", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
   expect_equal(rem_duration(events), 124.5)
@@ -51,7 +53,32 @@ test_that("REM TTS", {
   expect_warning(rem_tts(data.frame()))
 })
 
+test_that("N3 TTS", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  expect_equal(round(n3_tts(events),digits = 3), 0.318)
+  expect_warning(n3_tts(data.frame()))
+})
+
+test_that("N2 TTS", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  expect_equal(round(n2_tts(events),digits = 3), 0.407)
+  expect_warning(n2_tts(data.frame()))
+})
+
+test_that("N1 TTS", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  expect_equal(round(n1_tts(events),digits = 3), 0.058)
+  expect_warning(n1_tts(data.frame()))
+})
+
+# TSP
+# Sleep efficiency
+#
+
 test_that("Sleep latency", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
   expect_equal(sleep_latency(events), 54.5)
 })
+
+# REM latency
+# waso

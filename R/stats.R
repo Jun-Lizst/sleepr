@@ -301,6 +301,7 @@ rem_tts <- function(events){
 #' events$event = c("N3","REM")
 #' n3_tts(events)
 n3_tts <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(n3_duration(events)/tts(events))
 }
 
@@ -314,6 +315,7 @@ n3_tts <- function(events){
 #' events$event = c("N3","N2")
 #' n2_tts(events)
 n2_tts <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(n2_duration(events)/tts(events))
 }
 
@@ -327,13 +329,14 @@ n2_tts <- function(events){
 #' events$event = c("N3","N1")
 #' n1_tts(events)
 n1_tts <- function(hypnogram){
+  if(!check_events_integrity(events)){ return(NA) }
   return(n1_duration(hypnogram)/tts(hypnogram))
 }
 
-#' D
+#' Substracts the end time of the last element to the begin time of the first element to get the Total Sleep Period in minutes.
 #'
 #' @param events Events dataframe. Must contain begin, end and events.
-#' @return N1 over TTS durations ratio.
+#' @return Total Sleep Period in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
@@ -343,6 +346,15 @@ tsp <- function(events){
   return(as.numeric(difftime(max(events$end),min(events$begin),units="mins")))
 }
 
+#' Divides the Time To Sleep (TTS) by the Total Sleep Period (TSP) to get the sleep efficiency ratio.
+#' 
+#' @param events Events dataframe. Must contain begin, end and events.
+#' @return sleep efficiency ratio.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N3","AWA")
+#' sleep_efficiency(events)
 sleep_efficiency <- function(events){
   return(tts(events)/tsp(events))
 }
