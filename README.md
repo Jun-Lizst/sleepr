@@ -37,28 +37,11 @@ Various statistics can be computed from the polysomnographic data.
   * `n3_tts`: N3 over TTS durations ratio.
   * `n2_tts`: N2 over TTS durations ratio.
   * `n1_tts`: N1 over TTS durations ratio.
-  * `tsp`:
-  * `sleep_efficiency`:
-  * `sleep_latency`:
-  * `rem_latency`:
-  * `waso`:
-
-Exemple
-
-```R
-library(sleepr)
-
-write_mdf(edfPath = "tests/testthat/data/1/1.rec",
-          mdfPath = "tests/testthat/data/1/1",
-          events = read_events_isruc(
-            dir = "tests/testthat/data/1/",
-            scoringNum = 1))
-            
-record <- read_mdf("tests/testthat/data/1/1",
-                   channels = "C3-A2")
-
-hypnogram_band_powers(record,"C3-A2")
-```
+  * `tsp`: Total Sleep Period.
+  * `sleep_efficiency`: Sleep Efficiency.
+  * `sleep_latency`: Sleep Latency.
+  * `rem_latency`: REM Sleep Latency.
+  * `waso`: Wake After Sleep Onset.
 
 ## Package Testing
 

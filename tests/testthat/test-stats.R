@@ -71,14 +71,41 @@ test_that("N1 TTS", {
   expect_warning(n1_tts(data.frame()))
 })
 
-# TSP
-# Sleep efficiency
-#
+test_that("Total Sleep Period", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  expect_equal(tsp(events), 748.5)
+  expect_warning(tsp(data.frame()))
+})
+
+test_that("Sleep Efficiency", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  expect_equal(round(sleep_efficiency(events),digits = 3), 0.765)
+  expect_warning(sleep_efficiency(data.frame()))
+})
 
 test_that("Sleep latency", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
   expect_equal(sleep_latency(events), 54.5)
+  expect_warning(sleep_latency(data.frame()))
 })
 
-# REM latency
-# waso
+test_that("REM Latency", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  expect_equal(rem_latency(events), 107)
+  expect_warning(rem_latency(data.frame()))
+})
+
+test_that("Wake After Sleep Onset", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  expect_equal(waso(events), 121.5)
+  expect_warning(waso(data.frame()))
+})
+
+# Position & activity ----
+
+# Respiratory indexes ----
+
+test_that("Apnea and hypnonea count", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")
+  expect_equal(ah_count(events), 102)
+})

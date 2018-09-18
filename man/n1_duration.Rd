@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{n1_duration}
 \alias{n1_duration}
-\title{Sums up N1 stages duration from an events dataframe to get total N1 duration in minutes.}
+\title{N1 sleep duration in minutes.}
 \usage{
 n1_duration(events)
 }
@@ -13,7 +13,7 @@ n1_duration(events)
 Total duration of N1 sleep in minutes.
 }
 \description{
-Sums up N1 stages duration from an events dataframe to get total N1 duration in minutes.
+\code{n1_duration} sums up N1 stages duration from an events dataframe to get total N1 duration in minutes.
 }
 \examples{
 events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))

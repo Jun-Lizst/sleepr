@@ -2,18 +2,18 @@
 % Please edit documentation in R/stats.R
 \name{rem_duration}
 \alias{rem_duration}
-\title{Sums up REM stages duration from an events dataframe to get total REM duration in minutes.}
+\title{REM sleep duration in minutes.}
 \usage{
 rem_duration(events)
 }
 \arguments{
-\item{events}{events dataframe. Must have begin, end and event variables.}
+\item{events}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) variables.}
 }
 \value{
 Total duration of REM sleep in minutes.
 }
 \description{
-Sums up REM stages duration from an events dataframe to get total REM duration in minutes.
+\code{rem_duration} sums up REM stages duration from an events dataframe to get total REM duration in minutes.
 }
 \examples{
 events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))

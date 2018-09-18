@@ -187,9 +187,11 @@ check_events_integrity <- function(events){
 
 # Stages & scoring ----
 
-#' Sums up REM stages duration from an events dataframe to get total REM duration in minutes.
+#' REM sleep duration in minutes.
 #'
-#' @param events events dataframe. Must have begin, end and event variables.
+#' \code{rem_duration} sums up REM stages duration from an events dataframe to get total REM duration in minutes.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @return Total duration of REM sleep in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
@@ -202,9 +204,11 @@ rem_duration <- function(events){
   return(sum(as.numeric(difftime(events$end,events$begin,units="min"))))
 }
 
-#' Sums up N1 stages duration from an events dataframe to get total N1 duration in minutes.
+#' N1 sleep duration in minutes.
 #'
-#' @param events Events dataframe.
+#' \code{n1_duration} sums up N1 stages duration from an events dataframe to get total N1 duration in minutes.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @return Total duration of N1 sleep in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
@@ -217,9 +221,11 @@ n1_duration <- function(events){
   return(sum(as.numeric(difftime(events$end,events$begin,units="min"))))
 }
 
-#' Sums up N2 stages duration from an events dataframe to get total N2 duration in minutes.
+#' N2 sleep duration in minutes.
 #'
-#' @param events Events dataframe.
+#' \code{n2_duration} up N2 stages duration from an events dataframe to get total N2 duration in minutes.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @return total duration of N2 sleep in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
@@ -232,6 +238,8 @@ n2_duration <- function(events){
   return(sum(as.numeric(difftime(n2_events$end,n2_events$begin,units="mins"))))
 }
 
+#' N3 sleep duration in minutes.
+#'
 #' Sums up N3 stages duration from an events dataframe to get total N3 duration in minutes.
 #'
 #' @param events Events dataframe.
@@ -459,7 +467,6 @@ snoring_duration_pct <- function(events){
 }
 
 # Respiratory indexes ----
-
 
 ah_count <- function(events){
   return(nrow(events[events$event %in%
