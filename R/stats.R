@@ -328,9 +328,9 @@ n2_tts <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N3","N1")
 #' n1_tts(events)
-n1_tts <- function(hypnogram){
+n1_tts <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
-  return(n1_duration(hypnogram)/tts(hypnogram))
+  return(n1_duration(events)/tts(events))
 }
 
 #' Substracts the end time of the last element to the begin time of the first element to get the Total Sleep Period in minutes.
@@ -343,6 +343,7 @@ n1_tts <- function(hypnogram){
 #' events$event = c("N3","N1")
 #' tsp(events)
 tsp <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(as.numeric(difftime(max(events$end),min(events$begin),units="mins")))
 }
 
@@ -356,28 +357,41 @@ tsp <- function(events){
 #' events$event = c("N3","AWA")
 #' sleep_efficiency(events)
 sleep_efficiency <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(tts(events)/tsp(events))
 }
 
-
-sleep_latency <- function(hypnogram){
-  sleep <- hypnogram[hypnogram$event %in% c("N1","N2","N3","REM"),]
-  wake <- hypnogram[hypnogram$event == "AWA",]
+#' Substracts the start time of the first sleep epoch (N1,N2,N3 or REM) to the start of the hypnogram.
+#' 
+#' @param events Events dataframe. Must contain begin, end and events.
+#' @return Sleep latency.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("AWA","N3")
+#' sleep_latency(events)
+sleep_latency <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
+  sleep <- events[events$event %in% c("N1","N2","N3","REM"),]
+  wake <- events[events$event == "AWA",]
   return(as.numeric(difftime(min(sleep$begin),min(wake$begin),units="secs"))/60)
 }
 
-rem_latency <- function(hypnogram){
-  rem <- hypnogram[hypnogram$event == "REM",]
-  return(as.numeric(difftime(min(rem$begin),min(hypnogram$begin),units="secs"))/60-sleep_latency(hypnogram))
+rem_latency <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
+  rem <- events[events$event == "REM",]
+  return(as.numeric(difftime(min(rem$begin),min(events$begin),units="secs"))/60-sleep_latency(events))
 }
 
-waso <- function(hypnogram){
-  return(tsp(hypnogram)-sleep_latency(hypnogram)-tts(hypnogram))
+waso <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
+  return(tsp(events)-sleep_latency(events)-tts(events))
 }
 
 # Position & activity ----
 
 tts_pos_back <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(events_stages_overlap("Dos",c("N1","N2","N3","REM"),events))
 }
 
@@ -654,5 +668,5 @@ normalize_cycles <- function(events){
 
 
 
-events <- read_events_noxturnal("tests/testthat/data/noxturnal_events_example_unicode_3.csv")
-unique(events$event)
+# events <- read_events_noxturnal("tests/testthat/data/noxturnal_events_example_unicode_3.csv")
+# unique(events$event)
