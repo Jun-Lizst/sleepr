@@ -3,6 +3,8 @@
 #' @param x signal vector.
 #' @param Fs Frequency.
 #' @param bands bands. Default "delta","theta","alpha","beta", "gamma1".
+#' @param bands_names bands names
+#' @param normalize normalize.
 #' @return a named vector with all bands powers.
 bands_power <- function(x,
                         Fs,
@@ -35,6 +37,8 @@ bands_power <- function(x,
 #' @param record record.
 #' @param channel channel to split and hyp.
 #' @param bands bands. Default "delta","theta","alpha","beta", "gamma1", "denominator", "broadband".
+#' @param bands_names band_names.
+#' @param normalize normalize.
 #' @return a df.
 hypnogram_band_powers <- function(record,
                                   channel,

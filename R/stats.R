@@ -1,6 +1,6 @@
 #' Call and compile all statistics functions in a dataframe. 
 #'
-#' @param record record paths.
+#' @param records record paths.
 #' @param eeg_channels potential EEG channel names.
 #' @param metadata read metadata or not.
 #' @return df.

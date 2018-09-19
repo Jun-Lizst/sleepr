@@ -8,11 +8,11 @@ compute_all_stats(records, eeg_channels = c("C3-A2", "EEG Fpz-Cz"),
   metadata = TRUE)
 }
 \arguments{
+\item{records}{record paths.}
+
 \item{eeg_channels}{potential EEG channel names.}
 
 \item{metadata}{read metadata or not.}
-
-\item{record}{record paths.}
 }
 \value{
 df.

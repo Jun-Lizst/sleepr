@@ -95,9 +95,9 @@ read_events_noxturnal <- function(path){
 #' @param path EDF+ path
 #' @param update merge N3 and N4 or not
 #' @return A dataframe of scored events.
-read_events_sleepedfx <- function(hypnogram, update = TRUE){
+read_events_sleepedfx <- function(path, update = TRUE){
   
-  h <- edfReader::readEdfHeader(hypnogram)
+  h <- edfReader::readEdfHeader(path)
   s <- edfReader::readEdfSignals(h)
   events <- s[["annotations"]]
   events$begin <- events$onset + as.numeric(s[["startTime"]]) 

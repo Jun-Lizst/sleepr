@@ -15,6 +15,10 @@ hypnogram_band_powers(record, channel, bands = list(c(0.5, 3.5), c(3.5,
 \item{channel}{channel to split and hyp.}
 
 \item{bands}{bands. Default "delta","theta","alpha","beta", "gamma1", "denominator", "broadband".}
+
+\item{bands_names}{band_names.}
+
+\item{normalize}{normalize.}
 }
 \value{
 a df.

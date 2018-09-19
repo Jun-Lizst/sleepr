@@ -58,6 +58,7 @@ write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
 #' @param signals signals list.
 #' @param headers headers.
 #' @param mdfPath mdf path
+#' @param endian little or big.
 write_channel <- function(channel, signals, headers, mdfPath, endian="little"){
   signal <- signals[[channel]]
   

@@ -14,6 +14,8 @@ write_channel(channel, signals, headers, mdfPath, endian = "little")
 \item{headers}{headers.}
 
 \item{mdfPath}{mdf path}
+
+\item{endian}{little or big.}
 }
 \description{
 Write a channel, MDF style.

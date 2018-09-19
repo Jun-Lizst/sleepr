@@ -14,6 +14,10 @@ bands_power(x, Fs, bands = list(c(0.5, 3.5), c(3.5, 8), c(8, 12), c(12,
 \item{Fs}{Frequency.}
 
 \item{bands}{bands. Default "delta","theta","alpha","beta", "gamma1".}
+
+\item{bands_names}{bands names}
+
+\item{normalize}{normalize.}
 }
 \value{
 a named vector with all bands powers.

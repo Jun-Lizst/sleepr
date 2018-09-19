@@ -4,12 +4,12 @@
 \alias{read_events_sleepedfx}
 \title{Read a SleepEDFX events file EDF+}
 \usage{
-read_events_sleepedfx(hypnogram, update = TRUE)
+read_events_sleepedfx(path, update = TRUE)
 }
 \arguments{
-\item{update}{merge N3 and N4 or not}
-
 \item{path}{EDF+ path}
+
+\item{update}{merge N3 and N4 or not}
 }
 \value{
 A dataframe of scored events.
