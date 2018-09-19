@@ -1,5 +1,7 @@
 # Sleepr
 
+[![Build Status](https://travis-ci.org/boupetch/sleepr.svg?branch=master)](https://travis-ci.org/boupetch/sleepr)
+
 Sleep analysis with R.
 
 ## Installation
