@@ -240,9 +240,9 @@ n2_duration <- function(events){
 
 #' N3 sleep duration in minutes.
 #'
-#' Sums up N3 stages duration from an events dataframe to get total N3 duration in minutes.
+#' \code{n3_duration} sums up N3 stages duration from an events dataframe to get total N3 duration in minutes.
 #'
-#' @param events Events dataframe.
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @return total duration of N3 sleep in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
@@ -255,9 +255,11 @@ n3_duration <- function(events){
   return(sum(as.numeric(difftime(n3_events$end,n3_events$begin,units="mins"))))
 }
 
-#' Sums up AWA stages duration from an events dataframe to get total AWA duration in minutes.
+#' Wake duration in minutes.
+#' 
+#' \code{awa_duration} sums up AWA stages duration from an events dataframe to get total AWA duration in minutes.
 #'
-#' @param events Events dataframe.
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @return total duration of AWA sleep in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
@@ -270,9 +272,11 @@ awa_duration <- function(events){
   return(sum(as.numeric(difftime(awa_events$end,awa_events$begin,units="mins"))))
 }
 
-#' Sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.
+#' Time To Sleep in minutes.
+#' 
+#' \code{tts} (Time To Sleep) sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.
 #'
-#' @param events Events dataframe. Must contain begin, end and events.
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @return Time To Sleep (N1+N2+N3+REM durations) in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
@@ -285,6 +289,8 @@ tts <- function(events){
   return(sum(as.numeric(difftime(events$end,events$begin,units="mins"))))
 }
 
+#' REM over TTS ratio.
+#' 
 #' Divides REM duration by TTS duration from an events dataframe.
 #'
 #' @param events Events dataframe. Must contain begin, end and events.
@@ -381,8 +387,7 @@ sleep_efficiency <- function(events){
 sleep_latency <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   sleep <- events[events$event %in% c("N1","N2","N3","REM"),]
-  wake <- events[events$event == "AWA",]
-  return(as.numeric(difftime(min(sleep$begin),min(wake$begin),units="secs"))/60)
+  return(as.numeric(difftime(min(sleep$begin),min(events$begin),units="mins")))
 }
 
 rem_latency <- function(events){
@@ -391,6 +396,17 @@ rem_latency <- function(events){
   return(as.numeric(difftime(min(rem$begin),min(events$begin),units="secs"))/60-sleep_latency(events))
 }
 
+#' Wake After Sleep Onset in minutes.
+#'
+#' \code{waso} substracts Time To Sleep (TTS) and sleep latency to the Total Sleep Period (TSP) to get the total Wake After Sleep Onset in minutes.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return Wake After Sleep Onset in minutes.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N2","AWA")
+#' waso(events)
 waso <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(tsp(events)-sleep_latency(events)-tts(events))
