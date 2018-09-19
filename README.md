@@ -16,7 +16,7 @@ devtools::install_github("boupetch/sleepr")
 
 ### File manipulation
 
-In Sleepr, `write_mdf()` and `read_mdf()` functions are used to write and read records on disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format (MDF). MDF<sup>1</sup> is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
+In Sleepr, `write_mdf()` and `read_mdf()` functions are used to write and read records on disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format<sup>1</sup> (MDF). MDF is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
 MDF uses binary files for signals and JSON for metadata. Signals values are encoded by default in binary, 32 bits, little endian.
 
 ### Sleep visualization
@@ -53,6 +53,13 @@ These functions compute statistics based on stage scoring.
   * `tts_pos_back_pct`: TTS duration in back position over TTS duration.
   * `tts_pos_left`: TTS duration in left position in minutes.
   * `tts_pos_left_pct`: TTS duration in left position over TTS duration.
+  * `tts_pos_right`: TTS duration in right position in minutes.
+  * `tts_pos_right_pct`: TTS duration in right position over TTS duration.
+  * `tts_pos_stomach`: TTS duration in left position in minutes.
+  * `tts_pos_stomach_pct`: TTS duration in stomach position over TTS duration.
+  * `tts_pos_nonback`: TTS duration in non-back position in minutes.
+  * `tts_pos_nonback_pct`: TTS duration in non-back position over TTS duration.
+  
 
 ## Package Testing
 

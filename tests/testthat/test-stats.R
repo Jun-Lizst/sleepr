@@ -126,15 +126,43 @@ test_that("Wake After Sleep Onset", {
 # Position & activity ----
 
 test_that("Back position", {
+  
+  # Real scoring
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode_2.csv")
   expect_equal(round(tts_pos_back(events)), 123)
   expect_equal(round(tts_pos_back_pct(events),digits=3),0.363)
+  
+  # Incorrect dataframe
   expect_warning(tts_pos_back(data.frame()))
+  
+  # Correct small dataframe
   events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
   events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
   events$event = c("N3","N3","back")
   expect_equal(round(tts_pos_back(events),digits = 3),0.167)
   expect_equal(round(tts_pos_back_pct(events),digits = 3),0.167)
+  
+  # Empty dataframe
+  expect_equal(tts_pos_back(data.frame(begin = as.POSIXlt(character()),
+                                       end = as.POSIXlt(character()),
+                                       event = character())),0)
+  expect_equal(tts_pos_back_pct(data.frame(begin = as.POSIXlt(character()),
+                                       end = as.POSIXlt(character()),
+                                       event = character())),0)
+  
+  # Only back events
+  events <- data.frame(begin = as.POSIXlt(c(1536967800),origin = "1970-01-01"))
+  events$end <- as.POSIXlt(c(1536967830), origin = "1970-01-01")
+  events$event = c("back")
+  expect_equal(tts_pos_back(events),0)
+  expect_equal(tts_pos_back_pct(events),0)
+  
+  # Back + AWA
+  events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+  events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+  events$event = c("AWA","AWA","back")
+  expect_equal(tts_pos_back(events),0)
+  expect_equal(tts_pos_back_pct(events),0)
 })
 
 test_that("Left position", {
@@ -147,7 +175,20 @@ test_that("Left position", {
   events$event = c("N3","N3","left")
   expect_equal(round(tts_pos_left(events),digits = 3),0.167)
   expect_equal(round(tts_pos_left_pct(events),digits = 3),0.167)
+  
+  # Empty dataframe
+  expect_equal(tts_pos_left(data.frame(begin = as.POSIXlt(character()),
+                                       end = as.POSIXlt(character()),
+                                       event = character())),0)
+  expect_equal(tts_pos_left(data.frame(begin = as.POSIXlt(character()),
+                                           end = as.POSIXlt(character()),
+                                           event = character())),0)
 })
+
+# TODO find some data for the stomach tests
+
+# Non back
+
 
 # Respiratory indexes ----
 
