@@ -646,9 +646,24 @@ snoring_count <- function(events){
   ))
 }
 
-# Snorings per hour
+#' Snoring index
+#'
+#' \code{snoring_index} return the number of snorings occuring during TTS over TTS in hours.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return Snoring index
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+#' events$event = c("N3","N3","Train de ronflements")
+#' snoring_index(events)
 snoring_index <- function(events){
-  return(snoring_count(events)/(tts(hypnogram(events))/60))
+  tts_hour <- tts(hypnogram(events))/60
+  if(tts_hour == 0){
+    return(0)
+  } else {
+    return(snoring_count(events)/tts_hour)
+  }
 }
 
 snoring_duration <- function(events){
@@ -681,7 +696,7 @@ ah_back <- function(events){
 
 ah_nonback <- function(events){
   return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),
-                                     c("Droite","Gauche","Ventre")))/(tts_pos_nonback(events)/60))
+                                     c("right","left","stomach")))/(tts_pos_nonback(events)/60))
 }
 
 ah_rem <- function(events){
