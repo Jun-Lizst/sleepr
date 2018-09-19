@@ -7,7 +7,7 @@
 rem_duration(events)
 }
 \arguments{
-\item{events}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) variables.}
+\item{events}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
 }
 \value{
 Total duration of REM sleep in minutes.

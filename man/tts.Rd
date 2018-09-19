@@ -2,18 +2,18 @@
 % Please edit documentation in R/stats.R
 \name{tts}
 \alias{tts}
-\title{Sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.}
+\title{Time To Sleep in minutes.}
 \usage{
 tts(events)
 }
 \arguments{
-\item{events}{Events dataframe. Must contain begin, end and events.}
+\item{events}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
 }
 \value{
 Time To Sleep (N1+N2+N3+REM durations) in minutes.
 }
 \description{
-Sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.
+\code{tts} (Time To Sleep) sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.
 }
 \examples{
 events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))

@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{rem_tts}
 \alias{rem_tts}
-\title{Divides REM duration by TTS duration from an events dataframe.}
+\title{REM over TTS ratio.}
 \usage{
 rem_tts(events)
 }

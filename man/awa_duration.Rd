@@ -2,18 +2,18 @@
 % Please edit documentation in R/stats.R
 \name{awa_duration}
 \alias{awa_duration}
-\title{Sums up AWA stages duration from an events dataframe to get total AWA duration in minutes.}
+\title{Wake duration in minutes.}
 \usage{
 awa_duration(events)
 }
 \arguments{
-\item{events}{Events dataframe.}
+\item{events}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
 }
 \value{
 total duration of AWA sleep in minutes.
 }
 \description{
-Sums up AWA stages duration from an events dataframe to get total AWA duration in minutes.
+\code{awa_duration} sums up AWA stages duration from an events dataframe to get total AWA duration in minutes.
 }
 \examples{
 events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))

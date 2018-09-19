@@ -2,18 +2,18 @@
 % Please edit documentation in R/stats.R
 \name{n2_duration}
 \alias{n2_duration}
-\title{Sums up N2 stages duration from an events dataframe to get total N2 duration in minutes.}
+\title{N2 sleep duration in minutes.}
 \usage{
 n2_duration(events)
 }
 \arguments{
-\item{events}{Events dataframe.}
+\item{events}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
 }
 \value{
 total duration of N2 sleep in minutes.
 }
 \description{
-Sums up N2 stages duration from an events dataframe to get total N2 duration in minutes.
+\code{n2_duration} up N2 stages duration from an events dataframe to get total N2 duration in minutes.
 }
 \examples{
 events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
