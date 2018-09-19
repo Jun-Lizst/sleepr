@@ -85,7 +85,7 @@ read_events_noxturnal <- function(path){
   events$event[events$event == "Micro-Éveil"] <- "micro-arousal"
   events$event[events$event == "Micro-éveil"] <- "micro-arousal"
   events$event[events$event == "Dos"] <- "back"
-  
+  events$event[events$event == "Gauche"] <- "left"
   
   return(events)
 }

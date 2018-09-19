@@ -51,6 +51,8 @@ These functions compute statistics based on stage scoring.
 
   * `tts_pos_back`: TTS duration in back position in minutes.
   * `tts_pos_back_pct`: TTS duration in back position over TTS duration.
+  * `tts_pos_left`: TTS duration in left position in minutes.
+  * `tts_pos_left_pct`: TTS duration in left position over TTS duration.
 
 ## Package Testing
 

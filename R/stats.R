@@ -395,10 +395,10 @@ sleep_latency <- function(events){
 
 #' REM Latency in minutes.
 #' 
-#' Substracts the start time of the first REM epoch to the start of the sleep onset.
+#' Substracts the start time of the first REM epoch to the start of the sleep onset to get the REM latency in minutes.
 #' 
 #' @param events Events dataframe. Must contain begin, end and events.
-#' @return Sleep latency.
+#' @return REM Latency in minutes.
 #' @examples
 #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
@@ -466,14 +466,39 @@ tts_pos_back <- function(events){
 #' events$event = c("N3","N3","back")
 #' tts_pos_back_pct(events)
 tts_pos_back_pct <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(tts_pos_back(events)/tts(events))
 }
 
+#' TTS duration in left position in minutes.
+#'
+#' \code{tts_pos_left} computes the total time in left position during TTS in minutes.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return TTS duration in left position.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+#' events$event = c("N3","N3","left")
+#' tts_pos_left(events)
 tts_pos_left <- function(events){
-  return(events_stages_overlap("Gauche",c("N1","N2","N3","REM"),events))
+  if(!check_events_integrity(events)){ return(NA) }
+  return(events_stages_overlap("left",c("N1","N2","N3","REM"),events))
 }
 
+#' TTS duration in left position over TTS duration.
+#'
+#' \code{tts_pos_back_pct} computes the total time in left position during TTS over TTS duration.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return TTS duration in back position over TTS
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+#' events$event = c("N3","N3","back")
+#' tts_pos_left_pct(events)
 tts_pos_left_pct <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(tts_pos_left(events)/tts(events))
 }
 

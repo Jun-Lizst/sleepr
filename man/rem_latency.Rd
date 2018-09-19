@@ -10,10 +10,10 @@ rem_latency(events)
 \item{events}{Events dataframe. Must contain begin, end and events.}
 }
 \value{
-Sleep latency.
+REM Latency in minutes.
 }
 \description{
-Substracts the start time of the first REM epoch to the start of the sleep onset.
+Substracts the start time of the first REM epoch to the start of the sleep onset to get the REM latency in minutes.
 }
 \examples{
 events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))

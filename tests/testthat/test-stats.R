@@ -137,6 +137,18 @@ test_that("Back position", {
   expect_equal(round(tts_pos_back_pct(events),digits = 3),0.167)
 })
 
+test_that("Left position", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode_2.csv")
+  expect_equal(round(tts_pos_left(events)), 142)
+  expect_equal(round(tts_pos_left_pct(events),digits=3),0.419)
+  expect_warning(tts_pos_left(data.frame()))
+  events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+  events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+  events$event = c("N3","N3","left")
+  expect_equal(round(tts_pos_left(events),digits = 3),0.167)
+  expect_equal(round(tts_pos_left_pct(events),digits = 3),0.167)
+})
+
 # Respiratory indexes ----
 
 test_that("Apnea and hypnonea count", {
