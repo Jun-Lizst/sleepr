@@ -851,16 +851,3 @@ normalize_cycles <- function(events){
                                        "Activity-ENend"),]
   events <- events[order(events$begin),]
 }
-
-
-
-
-
-
-
-
-
-
-
-# events <- read_events_noxturnal("tests/testthat/data/noxturnal_events_example_unicode_3.csv")
-# unique(events$event)
