@@ -417,11 +417,33 @@ waso <- function(events){
 
 # Position & activity ----
 
+#' TTS duration in back position in minutes.
+#'
+#' \code{tts_pos_back} computes the total time in back position during TTS.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return TTS duration in back position in minutes.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+#' events$event = c("N3","N3","back")
+#' tts_pos_back(events)
 tts_pos_back <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
-  return(events_stages_overlap("Dos",c("N1","N2","N3","REM"),events))
+  return(events_stages_overlap("back",c("N1","N2","N3","REM"),events))
 }
 
+#' TTS duration in back position over TTS duration.
+#'
+#' \code{tts_pos_back_pct} computes the total time in back position during TTS over TTS duration.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return TTS duration in back position over TTS
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+#' events$event = c("N3","N3","back")
+#' tts_pos_back_pct(events)
 tts_pos_back_pct <- function(events){
   return(tts_pos_back(events)/tts(events))
 }
@@ -498,7 +520,7 @@ ah_hour <- function(events){
 }
 
 ah_back <- function(events){
-  return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),"Dos"))/(tts_pos_back(events)/60))
+  return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),"back"))/(tts_pos_back(events)/60))
 }
 
 ah_nonback <- function(events){

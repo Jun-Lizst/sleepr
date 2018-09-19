@@ -23,9 +23,11 @@ MDF uses binary files for signals and JSON for metadata. Signals values are enco
 
 ### Statistics computing
 
-Various statistics can be computed from the polysomnographic data.
+Various statistics can be computed from the polysomnographic data, signals and events.
 
 #### Stages & scoring
+
+These functions compute statistics based on stage scoring.
 
   * `rem_duration`: Total duration of REM sleep in minutes.
   * `n1_duration`: Total duration of N1 sleep in minutes.
@@ -42,6 +44,11 @@ Various statistics can be computed from the polysomnographic data.
   * `sleep_latency`: Sleep Latency.
   * `rem_latency`: REM Sleep Latency.
   * `waso`: Wake After Sleep Onset.
+  
+#### Position and activity
+
+  * `tts_pos_back`: TTS duration in back position in minutes.
+  * `tts_pos_back_pct`: TTS duration in back position over TTS duration.
 
 ## Package Testing
 

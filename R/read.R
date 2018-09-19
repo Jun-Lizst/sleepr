@@ -38,7 +38,6 @@ read_mdf <- function(mdfPath, channels = c(NA), metadata = TRUE) {
     }
   }
   
-  
   eventsPath <- paste0(mdfPath,"/events.json")
   if(file.exists(eventsPath)){
     mdf[["events"]] <- jsonlite::read_json(eventsPath,simplifyVector = TRUE)
