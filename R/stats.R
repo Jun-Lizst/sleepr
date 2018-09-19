@@ -162,7 +162,10 @@ events_stages_overlap <- function(label, stages, events){
 }
 
 check_events_integrity <- function(events){
-  if(!("begin" %in% colnames(events))){
+  if(nrow(events) == 0 ){
+    warning("Events dataframe is empty.")
+    return(FALSE)
+  } else if(!("begin" %in% colnames(events))){
     warning("Events dataframe must contain a 'begin' column.")
     return(FALSE)
   } else if(!("end" %in% colnames(events))){
