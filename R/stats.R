@@ -393,10 +393,31 @@ sleep_latency <- function(events){
   return(as.numeric(difftime(min(sleep$begin),min(events$begin),units="mins")))
 }
 
+#' REM Latency in minutes.
+#' 
+#' Substracts the start time of the first REM epoch to the start of the sleep onset.
+#' 
+#' @param events Events dataframe. Must contain begin, end and events.
+#' @return Sleep latency.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("AWA","REM")
+#' rem_latency(events)
+#' 
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("REM","REM")
+#' rem_latency(events)
+#' 
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+#' events$event = c("N1","REM")
+#' rem_latency(events)
 rem_latency <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   rem <- events[events$event == "REM",]
-  return(as.numeric(difftime(min(rem$begin),min(events$begin),units="secs"))/60-sleep_latency(events))
+  return(as.numeric(difftime(min(rem$begin),min(events$begin),units="mins"))-sleep_latency(events))
 }
 
 #' Wake After Sleep Onset in minutes.

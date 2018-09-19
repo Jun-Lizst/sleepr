@@ -19,13 +19,13 @@ devtools::install_github("boupetch/sleepr")
 In Sleepr, `write_mdf()` and `read_mdf()` functions are used to write and read records on disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format (MDF). MDF<sup>1</sup> is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
 MDF uses binary files for signals and JSON for metadata. Signals values are encoded by default in binary, 32 bits, little endian.
 
-### Data visualisation
+### Sleep visualization
 
 ![hypnogram](img/hypnogram.jpeg)
 
 ### Statistics computing
 
-Various statistics can be computed from the polysomnographic data, signals and events.
+Various statistics can be computed from the polysomnographic data, signals and events. Duration are expressed in *minutes*, indexes in *hours*.
 
 #### Stages & scoring
 
@@ -37,10 +37,10 @@ These functions compute statistics based on stage scoring.
   * `n3_duration`: Total duration of N3 sleep in minutes.
   * `awa_duration`: Total duration of wake in minutes.
   * `tts`: Time To Sleep (N1+N2+N3+REM durations) in minutes.
-  * `rem_tts`: REM over TTS durations ratio.
-  * `n3_tts`: N3 over TTS durations ratio.
-  * `n2_tts`: N2 over TTS durations ratio.
-  * `n1_tts`: N1 over TTS durations ratio.
+  * `rem_tts`: REM over TTS duration ratio.
+  * `n3_tts`: N3 over TTS duration ratio.
+  * `n2_tts`: N2 over TTS duration ratio.
+  * `n1_tts`: N1 over TTS duration ratio.
   * `tsp`: Total Sleep Period.
   * `sleep_efficiency`: Sleep Efficiency.
   * `sleep_latency`: Sleep Latency.

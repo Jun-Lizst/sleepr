@@ -89,9 +89,31 @@ test_that("Sleep latency", {
   expect_warning(sleep_latency(data.frame()))
 })
 
-test_that("REM Latency", {
+test_that("REM latency", {
+  
+  # Real record
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
   expect_equal(rem_latency(events), 107)
+  
+  # Example 1
+  events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+  events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+  events$event = c("AWA","REM")
+  expect_equal(rem_latency(events), 0)
+  
+  # Example 2
+  events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+  events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+  events$event = c("N1","REM")
+  expect_equal(rem_latency(events), 0.5)
+  
+  # Example 2
+  events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
+  events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
+  events$event = c("REM","REM")
+  expect_equal(rem_latency(events), 0)
+  
+  # Empty dataframe
   expect_warning(rem_latency(data.frame()))
 })
 
