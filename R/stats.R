@@ -628,7 +628,17 @@ tts_pos_nonback_pct <- function(events){
 
 # Snoring ----
 
-# Number of snorings
+#' Total snoring count.
+#'
+#' \code{snoring_count} filter snorings occuring during TTS.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return Total snoring count.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+#' events$event = c("N3","N3","Train de ronflements")
+#' snoring_count(events)
 snoring_count <- function(events){
   return(nrow(get_overlapping_events(events,
                          x = c("Train de ronflements"),

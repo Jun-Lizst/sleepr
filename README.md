@@ -47,7 +47,7 @@ These functions compute statistics based on stage scoring.
   * `rem_latency`: REM Sleep Latency.
   * `waso`: Wake After Sleep Onset.
   
-#### Position and activity
+#### Position & activity
 
   * `tts_pos_back`: TTS duration in back position in minutes.
   * `tts_pos_back_pct`: TTS duration in back position over TTS duration.
