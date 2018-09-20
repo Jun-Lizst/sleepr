@@ -239,7 +239,6 @@ test_that("Non-back position", {
                                               event = character())),0)
 })
 
-
 # Respiratory indexes ----
 
 test_that("Apnea and hypnonea count", {
