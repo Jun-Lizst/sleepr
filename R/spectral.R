@@ -6,6 +6,7 @@
 #' @param bands_names bands names
 #' @param normalize normalize.
 #' @return a named vector with all bands powers.
+#' @export
 bands_power <- function(x,
                         Fs,
                         bands=list(c(0.5,3.5),
@@ -40,6 +41,7 @@ bands_power <- function(x,
 #' @param bands_names band_names.
 #' @param normalize normalize.
 #' @return a df.
+#' @export
 hypnogram_band_powers <- function(record,
                                   channel,
                                   bands=list(c(0.5,3.5),c(3.5,8),

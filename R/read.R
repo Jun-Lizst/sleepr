@@ -4,6 +4,7 @@
 #' @param channels [String] Channels to read.
 #' @param metadata [Boolean] Read or not the metadata.
 #' @return A (large) list.
+#' @export
 read_mdf <- function(mdfPath, channels = c(NA), metadata = TRUE) {
   
   # Init list

@@ -3,6 +3,7 @@
 #' @param dir ISRUC record directory.
 #' @param scoringNum Scoring number in database.
 #' @return A dataframe of scored events.
+#' @export
 read_events_isruc <- function(dir,scoringNum){
   xlsxPath <- list.files(dir,
                          pattern = paste0("_",scoringNum,".xlsx"),
@@ -34,16 +35,17 @@ read_events_isruc <- function(dir,scoringNum){
 #'
 #' @param path Noxturnal events file path.
 #' @return A dataframe of scored events.
+#' @export
 read_events_noxturnal <- function(path){
 
   events <- tryCatch({
-    read.csv(path,
+    utils::read.csv(path,
              fileEncoding = "UTF-8")
   }, error = function(e){
-    read.csv(path,
+    utils::read.csv(path,
              fileEncoding = "UTF-16")
   }, warning = function(e){
-    read.csv(path,
+    utils::read.csv(path,
              fileEncoding = "UTF-16")
   }
   )
@@ -97,6 +99,7 @@ read_events_noxturnal <- function(path){
 #' @param path EDF+ path
 #' @param update merge N3 and N4 or not
 #' @return A dataframe of scored events.
+#' @export
 read_events_sleepedfx <- function(path, update = TRUE){
   
   h <- edfReader::readEdfHeader(path)

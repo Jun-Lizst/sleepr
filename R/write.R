@@ -4,6 +4,7 @@
 #' @param mdfPath MDF path.
 #' @param channels Channels to write.
 #' @param events Events dataframe to write.
+#' @export
 write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
   
   # Reset MDF directory
@@ -59,6 +60,7 @@ write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
 #' @param headers headers.
 #' @param mdfPath mdf path
 #' @param endian little or big.
+#' @export
 write_channel <- function(channel, signals, headers, mdfPath, endian="little"){
   signal <- signals[[channel]]
   

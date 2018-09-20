@@ -60,7 +60,13 @@ These functions compute statistics based on stage scoring.
   * `tts_pos_nonback`: TTS duration in non-back position in minutes.
   * `tts_pos_nonback_pct`: TTS duration in non-back position over TTS duration.
   
+#### Snoring
 
+  * `snoring_count`
+  * `snoring_index`
+  * `snoring_duration`
+  * `snoring_duration_pct`
+  
 ## Package Testing
 
 Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from open databases are downloaded first.

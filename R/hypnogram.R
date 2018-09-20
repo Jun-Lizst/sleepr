@@ -2,6 +2,7 @@
 #'
 #' @param events events dataframe.
 #' @return a ggplot.
+#' @export
 plot_hypnogram <- function(events){
   stages <- hypnogram(events)
   stages$begin <- as.POSIXct(stages$begin)
@@ -23,6 +24,7 @@ plot_hypnogram <- function(events){
 #'
 #' @param events events dataframe.
 #' @return hypngram dataframe.
+#' @export
 hypnogram <- function(events){
   labels <- c("N3","N2","N1","REM","AWA")
   stages <- events[events$event %in% labels,]
@@ -37,6 +39,7 @@ hypnogram <- function(events){
 #' @param hypnogram hypnogram df.
 #' @param sRate sRate sig.
 #' @return list.
+#' @export
 split_signal <- function(signal,hypnogram,sRate){
   
   hypnogram$begin <- as.numeric(hypnogram$begin)

@@ -4,6 +4,7 @@
 #' @param eeg_channels potential EEG channel names.
 #' @param metadata read metadata or not.
 #' @return df.
+#' @export
 compute_all_stats <- function(records, 
                               eeg_channels = c("C3-A2","EEG Fpz-Cz"),
                               metadata = TRUE){
@@ -134,7 +135,11 @@ get_overlapping_events <- function(events, x, y){
   }
 }
 
-
+#' get_overlapping_duration
+#'
+#' @param label label
+#' @param stages stages
+#' @param events events
 get_overlapping_duration <- function(label, stages, events){
   es <- events[events$event %in% label,] # [e]vents [s]ubset 
   h <- hypnogram(events)
@@ -161,6 +166,9 @@ get_overlapping_duration <- function(label, stages, events){
   return(td/60)
 }
 
+#' check_events_integrity
+#'
+#' @param events events
 check_events_integrity <- function(events){
   if(!("begin" %in% colnames(events))){
     warning("Events dataframe must contain a 'begin' column.")
@@ -198,6 +206,7 @@ check_events_integrity <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("REM","REM")
 #' rem_duration(events)
+#' @export
 rem_duration <- function(events){
   if(!check_events_integrity(events)){ return(0) }
   events <- events[events$event == "REM", c("begin","end")]
@@ -215,6 +224,7 @@ rem_duration <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N1","N1")
 #' n1_duration(events)
+#' @export
 n1_duration <- function(events){
   if(!check_events_integrity(events)){ return(0) }
   events <- events[events$event == "N1", c("begin","end")]
@@ -232,6 +242,7 @@ n1_duration <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N2","N2")
 #' n2_duration(events)
+#' @export
 n2_duration <- function(events){
   if(!check_events_integrity(events)){ return(0) }
   n2_events <- events[events$event == "N2", c("begin","end")]
@@ -249,6 +260,7 @@ n2_duration <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N3","N3")
 #' n3_duration(events)
+#' @export
 n3_duration <- function(events){
   if(!check_events_integrity(events)){ return(0) }
   n3_events <- events[events$event == "N3", c("begin","end")]
@@ -266,6 +278,7 @@ n3_duration <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("AWA","AWA")
 #' awa_duration(events)
+#' @export
 awa_duration <- function(events){
   if(!check_events_integrity(events)){ return(0) }
   awa_events <- events[events$event == "AWA", c("begin","end")]
@@ -283,6 +296,7 @@ awa_duration <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N1","REM")
 #' tts(events)
+#' @export
 tts <- function(events){
   if(!check_events_integrity(events)){ return(0) }
   events <- events[events$event %in% c("N1","N2","N3","REM"), c("begin","end")]
@@ -300,6 +314,7 @@ tts <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N1","REM")
 #' rem_tts(events)
+#' @export
 rem_tts <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(rem_duration(events)/tts(events))
@@ -314,6 +329,7 @@ rem_tts <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N3","REM")
 #' n3_tts(events)
+#' @export
 n3_tts <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(n3_duration(events)/tts(events))
@@ -328,6 +344,7 @@ n3_tts <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N3","N2")
 #' n2_tts(events)
+#' @export
 n2_tts <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(n2_duration(events)/tts(events))
@@ -342,6 +359,7 @@ n2_tts <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N3","N1")
 #' n1_tts(events)
+#' @export
 n1_tts <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(n1_duration(events)/tts(events))
@@ -356,6 +374,7 @@ n1_tts <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N3","N1")
 #' tsp(events)
+#' @export
 tsp <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(as.numeric(difftime(max(events$end),min(events$begin),units="mins")))
@@ -370,6 +389,7 @@ tsp <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N3","AWA")
 #' sleep_efficiency(events)
+#' @export
 sleep_efficiency <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(tts(events)/tsp(events))
@@ -384,6 +404,7 @@ sleep_efficiency <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("AWA","N3")
 #' sleep_latency(events)
+#' @export
 sleep_latency <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   sleep <- events[events$event %in% c("N1","N2","N3","REM"),]
@@ -411,6 +432,7 @@ sleep_latency <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N1","REM")
 #' rem_latency(events)
+#' @export
 rem_latency <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   rem <- events[events$event == "REM",]
@@ -428,6 +450,7 @@ rem_latency <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
 #' events$event = c("N2","AWA")
 #' waso(events)
+#' @export
 waso <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(tsp(events)-sleep_latency(events)-tts(events))
@@ -446,6 +469,7 @@ waso <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","back")
 #' tts_pos_back(events)
+#' @export
 tts_pos_back <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(get_overlapping_duration("back",c("N1","N2","N3","REM"),events))
@@ -462,6 +486,7 @@ tts_pos_back <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","back")
 #' tts_pos_back_pct(events)
+#' @export
 tts_pos_back_pct <- function(events){
   if(!check_events_integrity(events)){
     return(NA)
@@ -486,6 +511,7 @@ tts_pos_back_pct <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","left")
 #' tts_pos_left(events)
+#' @export
 tts_pos_left <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(get_overlapping_duration("left",c("N1","N2","N3","REM"),events))
@@ -502,6 +528,7 @@ tts_pos_left <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","back")
 #' tts_pos_left_pct(events)
+#' @export
 tts_pos_left_pct <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   tts_pos_left <- tts_pos_left(events)
@@ -524,6 +551,7 @@ tts_pos_left_pct <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","stomach")
 #' tts_pos_stomach(events)
+#' @export
 tts_pos_stomach <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(get_overlapping_duration("stomach",c("N1","N2","N3","REM"),events))
@@ -540,6 +568,7 @@ tts_pos_stomach <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","stomach")
 #' tts_pos_stomach_pct(events)
+#' @export
 tts_pos_stomach_pct <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   tts_pos_stomach <- tts_pos_stomach(events)
@@ -562,6 +591,7 @@ tts_pos_stomach_pct <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","right")
 #' tts_pos_right(events)
+#' @export
 tts_pos_right <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(get_overlapping_duration("right",c("N1","N2","N3","REM"),events))
@@ -578,6 +608,7 @@ tts_pos_right <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","right")
 #' tts_pos_right_pct(events)
+#' @export
 tts_pos_right_pct <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   tts_pos_right <- tts_pos_right(events)
@@ -600,6 +631,7 @@ tts_pos_right_pct <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","back")
 #' tts_pos_nonback(events)
+#' @export
 tts_pos_nonback <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   return(tts(hypnogram(events))-tts_pos_back(events))
@@ -616,6 +648,7 @@ tts_pos_nonback <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","back")
 #' tts_pos_right_pct(events)
+#' @export
 tts_pos_nonback_pct <- function(events){
   if(!check_events_integrity(events)){ return(NA) }
   tts_pos_nonback <- tts_pos_nonback(events)
@@ -640,7 +673,9 @@ tts_pos_nonback_pct <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","Train de ronflements")
 #' snoring_count(events)
+#' @export
 snoring_count <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(nrow(get_overlapping_events(events,
                          x = c("Train de ronflements"),
                          y = c("N1","N2","N3","REM"))
@@ -658,7 +693,9 @@ snoring_count <- function(events){
 #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
 #' events$event = c("N3","N3","Train de ronflements")
 #' snoring_index(events)
+#' @export
 snoring_index <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   tts_hour <- tts(hypnogram(events))/60
   if(tts_hour == 0){
     return(0)
@@ -667,44 +704,102 @@ snoring_index <- function(events){
   }
 }
 
+#' Total duration of snorings during TTS in minutes.
+#'
+#' \code{snoring_duration} sums up the durations of snorings during TTS (N1,N2,N3,REM).
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return Total duration of snorings during TTS in minutes.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+#' events$event = c("N3","N3","Train de ronflements")
+#' snoring_duration(events)
+#' @export
 snoring_duration <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
+  if(nrow(events) == 0){
+    return(0)
+  }
   s <- get_overlapping_events(events,
                          x = c("Train de ronflements"),
                          y = c("N1","N2","N3","REM"))
-  s$duration <- as.numeric(difftime(s$end.x,s$begin.x,units="secs"))/60
+  s$duration <- as.numeric(difftime(s$end.x,s$begin.x,units="mins"))
   return(sum(s$duration))
 }
 
+#' Total duration of snorings during TTS over TTS duration.
+#'
+#' \code{snoring_duration} divides the durations of snorings during TTS (N1,N2,N3,REM) over the TTS duration.
+#'
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return Total duration of snorings during TTS over TTS.
+#' @examples
+#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+#' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+#' events$event = c("N3","N3","Train de ronflements")
+#' snoring_duration_pct(events)
+#' @export
 snoring_duration_pct <- function(events){
-  return(snoring_duration(events)/tts(hypnogram(events)))
+  if(!check_events_integrity(events)){ return(NA) }
+  tts <- tts(events)
+  if(tts(events) > 0){
+    return(snoring_duration(events)/tts)
+  } else {
+    return(0)
+  }
+  
 }
 
 # Respiratory indexes ----
 
+#' Apnea and Hypopnea count
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ah_count <- function(events){
   return(nrow(events[events$event %in%
                        c("A. Obstructive",
                          "Hypopnée"),]))
 }
 
+#' Apnea and Hypopnea index
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 ah_hour <- function(events){
   return(ah_count(events)/(tts(hypnogram(events))/60))
 }
 
+#' Apnea and Hypopnea on back
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ah_back <- function(events){
   return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),"back"))/(tts_pos_back(events)/60))
 }
 
+#' Apnea and Hypopnea non back
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ah_nonback <- function(events){
   return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),
                                      c("right","left","stomach")))/(tts_pos_nonback(events)/60))
 }
 
+#' Apnea and Hypopnea in rem
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ah_rem <- function(events){
   return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),
                                      c("REM")))/(rem_duration(hypnogram(events))/60))
 }
 
+#' Apnea and Hypopnea nonrem
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ah_nonrem <- function(events){
   return(
     nrow(
@@ -719,7 +814,7 @@ ah_nonrem <- function(events){
     )
 }
 
-# Oxygen stauration ----
+# Oxygen saturation ----
 
 # Pulse ----
 
@@ -729,7 +824,10 @@ ah_nonrem <- function(events){
 
 # Micro-arousals ----
 
-# Count
+#' Micro-arousals count
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_count <- function(events){
   return(nrow(get_overlapping_events(events,
                                      x = c("micro-arousal"),
@@ -737,11 +835,18 @@ ma_count <- function(events){
   ))
 }
 
-# Per hour of tts
+#' Micro-arousals index
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_index <- function(events){
   return(ma_count(events)/(tts(events)/60))
 }
 
+#' Micro-arousals duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_duration <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
@@ -753,6 +858,10 @@ ma_duration <- function(events){
   return(duration)
 }
 
+#' Micro-arousals duration in n1
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_n1_duration <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
@@ -764,6 +873,10 @@ ma_n1_duration <- function(events){
   return(duration)
 }
 
+#' Micro-arousals n2 duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_n2_duration <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
@@ -775,6 +888,10 @@ ma_n2_duration <- function(events){
   return(duration)
 }
 
+#' Micro-arousals n3 duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_n3_duration <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
@@ -786,6 +903,10 @@ ma_n3_duration <- function(events){
   return(duration)
 }
 
+#' Micro-arousals rem duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_rem_duration <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
@@ -797,6 +918,10 @@ ma_rem_duration <- function(events){
   return(duration)
 }
 
+#' Micro-arousals n1 count
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_n1_count <- function(events){
   return(nrow(get_overlapping_events(events,
                                      x = c("micro-arousal"),
@@ -804,6 +929,10 @@ ma_n1_count <- function(events){
   ))
 }
 
+#' Micro-arousals m2 count
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_n2_count <- function(events){
   return(nrow(get_overlapping_events(events,
                                      x = c("micro-arousal"),
@@ -811,6 +940,10 @@ ma_n2_count <- function(events){
   ))
 }
 
+#' Micro-arousals n3 count
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_n3_count <- function(events){
   return(nrow(get_overlapping_events(events,
                                      x = c("micro-arousal"),
@@ -818,6 +951,10 @@ ma_n3_count <- function(events){
   ))
 }
 
+#' Micro-arousals remcount
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_rem_count <- function(events){
   return(nrow(get_overlapping_events(events,
                                      x = c("micro-arousal"),
@@ -825,24 +962,44 @@ ma_rem_count <- function(events){
   ))
 }
 
+#' Micro-arousals n1 index
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_n1_index <- function(events){
   return(ma_n1_count(events)/(n1_duration(events)/60))
 }
 
+#' Micro-arousals n2 index
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_n2_index <- function(events){
   return(ma_n2_count(events)/(n2_duration(events)/60))
 }
 
+#' Micro-arousals n3 index
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_n3_index <- function(events){
   return(ma_n3_count(events)/(n3_duration(events)/60))
 }
 
+#' Micro-arousals rem index
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 ma_rem_index <- function(events){
   return(ma_rem_count(events)/(rem_duration(events)/60))
 }
 
 # Rapid Eye Movements ----
 
+#' REM count
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 rem_count <- function(events){
   events <- get_overlapping_events(events,
                                    x = c("Rapide"),
@@ -850,10 +1007,18 @@ rem_count <- function(events){
   return(nrow(events))
 }
 
+#' REM index
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 rem_index <- function(events){
   return(rem_count(events)/(rem_duration(events)/60))
 }
 
+#' REM avg duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 rem_avg_duration <- function(events){
   
   
@@ -868,12 +1033,12 @@ rem_avg_duration <- function(events){
 
 # Cycles ----
 
-normalize_cycles <- function(events){
-  events <- events[events$event %in% c("Activity-CLASSICstart",
-                                       "Activity-CLASSICend",
-                                       "Activity-REMstart",
-                                       "Activity-REMend",
-                                       "Activity-ENstart",
-                                       "Activity-ENend"),]
-  events <- events[order(events$begin),]
-}
+# normalize_cycles <- function(events){
+#   events <- events[events$event %in% c("Activity-CLASSICstart",
+#                                        "Activity-CLASSICend",
+#                                        "Activity-REMstart",
+#                                        "Activity-REMend",
+#                                        "Activity-ENstart",
+#                                        "Activity-ENend"),]
+#   events <- events[order(events$begin),]
+# }

@@ -239,6 +239,64 @@ test_that("Non-back position", {
                                               event = character())),0)
 })
 
+# Snoring ----
+
+test_that("Snoring count", {
+  
+  # Real scoring
+  
+  # Incorrect dataframe
+  
+  # Correct small dataframe
+  
+  # Empty dataframe
+  expect_equal(snoring_count(data.frame(begin = as.POSIXlt(character()),
+                                          end = as.POSIXlt(character()),
+                                          event = character())),0)
+})
+
+test_that("Snoring index", {
+  
+  # Real scoring
+  
+  # Incorrect dataframe
+  
+  # Correct small dataframe
+  
+  # Empty dataframe
+  expect_equal(snoring_index(data.frame(begin = as.POSIXlt(character()),
+                                        end = as.POSIXlt(character()),
+                                        event = character())),0)
+})
+
+test_that("Snoring duration", {
+  
+  # Real scoring
+  
+  # Incorrect dataframe
+  
+  # Correct small dataframe
+  
+  # Empty dataframe
+  expect_equal(snoring_duration(data.frame(begin = as.POSIXlt(character()),
+                                        end = as.POSIXlt(character()),
+                                        event = character())),0)
+})
+
+test_that("Snoring duration ratio", {
+  
+  # Real scoring
+  
+  # Incorrect dataframe
+  
+  # Correct small dataframe
+  
+  # Empty dataframe
+  expect_equal(snoring_duration_pct(data.frame(begin = as.POSIXlt(character()),
+                                           end = as.POSIXlt(character()),
+                                           event = character())),0)
+})
+
 # Respiratory indexes ----
 
 test_that("Apnea and hypnonea count", {
