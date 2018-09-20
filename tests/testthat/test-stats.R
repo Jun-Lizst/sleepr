@@ -185,9 +185,59 @@ test_that("Left position", {
                                            event = character())),0)
 })
 
-# TODO find some data for the stomach tests
+test_that("Stomach position", {
+  
+  # Real scoring
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode_2.csv")
+  expect_equal(round(tts_pos_stomach(events)), 0)
+  expect_equal(round(tts_pos_stomach_pct(events),digits=3),0)
+  
+  # Incorrect dataframe
+  expect_warning(tts_pos_stomach(data.frame()))
+  expect_warning(tts_pos_stomach_pct(data.frame()))
+  
+  # Correct small dataframe
+  events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+  events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+  events$event = c("N3","N3","stomach")
+  expect_equal(round(tts_pos_stomach(events),digits = 3),0.167)
+  expect_equal(round(tts_pos_stomach_pct(events),digits = 3),0.167)
+  
+  # Empty dataframe
+  expect_equal(tts_pos_stomach(data.frame(begin = as.POSIXlt(character()),
+                                       end = as.POSIXlt(character()),
+                                       event = character())),0)
+  expect_equal(tts_pos_stomach_pct(data.frame(begin = as.POSIXlt(character()),
+                                       end = as.POSIXlt(character()),
+                                       event = character())),0)
+})
 
-# Non back
+test_that("Non-back position", {
+  
+  # Real scoring
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode_2.csv")
+  expect_equal(round(tts_pos_nonback(events)), 216)
+  expect_equal(round(tts_pos_nonback_pct(events),digits=3),0.637)
+  
+  # Incorrect dataframe
+  expect_warning(tts_pos_nonback(data.frame()))
+  expect_warning(tts_pos_nonback_pct(data.frame()))
+  
+  # Correct small dataframe
+  events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
+  events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
+  events$event = c("N3","N3","stomach")
+  expect_equal(round(tts_pos_nonback(events),digits = 3),1)
+  expect_equal(round(tts_pos_nonback_pct(events),digits = 3),1)
+  
+  # Empty dataframe
+  expect_equal(tts_pos_nonback(data.frame(begin = as.POSIXlt(character()),
+                                          end = as.POSIXlt(character()),
+                                          event = character())),0)
+  expect_equal(tts_pos_nonback_pct(data.frame(begin = as.POSIXlt(character()),
+                                              end = as.POSIXlt(character()),
+                                              event = character())),0)
+})
 
 
 # Respiratory indexes ----

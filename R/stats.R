@@ -601,6 +601,7 @@ tts_pos_right_pct <- function(events){
 #' events$event = c("N3","N3","back")
 #' tts_pos_nonback(events)
 tts_pos_nonback <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(tts(hypnogram(events))-tts_pos_back(events))
 }
 
