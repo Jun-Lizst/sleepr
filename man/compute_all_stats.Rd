@@ -4,8 +4,8 @@
 \alias{compute_all_stats}
 \title{Call and compile all statistics functions in a dataframe.}
 \usage{
-compute_all_stats(records, eeg_channels = c("C3-A2", "EEG Fpz-Cz"),
-  metadata = TRUE)
+compute_all_stats(records, eeg_channels = c("C3-A2", "EEG Fpz-Cz",
+  "C3-M2"), metadata = TRUE)
 }
 \arguments{
 \item{records}{record paths.}

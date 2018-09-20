@@ -114,7 +114,7 @@ read_events_sleepedfx <- function(path, update = TRUE){
   events$event[events$annotation == "Sleep stage 4"] <- "N4"
   events$event[events$annotation == "Sleep stage R"] <- "REM"
   events <- events[,c("begin","end","event")]
-  events_final <- head(events,0)
+  events_final <- utils::head(events,0)
   events <- events[order(events$begin),]
   events$duration <- events$end - events$begin
   events$epochs <- events$duration/30

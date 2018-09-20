@@ -7,14 +7,14 @@ plot_hypnogram <- function(events){
   stages <- hypnogram(events)
   stages$begin <- as.POSIXct(stages$begin)
   stages$end <- as.POSIXct(stages$end)
-  hypnogram <- ggplot2::ggplot(stages,ggplot2::aes(x=begin,y=event,group=1)) +
+  hypnogram <- ggplot2::ggplot(stages,ggplot2::aes_string(x="begin",y="event",group=1)) +
     ggplot2::geom_line() + 
     ggplot2::theme_bw() +
     ggplot2::xlab("") + 
     ggplot2::ylab("")
   rem = stages[stages$event == "REM",]
   for(i in c(1:nrow(rem))){
-    hypnogram <- hypnogram+ggplot2::geom_line(data=reshape2::melt(rem[i,],id.vars = c("event")),mapping = ggplot2::aes(x=value,y=event,group=1),colour='red')
+    hypnogram <- hypnogram+ggplot2::geom_line(data=reshape2::melt(rem[i,],id.vars = c("event")),mapping = ggplot2::aes_string(x="value",y="event",group=1),colour='red')
   }
     
   return(hypnogram)

@@ -21,7 +21,7 @@ MDF uses binary files for signals and JSON for metadata. Signals values are enco
 
 ### Sleep visualization
 
-![hypnogram](img/hypnogram.jpeg)
+![hypnogram](man/hypnogram.jpeg)
 
 ### Statistics computing
 
