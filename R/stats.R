@@ -760,7 +760,7 @@ snoring_duration_pct <- function(events){
 ah_count <- function(events){
   return(nrow(events[events$event %in%
                        c("A. Obstructive",
-                         "Hypopnée"),]))
+                         paste0("Hypopn","\u00E9","e")),]))
 }
 
 #' Apnea and Hypopnea index
@@ -775,7 +775,7 @@ ah_hour <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ah_back <- function(events){
-  return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),"back"))/(tts_pos_back(events)/60))
+  return(nrow(get_overlapping_events(events,c(paste0("Hypopn","\u00E9","e"),"A. Obstructive"),"back"))/(tts_pos_back(events)/60))
 }
 
 #' Apnea and Hypopnea non back
@@ -783,7 +783,7 @@ ah_back <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ah_nonback <- function(events){
-  return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),
+  return(nrow(get_overlapping_events(events,c(paste0("Hypopn","\u00E9","e"),"A. Obstructive"),
                                      c("right","left","stomach")))/(tts_pos_nonback(events)/60))
 }
 
@@ -792,7 +792,7 @@ ah_nonback <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ah_rem <- function(events){
-  return(nrow(get_overlapping_events(events,c("Hypopnée","A. Obstructive"),
+  return(nrow(get_overlapping_events(events,c(paste0("Hypopn","\u00E9","e"),"A. Obstructive"),
                                      c("REM")))/(rem_duration(hypnogram(events))/60))
 }
 
@@ -805,7 +805,7 @@ ah_nonrem <- function(events){
     nrow(
       get_overlapping_events(
         events,
-        c("Hypopnée",
+        c(paste0("Hypopn","\u00E9","e"),
           "A. Obstructive"),
         c("N1","N2","N3")))/
       ((n1_duration(hypnogram(events))+

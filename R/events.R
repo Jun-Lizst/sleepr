@@ -56,36 +56,36 @@ read_events_noxturnal <- function(path){
   }
 
   for (i in 1:4){
-    if(colnames(events)[i] == "Heure.de.d.but" | colnames(events)[i] == "Heure.de.début"){
+    if(colnames(events)[i] == "Heure.de.d.but" | colnames(events)[i] == paste0("Heure.de.d","\u00E9","but")){
       colnames(events)[i] <- "begin"
       events$begin <- strptime(events$begin, format = "%d/%m/%Y %H:%M:%S")
     } else if(colnames(events)[i] == "Heure.de.fin") {
       colnames(events)[i] <- "end"
       events$end <- strptime(events$end, format = "%d/%m/%Y %H:%M:%S")
-    } else if(colnames(events)[i] == "X.v.nement" | colnames(events)[i] == "Événement") {
+    } else if(colnames(events)[i] == "X.v.nement" | colnames(events)[i] == paste0("\u00C9","v","\u00E9","nement")) {
       colnames(events)[i] <- "event"
       events$event <- as.character(events$event)
-    } else if(colnames(events)[i] == "Dur.e" | colnames(events)[i] == "Durée") {
+    } else if(colnames(events)[i] == "Dur.e" | colnames(events)[i] == paste0("Dur","\u00E9","e")) {
       colnames(events)[i] <- "duration"
       events$duration <- as.numeric(events$duration)
     }
   }
 
   events$duration <- NULL
-  events$event[events$event == "?veil"] <- "Éveil"
-  events$event[events$event == "Éveil"] <- "AWA"
-  events$event[events$event == "D?but de l'analyse"] <- "Début de l'analyse"
-  events$event[events$event == "Micro-?veil"] <- "Micro-Éveil"
-  events$event[events$event == "Hypopn?e"] <- "Hypopnée"
-  events$event[events$event == "D?sat"] <- "Désat"
+  events$event[events$event == "?veil"] <- paste0("\u00C9","veil")
+  events$event[events$event == paste0("\u00C9","veil")] <- "AWA"
+  events$event[events$event == "D?but de l'analyse"] <- paste0("D","\u00E9","but de l'analyse")
+  events$event[events$event == "Micro-?veil"] <- paste0("Micro-","\u00C9","veil")
+  events$event[events$event == "Hypopn?e"] <- paste0("Hypopn","\u00E9","e")
+  events$event[events$event == "D?sat"] <- paste0("D","\u00E9","sat")
   
-  if(nrow(events[events$event == "Début de l'analyse",]) > 0){
-    events <- events[events$begin >= min(events$begin[events$event == "Début de l'analyse"]),]
+  if(nrow(events[events$event == paste0("D","\u00E9","but de l'analyse"),]) > 0){
+    events <- events[events$begin >= min(events$begin[events$event == paste0("D","\u00E9","but de l'analyse")]),]
   }
   
   # Normalize events names
-  events$event[events$event == "Micro-Éveil"] <- "micro-arousal"
-  events$event[events$event == "Micro-éveil"] <- "micro-arousal"
+  events$event[events$event == paste0("Micro-","\u00C9","veil")] <- "micro-arousal"
+  events$event[events$event == paste0("Micro-","\u00C9","veil")] <- "micro-arousal"
   events$event[events$event == "Dos"] <- "back"
   events$event[events$event == "Gauche"] <- "left"
   events$event[events$event == "Droite"] <- "right"
