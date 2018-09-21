@@ -66,3 +66,19 @@ hypnogram_band_powers <- function(record,
   pw$epoch <- c(1:nrow(pw))
   return(pw)
 }
+
+#' aggregate_band_powers
+#'
+#' @param hypnogram_band_powers hypnogram_band_powers.
+#' @return Wide dataframe. 
+#' @export
+aggregate_band_powers <- function(hypnogram_band_powers){
+  colnames <- colnames(hypnogram_band_powers)[!(colnames(hypnogram_band_powers) %in% c("denominator","broadband","epoch"))]
+  bandnames <- colnames[!(colnames %in% c("stage"))]
+  means <- stats::aggregate(hypnogram_band_powers[,bandnames],by=list(hypnogram_band_powers$stage),FUN=mean,na.rm=TRUE)
+  means$id <- 1
+  means <- stats::reshape(means, idvar = "id", timevar = "Group.1", direction = "wide")
+  means$id <- NULL
+  colnames(means) <- tolower(gsub("\\.", "_", colnames(means)))
+  return(means)
+}
