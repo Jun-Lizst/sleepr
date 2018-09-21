@@ -25,7 +25,7 @@ MDF uses binary files for signals and JSON for metadata. Signals values are enco
 
 ### Statistics computing
 
-Various statistics can be computed from the polysomnographic data, signals and events. Duration are expressed in *minutes*, indexes in *hours*.
+Various statistics can be computed from the polysomnographic data, signals and events. Durations are expressed in *minutes*, indexes in *hours*.
 
 #### Stages & scoring
 
@@ -69,9 +69,9 @@ These functions compute statistics based on stage scoring.
   
 ## Package Testing
 
-Testing use [testthat](https://github.com/r-lib/testthat). Sample EDFs from open databases are downloaded first.
+Testing use [testthat](https://github.com/r-lib/testthat).
 
-### Generating reference manual
+### Generating Sleepr package reference manual
 
 ```
 R CMD Rd2pdf . && mv ..pdf sleepr.pdf && rm -r .Rd2pdf*
