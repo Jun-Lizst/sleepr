@@ -4,7 +4,7 @@ test_that("Computing statistics from one record", {
   write_mdf(edfPath = "data/sample.edf",
             mdfPath = "data/sample",
             events = read_events_noxturnal("data/noxturnal_events_example_unicode.csv"))
-  stats <- compute_all_stats(c("data/sample"))
+  stats <- compute_all_stats("data/sample")
   expect_equal(nrow(stats), 1)
   unlink("data/sample", recursive = TRUE)
 })

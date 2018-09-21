@@ -15,6 +15,7 @@ test_that("Compute spectral power bands", {
                       channels = c("C3-M2"),
                       metadata = FALSE),
     channel = "C3-M2")
+  
   unlink("data/sample",recursive = TRUE)
 })
 
