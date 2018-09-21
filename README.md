@@ -1,6 +1,6 @@
 # Sleepr
 
-[![Build Status](https://travis-ci.org/boupetch/sleepr.svg?branch=master)](https://travis-ci.org/boupetch/sleepr)
+[![Build Status](https://travis-ci.org/boupetch/sleepr.svg?branch=master)](https://travis-ci.org/boupetch/sleepr) [![codecov](https://codecov.io/gh/boupetch/sleepr/branch/master/graph/badge.svg)](https://codecov.io/gh/boupetch/sleepr) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 Sleep analysis with R.
 
