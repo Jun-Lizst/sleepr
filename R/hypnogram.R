@@ -54,17 +54,3 @@ split_signal <- function(signal,hypnogram,sRate){
   }
   return(splitted_signal)
 }
-
-
-# record <- sleepr::read_mdf(mdfPath = "path/to/spec", channels = c("C3-M2"), metadata = FALSE)
-# 
-# spectrogram <- signal::specgram(
-#   x = signal::resample(
-#     x = record[["channels"]][["C3-M2"]][["signal"]],
-#     q = record[["channels"]][["C3-M2"]][["metadata"]][["sRate"]],
-#     p = 120),
-#   Fs = 120,n = 2048, window = 1024, overlap = 512)
-# 
-# jpeg(filename = "test.jpeg",width = 1000,height = 500)
-# spectrogram
-# dev.off()
