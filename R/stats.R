@@ -775,6 +775,7 @@ snoring_duration_pct <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ah_count <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(nrow(events[events$event %in%
                        c("A. Obstructive",
                          paste0("Hypopn","\u00E9","e")),]))
@@ -792,6 +793,7 @@ ah_hour <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ah_back <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(nrow(get_overlapping_events(events,c(paste0("Hypopn","\u00E9","e"),"A. Obstructive"),"back"))/(tts_pos_back(events)/60))
 }
 
@@ -800,6 +802,7 @@ ah_back <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ah_nonback <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(nrow(get_overlapping_events(events,c(paste0("Hypopn","\u00E9","e"),"A. Obstructive"),
                                      c("right","left","stomach")))/(tts_pos_nonback(events)/60))
 }
@@ -809,6 +812,7 @@ ah_nonback <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ah_rem <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(nrow(get_overlapping_events(events,c(paste0("Hypopn","\u00E9","e"),"A. Obstructive"),
                                      c("REM")))/(rem_duration(hypnogram(events))/60))
 }
@@ -818,6 +822,7 @@ ah_rem <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ah_nonrem <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(
     nrow(
       get_overlapping_events(
@@ -846,6 +851,7 @@ ah_nonrem <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_count <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(nrow(get_overlapping_events(events,
                                      x = c("micro-arousal"),
                                      y = c("N1","N2","N3","REM"))
@@ -857,6 +863,7 @@ ma_count <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_index <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(ma_count(events)/(tts(events)/60))
 }
 
@@ -865,6 +872,7 @@ ma_index <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_duration <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
                                y = c("N1","N2","N3","REM"))
@@ -880,6 +888,7 @@ ma_duration <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_n1_duration <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
                                    y = c("N1"))
@@ -895,6 +904,7 @@ ma_n1_duration <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_n2_duration <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
                                    y = c("N2"))
@@ -910,6 +920,7 @@ ma_n2_duration <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_n3_duration <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
                                    y = c("N3"))
@@ -925,6 +936,7 @@ ma_n3_duration <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_rem_duration <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   events <- get_overlapping_events(events,
                                    x = c("micro-arousal"),
                                    y = c("REM"))
@@ -940,6 +952,7 @@ ma_rem_duration <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_n1_count <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(nrow(get_overlapping_events(events,
                                      x = c("micro-arousal"),
                                      y = c("N1"))
@@ -951,6 +964,7 @@ ma_n1_count <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_n2_count <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(nrow(get_overlapping_events(events,
                                      x = c("micro-arousal"),
                                      y = c("N2"))
@@ -973,6 +987,7 @@ ma_n3_count <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_rem_count <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(nrow(get_overlapping_events(events,
                                      x = c("micro-arousal"),
                                      y = c("REM"))
@@ -984,6 +999,7 @@ ma_rem_count <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_n1_index <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(ma_n1_count(events)/(n1_duration(events)/60))
 }
 
@@ -992,6 +1008,7 @@ ma_n1_index <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_n2_index <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(ma_n2_count(events)/(n2_duration(events)/60))
 }
 
@@ -1000,6 +1017,7 @@ ma_n2_index <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_n3_index <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(ma_n3_count(events)/(n3_duration(events)/60))
 }
 
@@ -1008,6 +1026,7 @@ ma_n3_index <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 ma_rem_index <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(ma_rem_count(events)/(rem_duration(events)/60))
 }
 
@@ -1018,6 +1037,7 @@ ma_rem_index <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 rem_count <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   events <- get_overlapping_events(events,
                                    x = c("Rapide"),
                                    y = c("REM"))
@@ -1029,6 +1049,7 @@ rem_count <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 rem_index <- function(events){
+  if(!check_events_integrity(events)){ return(NA) }
   return(rem_count(events)/(rem_duration(events)/60))
 }
 
@@ -1038,7 +1059,7 @@ rem_index <- function(events){
 #' @export
 rem_avg_duration <- function(events){
   
-  
+  if(!check_events_integrity(events)){ return(NA) }
   events <- get_overlapping_events(events,
                                    x = c("Rapide"),
                                    y = c("REM"))
