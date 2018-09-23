@@ -5,6 +5,5 @@
 *.Rproj
 .DS_Store
 .RDataTmp
-.Rbuildignore
 tests.R
 sleepr.pdf
