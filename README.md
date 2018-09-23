@@ -25,7 +25,19 @@ MDF uses binary files for signals and JSON for metadata. Signals values are enco
 
 ### Statistics computing
 
-Various statistics can be computed from the polysomnographic data, signals and events. Durations are expressed in *minutes*, indexes in *hours*.
+Various statistics can be computed from the polysomnographic data, signals and events. Durations are expressed in *minutes*, indexes in *hours*. 
+
+`compute_all_stats` function call all the following functions over a vector of records paths. It returns a dataframe with a line for each record. EEG bands can be specified at this point to the `bands` argument.
+
+```R
+# Write record to disk from EDF to MDF
+write_mdf("path/to/edf", "path/to/mdf")
+
+# Compute all stats from the record
+compute_all_stats("path/to/mdf", bands = list(
+  delta = c(0.5,3.5),theta = c(3.5,8),alpha = c(8,12),
+  beta = c(12,30),gamma1 = c(30,40),gamma2 = c(40,60)))
+```
 
 #### Stages & scoring
 
@@ -66,6 +78,39 @@ These functions compute statistics based on stage scoring.
   * `snoring_index`
   * `snoring_duration`
   * `snoring_duration_pct`
+  
+#### Respiratory indexes
+
+  * `ah_count`
+  * `ah_hour`
+  * `ah_back`
+  * `ah_nonback`
+  * `ah_rem`
+  * `ah_nonrem`
+  
+#### Micro-arousals
+
+  * `ma_count`
+  * `ma_index`
+  * `ma_duration`
+  * `ma_n1_duration`
+  * `ma_n2_duration`
+  * `ma_n3_duration`
+  * `ma_rem_duration`
+  * `ma_n1_count`
+  * `ma_n2_count`
+  * `ma_n3_count`
+  * `ma_rem_count`
+  * `ma_n1_index`
+  * `ma_n2_index`
+  * `ma_n3_index`
+  * `ma_rem_index`
+
+#### Rapid eye movements
+
+  * `rem_count`
+  * `rem_index`
+  * `rem_avg_duration`
   
 ## Package Testing
 
