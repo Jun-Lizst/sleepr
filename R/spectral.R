@@ -24,7 +24,6 @@ bands_power <- function(x,Fs,bands,normalize){
 #' @param record record.
 #' @param channel channel to split and hyp.
 #' @param bands bands. Default "delta","theta","alpha","beta", "gamma1", "denominator", "broadband".
-#' @param bands_names band_names.
 #' @param normalize normalize.
 #' @return a df.
 #' @export

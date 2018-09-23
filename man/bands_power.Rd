@@ -4,18 +4,14 @@
 \alias{bands_power}
 \title{Compute bands powers.}
 \usage{
-bands_power(x, Fs, bands = list(c(0.5, 3.5), c(3.5, 8), c(8, 12), c(12,
-  30), c(30, 40)), bands_names = c("delta", "theta", "alpha", "beta",
-  "gamma1"), normalize = c(10, 90))
+bands_power(x, Fs, bands, normalize)
 }
 \arguments{
 \item{x}{signal vector.}
 
 \item{Fs}{Frequency.}
 
-\item{bands}{bands. Default "delta","theta","alpha","beta", "gamma1".}
-
-\item{bands_names}{bands names}
+\item{bands}{bands.}
 
 \item{normalize}{normalize.}
 }

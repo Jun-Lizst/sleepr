@@ -1,6 +1,7 @@
 #' Call and compile all statistics functions in a dataframe. 
 #'
 #' @param records record paths.
+#' @param bands EEG bands to use. Ex: list(delta = c(0.5,3.5), theta = c(3.5,8), alpha = c(8,12),beta = c(12,30))
 #' @param eeg_channels potential EEG channel names.
 #' @param metadata read metadata or not.
 #' @return df.

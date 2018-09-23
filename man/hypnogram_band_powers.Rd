@@ -4,10 +4,9 @@
 \alias{hypnogram_band_powers}
 \title{Compute bands powers from a full hypnogram.}
 \usage{
-hypnogram_band_powers(record, channel, bands = list(c(0.5, 3.5), c(3.5,
-  8), c(8, 12), c(12, 30), c(30, 40), c(4, 40), c(0.5, 40)),
-  bands_names = c("delta", "theta", "alpha", "beta", "gamma1",
-  "denominator", "broadband"), normalize = c(4, 40))
+hypnogram_band_powers(record, channel, bands = list(delta = c(0.5, 3.5),
+  theta = c(3.5, 8), alpha = c(8, 12), beta = c(12, 30), gamma1 = c(30,
+  40)), normalize = c(4, 40))
 }
 \arguments{
 \item{record}{record.}
@@ -15,8 +14,6 @@ hypnogram_band_powers(record, channel, bands = list(c(0.5, 3.5), c(3.5,
 \item{channel}{channel to split and hyp.}
 
 \item{bands}{bands. Default "delta","theta","alpha","beta", "gamma1", "denominator", "broadband".}
-
-\item{bands_names}{band_names.}
 
 \item{normalize}{normalize.}
 }

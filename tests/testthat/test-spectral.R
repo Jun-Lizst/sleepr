@@ -19,7 +19,8 @@ test_that("Compute spectral power bands", {
                                    alpha = c(8,12),
                                    beta = c(12,30),
                                    gamma1 = c(30,40)))
-  
+  expect_equal(nrow(bands_powers), 3)
+  expect_equal(length(colnames(bands_powers)), 7)
   unlink("data/sample",recursive = TRUE)
 })
 
