@@ -21,6 +21,20 @@ test_that("Compute spectral power bands", {
                                    gamma1 = c(30,40)))
   expect_equal(nrow(bands_powers), 3)
   expect_equal(length(colnames(bands_powers)), 7)
+  
+  bands <- list()
+  for(i in c(0:39)){
+    bands[[paste0(as.character(i),";",as.character(i+1))]] <- c(i,i+1)
+  }
+  bands_powers <- hypnogram_band_powers(
+    record = read_mdf(mdfPath = "data/sample",
+                      channels = c("C3-M2"),
+                      metadata = FALSE),
+    channel = "C3-M2",bands = bands)
+  bands_powers <- aggregate_band_powers(bands_powers)
+  expect_equal(nrow(bands_powers), 1)
+  expect_equal(length(colnames(bands_powers)), 80)
+  
   unlink("data/sample",recursive = TRUE)
 })
 
