@@ -17,7 +17,6 @@ Imports:
     dplyr,
     eegkit,
     reshape2,
-    lubridate,
-    plyr
+    lubridate
 Suggests: testthat
 RoxygenNote: 6.1.0

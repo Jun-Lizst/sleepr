@@ -40,9 +40,11 @@ hypnogram_band_powers <- function(record,
   signal <- sleepr::split_signal(signal = record[["channels"]][[channel]][["signal"]],
                                  hypnogram = hypnogram,
                                  sRate = sRate)
-  pw <- plyr::ldply(lapply(signal,function(x){
-    sleepr::bands_power(x = x, Fs = sRate, bands = bands, normalize = normalize)
+  
+  pw <- dplyr::bind_rows(lapply(signal,function(x){
+    as.list(sleepr::bands_power(x = x, Fs = sRate, bands = bands, normalize = normalize))
   }))
+  
   pw$stage <- hypnogram$event
   pw$epoch <- c(1:nrow(pw))
   return(pw)
