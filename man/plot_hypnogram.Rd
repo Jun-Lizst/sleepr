@@ -2,7 +2,7 @@
 % Please edit documentation in R/hypnogram.R
 \name{plot_hypnogram}
 \alias{plot_hypnogram}
-\title{Draw a histogram with ggplot.}
+\title{Draw a histogram with ggplot2.}
 \usage{
 plot_hypnogram(events)
 }
@@ -13,5 +13,5 @@ plot_hypnogram(events)
 a ggplot.
 }
 \description{
-Draw a histogram with ggplot.
+Draw a histogram with ggplot2.
 }

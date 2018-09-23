@@ -1,4 +1,4 @@
-#' Draw a histogram with ggplot.
+#' Draw a histogram with ggplot2.
 #'
 #' @param events events dataframe.
 #' @return a ggplot.
@@ -15,7 +15,9 @@ plot_hypnogram <- function(events){
   rem = stages[stages$event == "REM",]
   if(nrow(rem) > 0){
     for(i in c(1:nrow(rem))){
-      hypnogram <- hypnogram+ggplot2::geom_line(data=reshape2::melt(rem[i,],id.vars = c("event")),mapping = ggplot2::aes_string(x="value",y="event",group=1),colour='red')
+      df <- stats::reshape(rem[i,], idvar = "event", varying = c("begin","end"),
+                           v.names = "value", direction = "long")
+      hypnogram <- hypnogram+ggplot2::geom_line(data=df,mapping = ggplot2::aes_string(x="value",y="event",group=1),colour='red')
     }
   }
   return(hypnogram)

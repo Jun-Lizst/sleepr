@@ -16,7 +16,6 @@ Imports:
     ggplot2,
     dplyr,
     eegkit,
-    reshape2,
     lubridate
 Suggests: testthat
 RoxygenNote: 6.1.0
