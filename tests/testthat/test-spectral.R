@@ -14,7 +14,11 @@ test_that("Compute spectral power bands", {
     record = read_mdf(mdfPath = "data/sample",
                       channels = c("C3-M2"),
                       metadata = FALSE),
-    channel = "C3-M2")
+    channel = "C3-M2",bands = list(delta = c(0.5,3.5),
+                                   theta = c(3.5,8),
+                                   alpha = c(8,12),
+                                   beta = c(12,30),
+                                   gamma1 = c(30,40)))
   
   unlink("data/sample",recursive = TRUE)
 })

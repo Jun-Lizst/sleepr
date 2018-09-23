@@ -1,10 +1,16 @@
 context("Computing statistics")
 
+# Meta function ----
+
 test_that("Computing statistics from one record", {
   write_mdf(edfPath = "data/sample.edf",
             mdfPath = "data/sample",
             events = read_events_noxturnal("data/noxturnal_events_example_unicode.csv"))
-  stats <- compute_all_stats("data/sample")
+  stats <- compute_all_stats("data/sample",bands = list(delta = c(0.5,3.5),
+                                                        theta = c(3.5,8),
+                                                        alpha = c(8,12),
+                                                        beta = c(12,30),
+                                                        gamma1 = c(30,40)))
   expect_equal(nrow(stats), 1)
   unlink("data/sample", recursive = TRUE)
 })

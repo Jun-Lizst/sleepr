@@ -2,34 +2,20 @@
 #'
 #' @param x signal vector.
 #' @param Fs Frequency.
-#' @param bands bands. Default "delta","theta","alpha","beta", "gamma1".
-#' @param bands_names bands names
+#' @param bands bands.
 #' @param normalize normalize.
 #' @return a named vector with all bands powers.
 #' @export
-bands_power <- function(x,
-                        Fs,
-                        bands=list(c(0.5,3.5),
-                                   c(3.5,8),
-                                   c(8,12),
-                                   c(12,30),
-                                   c(30,40)),
-                       bands_names = c("delta",
-                                       "theta",
-                                       "alpha",
-                                       "beta",
-                                       "gamma1"),
-                       normalize = c(10,90)
-                       ){
+bands_power <- function(x,Fs,bands,normalize){
   powers <- c()
-  for(band in bands){
-    power <- sum(eegkit::eegfft(x,Fs,band[1],band[2])$strength)
+  for(band_label in names(bands)){
+    power <- sum(eegkit::eegfft(x,Fs,bands[[band_label]][1],bands[[band_label]][2])$strength)
     if(length(normalize) == 2){
       power <- power/sum(eegkit::eegfft(x,Fs,normalize[1],normalize[2])$strength)
     }
     powers <- c(powers,power)
   }
-  names(powers) <- bands_names
+  names(powers) <- names(bands)
   return(powers)
 }
 
@@ -44,13 +30,11 @@ bands_power <- function(x,
 #' @export
 hypnogram_band_powers <- function(record,
                                   channel,
-                                  bands=list(c(0.5,3.5),c(3.5,8),
-                                             c(8,12),c(12,30),
-                                             c(30,40),
-                                             c(4,40),c(0.5,40)),
-                                  bands_names=c("delta","theta","alpha",
-                                                "beta","gamma1",
-                                                "denominator","broadband"),
+                                  bands=list(delta = c(0.5,3.5),
+                                             theta = c(3.5,8),
+                                             alpha = c(8,12),
+                                             beta = c(12,30),
+                                             gamma1 = c(30,40)),
                                   normalize = c(4,40)){
   sRate <- record[["channels"]][[channel]][["metadata"]][["sRate"]]
   hypnogram <- hypnogram(record[["events"]])
@@ -58,9 +42,7 @@ hypnogram_band_powers <- function(record,
                                  hypnogram = hypnogram,
                                  sRate = sRate)
   pw <- plyr::ldply(lapply(signal,function(x){
-    sleepr::bands_power(x = x, Fs = sRate, bands = bands,
-                        bands_names = bands_names,
-                        normalize = normalize)
+    sleepr::bands_power(x = x, Fs = sRate, bands = bands, normalize = normalize)
   }))
   pw$stage <- hypnogram$event
   pw$epoch <- c(1:nrow(pw))

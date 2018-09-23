@@ -5,7 +5,8 @@
 #' @param metadata read metadata or not.
 #' @return df.
 #' @export
-compute_all_stats <- function(records, 
+compute_all_stats <- function(records,
+                              bands,
                               eeg_channels = c("C3-A2","EEG Fpz-Cz","C3-M2"),
                               metadata = TRUE){
   df <- data.frame(stringsAsFactors = FALSE)
@@ -19,7 +20,8 @@ compute_all_stats <- function(records,
           if(eeg_channel %in% names(l[["channels"]])){
             
             hypnogram_band_powers <- sleepr::hypnogram_band_powers(record = l,
-                                                                   channel = eeg_channel)
+                                                                   channel = eeg_channel,
+                                                                   bands = bands)
             # hypnogram_band_powers$denominator <- NULL
             # hypnogram_band_powers$broadband <- NULL
             # hypnogram_band_powers$epoch <- NULL
