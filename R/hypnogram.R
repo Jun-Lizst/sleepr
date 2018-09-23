@@ -13,10 +13,11 @@ plot_hypnogram <- function(events){
     ggplot2::xlab("") + 
     ggplot2::ylab("")
   rem = stages[stages$event == "REM",]
-  for(i in c(1:nrow(rem))){
-    hypnogram <- hypnogram+ggplot2::geom_line(data=reshape2::melt(rem[i,],id.vars = c("event")),mapping = ggplot2::aes_string(x="value",y="event",group=1),colour='red')
+  if(nrow(rem) > 0){
+    for(i in c(1:nrow(rem))){
+      hypnogram <- hypnogram+ggplot2::geom_line(data=reshape2::melt(rem[i,],id.vars = c("event")),mapping = ggplot2::aes_string(x="value",y="event",group=1),colour='red')
+    }
   }
-    
   return(hypnogram)
 }
 
