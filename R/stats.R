@@ -2,12 +2,13 @@
 #'
 #' @param records record paths.
 #' @param bands EEG bands to use. Ex: list(delta = c(0.5,3.5), theta = c(3.5,8), alpha = c(8,12),beta = c(12,30))
+#' @param normalize Normalize band. Ex: c(0,40)
 #' @param eeg_channels potential EEG channel names.
 #' @param metadata read metadata or not.
 #' @return df.
 #' @export
 compute_all_stats <- function(records,
-                              bands,
+                              bands,normalize,
                               eeg_channels = c("C3-A2","EEG Fpz-Cz","C3-M2"),
                               metadata = TRUE){
   df <- data.frame(stringsAsFactors = FALSE)
@@ -22,7 +23,8 @@ compute_all_stats <- function(records,
             
             hypnogram_band_powers <- sleepr::hypnogram_band_powers(record = l,
                                                                    channel = eeg_channel,
-                                                                   bands = bands)
+                                                                   bands = bands,
+                                                                   normalize = normalize)
             # hypnogram_band_powers$denominator <- NULL
             # hypnogram_band_powers$broadband <- NULL
             # hypnogram_band_powers$epoch <- NULL

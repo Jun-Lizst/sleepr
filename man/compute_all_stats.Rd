@@ -4,13 +4,15 @@
 \alias{compute_all_stats}
 \title{Call and compile all statistics functions in a dataframe.}
 \usage{
-compute_all_stats(records, bands, eeg_channels = c("C3-A2", "EEG Fpz-Cz",
-  "C3-M2"), metadata = TRUE)
+compute_all_stats(records, bands, normalize, eeg_channels = c("C3-A2",
+  "EEG Fpz-Cz", "C3-M2"), metadata = TRUE)
 }
 \arguments{
 \item{records}{record paths.}
 
 \item{bands}{EEG bands to use. Ex: list(delta = c(0.5,3.5), theta = c(3.5,8), alpha = c(8,12),beta = c(12,30))}
+
+\item{normalize}{Normalize band. Ex: c(0,40)}
 
 \item{eeg_channels}{potential EEG channel names.}
 

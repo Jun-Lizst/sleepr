@@ -10,7 +10,8 @@ test_that("Computing statistics from one record", {
                                                         theta = c(3.5,8),
                                                         alpha = c(8,12),
                                                         beta = c(12,30),
-                                                        gamma1 = c(30,40)))
+                                                        gamma1 = c(30,40)),
+                             normalize = c(0,40))
   expect_equal(nrow(stats), 1)
   unlink("data/sample", recursive = TRUE)
 })
