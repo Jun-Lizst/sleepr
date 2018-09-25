@@ -13,6 +13,7 @@ test_that("Computing statistics from one record", {
                                                         gamma1 = c(30,40)),
                              normalize = c(0,40))
   expect_equal(nrow(stats), 1)
+  expect_equal(stats$tts_pos_nonback[1], 572.5)
   unlink("data/sample", recursive = TRUE)
 })
 
