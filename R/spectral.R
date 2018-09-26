@@ -59,6 +59,12 @@ aggregate_band_powers <- function(hypnogram_band_powers){
   colnames <- colnames(hypnogram_band_powers)[!(colnames(hypnogram_band_powers) %in% c("denominator","broadband","epoch"))]
   bandnames <- colnames[!(colnames %in% c("stage"))]
   means <- stats::aggregate(hypnogram_band_powers[,bandnames],by=list(hypnogram_band_powers$stage),FUN=mean,na.rm=TRUE)
+  hypnogram_band_powers_nrem <- hypnogram_band_powers[hypnogram_band_powers$stage %in% c("N1","N2","N3"),]
+  if (nrow(hypnogram_band_powers_nrem) > 0){
+    hypnogram_band_powers_nrem$stage <- "NREM"
+    meansnrem <- stats::aggregate(hypnogram_band_powers_nrem[,bandnames],by=list(hypnogram_band_powers_nrem$stage),FUN=mean,na.rm=TRUE)
+    means <- rbind(means,meansnrem)
+  }
   means$id <- 1
   means <- stats::reshape(means, idvar = "id", timevar = "Group.1", direction = "wide")
   means$id <- NULL
