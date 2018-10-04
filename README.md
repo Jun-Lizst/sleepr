@@ -74,10 +74,10 @@ These functions compute statistics based on stage scoring.
   
 #### Snoring
 
-  * `snoring_count`
-  * `snoring_index`
-  * `snoring_duration`
-  * `snoring_duration_pct`
+  * `snoring_count`: Snorings count.
+  * `snoring_index`: Snoring count per hour.
+  * `snoring_duration`: Total duration of snorings.
+  * `snoring_duration_pct`: Total duration of snorings over TTS duration.
   
 #### Respiratory indexes
 
