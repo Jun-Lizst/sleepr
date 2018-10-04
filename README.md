@@ -81,7 +81,7 @@ These functions compute statistics based on stage scoring.
   
 #### Respiratory indexes
 
-  * `ah_count`
+  * `ah_count`: Apnea and hypopnea count.
   * `ah_hour`
   * `ah_back`
   * `ah_nonback`
