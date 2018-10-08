@@ -25,41 +25,8 @@ compute_all_stats <- function(records,
                                                                    channel = eeg_channel,
                                                                    bands = bands,
                                                                    normalize = normalize)
-            # hypnogram_band_powers$denominator <- NULL
-            # hypnogram_band_powers$broadband <- NULL
-            # hypnogram_band_powers$epoch <- NULL
-            # 
-            # df_record <- hypnogram_band_powers
-            # 
-            # delta <- stats::aggregate(df_record$delta, by=list(df_record$stage), FUN=mean)
-            # colnames(delta) <- c("stages","delta")
-            # theta <- stats::aggregate(df_record$theta, by=list(df_record$stage), FUN=mean)
-            # colnames(theta) <- c("stages","theta")
-            # alpha <- stats::aggregate(df_record$alpha, by=list(df_record$stage), FUN=mean)
-            # colnames(alpha) <- c("stages","alpha")
-            # beta <- stats::aggregate(df_record$beta, by=list(df_record$stage), FUN=mean)
-            # colnames(beta) <- c("stages","beta")
-            # gamma1 <- stats::aggregate(df_record$gamma1, by=list(df_record$stage), FUN=mean)
-            # colnames(gamma1) <- c("stages","gamma1")
-            # df_record <- merge(delta,theta,by = "stages")
-            # df_record <- merge(df_record,alpha,by = "stages")
-            # df_record <- merge(df_record,beta,by = "stages")
-            # df_record <- merge(df_record,gamma1,by = "stages")
-            # 
-            # # df_record <-   dplyr::group_by(df_record,stage)
-            # # df_record <-  dplyr::summarise(df_record,
-            # #                                delta = mean(delta),
-            # #                                theta = mean(theta),
-            # #                                alpha = mean(alpha),
-            # #                                beta = mean(beta),
-            # #                                gamma1 = mean(gamma1))
-            # df_record <-  reshape2::melt(df_record,id.vars = "stages")
-            # df_record$id <- 1
-            # df_record <-  reshape2::dcast(df_record,id ~ stages+variable)
-            # df_record$id <- NULL
-            # #df_record <- dplyr::select(df_record,-id)
-            # colnames(df_record) <- paste0(tolower(colnames(df_record)),"_mean_eeg")
             df_record <- aggregate_band_powers(hypnogram_band_powers)
+            df_record$eeg_channel <- eeg_channel
           }
         }
       }

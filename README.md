@@ -17,7 +17,7 @@ devtools::install_github("boupetch/sleepr")
 ### File manipulation
 
 In Sleepr, `write_mdf()` and `read_mdf()` functions are used to write and read records on disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format<sup>1</sup> (MDF). MDF is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
-MDF uses binary files for signals and JSON for metadata. Signals values are encoded by default in binary, 32 bits, little endian.
+MDF uses binary files for signals and JSON for metadata.  Signals values are encoded by default in binary, 32 bits, little endian.
 
 ### Sleep visualization
 
@@ -74,14 +74,14 @@ These functions compute statistics based on stage scoring.
   
 #### Snoring
 
-  * `snoring_count`
-  * `snoring_index`
-  * `snoring_duration`
-  * `snoring_duration_pct`
+  * `snoring_count`: Snorings count.
+  * `snoring_index`: Snoring count per hour.
+  * `snoring_duration`: Total duration of snorings.
+  * `snoring_duration_pct`: Total duration of snorings over TTS duration.
   
 #### Respiratory indexes
 
-  * `ah_count`
+  * `ah_count`: Apnea and hypopnea count.
   * `ah_hour`
   * `ah_back`
   * `ah_nonback`
