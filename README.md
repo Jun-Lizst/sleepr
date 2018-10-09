@@ -108,7 +108,7 @@ These functions compute statistics based on stage scoring.
 
 #### Rapid eye movements
 
-  * `rem_count`
+  * `rem_count` Count of Rapid-Eye-Movements
   * `rem_index`
   * `rem_avg_duration`
   
