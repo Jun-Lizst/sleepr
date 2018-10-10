@@ -311,3 +311,13 @@ test_that("Apnea and hypnonea count", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")
   expect_equal(ah_count(events), 102)
 })
+
+# Cycles ----
+
+test_that("Cycles count", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")
+  expect_equal(cycles_classic_count(events), 4)
+  expect_equal(cycles_begin_count(events),0)
+  expect_equal(cycles_rem_count(events),5)
+  expect_equal(cycles_end_count(events),1)
+})

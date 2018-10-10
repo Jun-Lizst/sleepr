@@ -10,4 +10,7 @@ test_that("Reading Sleep EDF Expanded events", {
   expect_equal(nrow(events), 852)
 })
 
-
+# test_that("Reading ISRUC events", {
+#   events <- sleepr::read_events_isruc("data/isruc/",1)
+#   expect_equal(nrow(events), 852)
+# })

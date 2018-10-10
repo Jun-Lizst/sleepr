@@ -1044,12 +1044,20 @@ rem_avg_duration <- function(events){
 
 # Cycles ----
 
-# normalize_cycles <- function(events){
-#   events <- events[events$event %in% c("Activity-CLASSICstart",
-#                                        "Activity-CLASSICend",
-#                                        "Activity-REMstart",
-#                                        "Activity-REMend",
-#                                        "Activity-ENstart",
-#                                        "Activity-ENend"),]
-#   events <- events[order(events$begin),]
-# }
+cycles_classic_count <- function(events){
+  return(nrow(events[events$event == "cycle-CLASSIC",]))
+}
+
+cycles_begin_count <- function(events){
+  return(nrow(events[events$event == "cycle-BEGIN",]))
+}
+
+cycles_rem_count <- function(events){
+  return(nrow(events[events$event == "cycle-REM",]))
+}
+
+cycles_end_count <- function(events){
+  return(nrow(events[events$event == "cycle-EN",]))
+}
+
+
