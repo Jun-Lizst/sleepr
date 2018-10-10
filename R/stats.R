@@ -1060,4 +1060,26 @@ cycles_end_count <- function(events){
   return(nrow(events[events$event == "cycle-EN",]))
 }
 
+# Cycles duration in minutes
+cycles_classic_duration <- function(events){
+  cycles <- events[events$event == "cycle-CLASSIC",]
+  return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
+}
+
+cycles_classic_avg_duration <- function(events){
+  return(cycles_classic_duration(events)/cycles_classic_count(events))
+}
+
+# Cycles duration in minutes
+cycles_begin_duration <- function(events){
+  cycles <- events[events$event == "cycle-BEGIN",]
+  return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
+}
+
+cycles_begin_avg_duration <- function(events){
+  return(cycles_classic_begin_duration(events)/cycles_begin_count(events))
+}
+#cycles_begin_avg_duration
+#cycles_rem_avg_duration
+#cycles_end_avg_duration
 
