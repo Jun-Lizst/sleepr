@@ -112,6 +112,8 @@ These functions compute statistics based on stage scoring.
   * `rem_index`
   * `rem_avg_duration`
   
+#### Cycles
+
 ## Package Testing
 
 Testing use [testthat](https://github.com/r-lib/testthat).
