@@ -1067,7 +1067,13 @@ cycles_classic_duration <- function(events){
 }
 
 cycles_classic_avg_duration <- function(events){
-  return(cycles_classic_duration(events)/cycles_classic_count(events))
+  duration <- cycles_classic_duration(events)
+  count <- cycles_classic_count(events)
+  if (count == 0 || duration == 0){
+    return(0)
+  } else {
+    return(duration/count)
+  }
 }
 
 # Cycles duration in minutes
@@ -1077,6 +1083,7 @@ cycles_begin_duration <- function(events){
 }
 
 cycles_begin_avg_duration <- function(events){
+  
   return(cycles_classic_begin_duration(events)/cycles_begin_count(events))
 }
 #cycles_begin_avg_duration
