@@ -108,11 +108,24 @@ These functions compute statistics based on stage scoring.
 
 #### Rapid eye movements
 
-  * `rem_count` Count of Rapid-Eye-Movements
+  * `rem_count` Count of Rapid-Eye-Movements.
   * `rem_index`
   * `rem_avg_duration`
   
 #### Cycles
+
+  * `cycles_classic_count`
+  * `cycles_begin_count`
+  * `cycles_end_count`
+  * `cycles_rem_count`
+  * `cycles_classic_duration`
+  * `cycles_begin_duration`
+  * `cycles_rem_duration`
+  * `cycles_end_duration`
+  * `cycles_classic_avg_duration`
+  * `cycles_begin_avg_duration`
+  * `cycles_rem_avg_duration`
+  * `cycles_end_avg_duration`
 
 ## Package Testing
 
