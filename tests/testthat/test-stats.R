@@ -322,15 +322,21 @@ test_that("Cycles count", {
   expect_equal(cycles_end_count(events),1)
 })
 
-test_that("Cycles duration total", {
+test_that("Cycles duration", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")
   expect_equal(cycles_classic_duration(events), 344.35)
   expect_equal(cycles_begin_duration(events), 0)
+  expect_equal(cycles_rem_duration(events), 139.25)
+  expect_equal(round(cycles_end_duration(events)), 61)
 })
 
-test_that("Cycles duration total", {
+test_that("Cycles average duration", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")
   expect_equal(cycles_classic_avg_duration(events), 86.0875)
-  #expect_equal(cycles_begin_avg_duration(events), 0)
+  expect_equal(cycles_begin_avg_duration(events), 0)
+  expect_equal(cycles_rem_avg_duration(events), 27.85)
+  expect_equal(round(cycles_end_avg_duration(events)), 61)
 })
+
+
 

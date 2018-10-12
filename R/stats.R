@@ -90,6 +90,20 @@ compute_all_stats <- function(records,
       df_record$rem_count <- rem_count(e)
       df_record$rem_index <- rem_index(e)
       df_record$rem_avg_duration <- rem_avg_duration(e)
+      
+      # Cycles
+      df_record$cycles_classic_count <- cycles_classic_count(e)
+      df_record$cycles_begin_count <- cycles_begin_count(e)
+      df_record$cycles_rem_count <- cycles_rem_count(e)
+      df_record$cycles_end_count <- cycles_end_count(e)
+      df_record$cycles_classic_duration <- cycles_classic_duration(e)
+      df_record$cycles_begin_duration <- cycles_begin_duration(e)
+      df_record$cycles_rem_duration <- cycles_rem_duration(e)
+      df_record$cycles_end_duration <- cycles_end_duration(e)
+      df_record$cycles_classic_avg_duration <- cycles_classic_avg_duration(e)
+      df_record$cycles_begin_avg_duration <- cycles_begin_avg_duration(e)
+      df_record$cycles_rem_avg_duration <- cycles_rem_avg_duration(e)
+      df_record$cycles_end_avg_duration <- cycles_end_avg_duration(e)
     }
       df <- dplyr::bind_rows(df,df_record)
        
@@ -1066,6 +1080,22 @@ cycles_classic_duration <- function(events){
   return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
 }
 
+# Cycles duration in minutes
+cycles_begin_duration <- function(events){
+  cycles <- events[events$event == "cycle-BEGIN",]
+  return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
+}
+
+cycles_rem_duration <- function(events){
+  cycles <- events[events$event == "cycle-REM",]
+  return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
+}
+
+cycles_end_duration <- function(events){
+  cycles <- events[events$event == "cycle-EN",]
+  return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
+}
+
 cycles_classic_avg_duration <- function(events){
   duration <- cycles_classic_duration(events)
   count <- cycles_classic_count(events)
@@ -1076,17 +1106,32 @@ cycles_classic_avg_duration <- function(events){
   }
 }
 
-# Cycles duration in minutes
-cycles_begin_duration <- function(events){
-  cycles <- events[events$event == "cycle-BEGIN",]
-  return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
-}
-
 cycles_begin_avg_duration <- function(events){
-  
-  return(cycles_classic_begin_duration(events)/cycles_begin_count(events))
+  duration <- cycles_begin_duration(events)
+  count <- cycles_begin_count(events)
+  if (count == 0 || duration == 0){
+    return(0)
+  } else {
+    return(duration/count)
+  }
 }
-#cycles_begin_avg_duration
-#cycles_rem_avg_duration
-#cycles_end_avg_duration
 
+cycles_rem_avg_duration <- function(events){
+  duration <- cycles_rem_duration(events)
+  count <- cycles_rem_count(events)
+  if (count == 0 || duration == 0){
+    return(0)
+  } else {
+    return(duration/count)
+  }
+}
+
+cycles_end_avg_duration <- function(events){
+  duration <- cycles_end_duration(events)
+  count <- cycles_end_count(events)
+  if (count == 0 || duration == 0){
+    return(0)
+  } else {
+    return(duration/count)
+  }
+}
