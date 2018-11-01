@@ -22,9 +22,9 @@ test_that("Writing all channels and overwriting with events", {
 })
 
 test_that("Do not write channels", {
-  sleepr::write_mdf(edfPath = "data/sample.edf",
-                    mdfPath = "data/sample",
-                    channels = c())
+  write_mdf(edfPath = "data/sample.edf",
+            mdfPath = "data/sample",
+            channels = c())
   expect_equal(length(list.dirs("data/sample")), 1)
   unlink("data/sample",recursive = TRUE)
 })
