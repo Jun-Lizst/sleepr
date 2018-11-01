@@ -25,6 +25,7 @@ bands_power <- function(x,Fs,bands,normalize){
 #' @param channel channel to split and hyp.
 #' @param bands bands. Default "delta","theta","alpha","beta", "gamma1", "denominator", "broadband".
 #' @param normalize normalize.
+#' @param labels labels.
 #' @return a df.
 #' @export
 hypnogram_band_powers <- function(record,
@@ -34,9 +35,10 @@ hypnogram_band_powers <- function(record,
                                              alpha = c(8,12),
                                              beta = c(12,30),
                                              gamma1 = c(30,40)),
-                                  normalize = c(4,40)){
+                                  normalize = c(4,40),
+                                  labels = c("N3","N2","N1","REM","AWA")){
   sRate <- record[["channels"]][[channel]][["metadata"]][["sRate"]]
-  hypnogram <- hypnogram(record[["events"]])
+  hypnogram <- hypnogram(record[["events"]],labels)
   signal <- sleepr::split_signal(signal = record[["channels"]][[channel]][["signal"]],
                                  hypnogram = hypnogram,
                                  sRate = sRate)

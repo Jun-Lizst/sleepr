@@ -4,13 +4,15 @@
 \alias{hypnogram}
 \title{Filter an events dataframe to keep hypnogram.}
 \usage{
-hypnogram(events)
+hypnogram(events, labels = c("N3", "N2", "N1", "REM", "AWA"))
 }
 \arguments{
 \item{events}{events dataframe.}
+
+\item{labels}{events labels in data.}
 }
 \value{
-hypngram dataframe.
+hypnogram dataframe.
 }
 \description{
 Filter an events dataframe to keep hypnogram.

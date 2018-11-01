@@ -6,7 +6,8 @@
 \usage{
 hypnogram_band_powers(record, channel, bands = list(delta = c(0.5, 3.5),
   theta = c(3.5, 8), alpha = c(8, 12), beta = c(12, 30), gamma1 = c(30,
-  40)), normalize = c(4, 40))
+  40)), normalize = c(4, 40), labels = c("N3", "N2", "N1", "REM",
+  "AWA"))
 }
 \arguments{
 \item{record}{record.}
@@ -16,6 +17,8 @@ hypnogram_band_powers(record, channel, bands = list(delta = c(0.5, 3.5),
 \item{bands}{bands. Default "delta","theta","alpha","beta", "gamma1", "denominator", "broadband".}
 
 \item{normalize}{normalize.}
+
+\item{labels}{labels.}
 }
 \value{
 a df.

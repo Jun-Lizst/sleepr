@@ -26,10 +26,10 @@ plot_hypnogram <- function(events){
 #' Filter an events dataframe to keep hypnogram.
 #'
 #' @param events events dataframe.
-#' @return hypngram dataframe.
+#' @param labels events labels in data.
+#' @return hypnogram dataframe.
 #' @export
-hypnogram <- function(events){
-  labels <- c("N3","N2","N1","REM","AWA")
+hypnogram <- function(events, labels = c("N3","N2","N1","REM","AWA")){
   stages <- events[events$event %in% labels,]
   stages$event <- factor(stages$event, levels = labels)
   stages <- stages[order(stages$begin),]
