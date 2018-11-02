@@ -88,3 +88,19 @@ test_that("Compute spectral power bands without NREM", {
   
   unlink("data/sample",recursive = TRUE)
 })
+
+test_that("Compute spectral power bands without REM", {
+  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/sample.edf")$startTime, origin = "1970-01-01")
+  events <- data.frame(begin = c(startTime,startTime+30,startTime+60),
+                       end = c(startTime+30,startTime+60,startTime+90),
+                       event = c("REM","REM","REM"))
+  events$event <- as.character(events$event)
+  write_mdf(edfPath = "data/sample.edf",
+            mdfPath = "data/sample",
+            events = events)
+  record <- read_mdf("data/sample",channels = "C3-M2")
+  eemd <- hypnogram_eemd(record,"C3-M2")
+  expect_equal(length(colnames(eemd)), 33)
+  expect_equal(nrow(eemd), 3)
+  unlink("data/sample",recursive = TRUE)
+})

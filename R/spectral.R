@@ -52,6 +52,45 @@ hypnogram_band_powers <- function(record,
   return(pw)
 }
 
+#' Compute EEMD mean,var,skew,kur
+#'
+#' @param record record.
+#' @param channel channel to split and hyp.
+#' @param num_imfs numinfs
+#' @param labels lablssl
+#' @return a df.
+#' @export
+hypnogram_eemd <- function(record, 
+                           channel,
+                           num_imfs = 8, 
+                           labels = c("N3","N2","N1","REM","AWA")){
+  # Rlibeemd::eemd(c3a2.period$signal,
+  #                num_imfs = 8)
+  sRate <- record[["channels"]][[channel]][["metadata"]][["sRate"]]
+  hypnogram <- hypnogram(record[["events"]],labels)
+  signal <- sleepr::split_signal(signal = record[["channels"]][[channel]][["signal"]],
+                                 hypnogram = hypnogram,
+                                 sRate = sRate)
+  eemddf <- data.frame()
+  for(i in c(1:length(signal))){
+    eemd <- Rlibeemd::eemd(signal[[i]],num_imfs = num_imfs)
+    epdf <- data.frame(epoch = i)
+    for(j in c(1:num_imfs)){
+      epdft <- data.frame(x1 = mean(eemd[,j]),
+                          x2 = stats::var(eemd[,j]),
+                          x3 = e1071::skewness(eemd[,j]),
+                          x4 = e1071::kurtosis(eemd[,j]))
+      colnames(epdft) <- c(paste0("eemd_",j,"_mean"),
+                           paste0("eemd_",j,"_var"),
+                           paste0("eemd_",j,"_skew"),
+                           paste0("eemd_",j,"_kur"))
+      epdf <- cbind(epdf,epdft)
+    }
+    eemddf <- dplyr::bind_rows(eemddf,epdf)
+  }
+  return(eemddf)
+}
+
 #' aggregate_band_powers
 #'
 #' @param hypnogram_band_powers hypnogram_band_powers.
