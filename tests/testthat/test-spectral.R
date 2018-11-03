@@ -89,7 +89,7 @@ test_that("Compute spectral power bands without NREM", {
   unlink("data/sample",recursive = TRUE)
 })
 
-test_that("Compute spectral power bands without REM", {
+test_that("Compute EEMD", {
   startTime <- as.POSIXlt(edfReader::readEdfHeader("data/sample.edf")$startTime, origin = "1970-01-01")
   events <- data.frame(begin = c(startTime,startTime+30,startTime+60),
                        end = c(startTime+30,startTime+60,startTime+90),
