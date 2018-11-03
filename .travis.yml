@@ -2,6 +2,9 @@ language: r
 cache: packages
 warnings_are_errors: false
 
+before_install:
+  - sudo apt-get install -y libgsl-dev
+
 r_packages:
   - covr
   
