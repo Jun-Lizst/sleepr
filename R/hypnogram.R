@@ -49,7 +49,7 @@ split_signal <- function(signal,hypnogram,sRate){
   hypnogram$begin <- as.numeric(hypnogram$begin)
   hypnogram$end <- as.numeric(hypnogram$end)
   hypstart <- min(hypnogram$begin)
-  hypnogram$begin <- (hypnogram$begin-hypstart)*sRate
+  hypnogram$begin <- (hypnogram$begin-hypstart)*sRate+1
   hypnogram$end <- (hypnogram$end-hypstart)*sRate
   
   splitted_signal <- list()

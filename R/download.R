@@ -1,7 +1,36 @@
-# #http://sleeptight.isr.uc.pt/ISRUC_Sleep/
-# download_isruc <- function(path){
-#   #http://sleeptight.isr.uc.pt/ISRUC_Sleep/ISRUC_Sleep/subgroupI/1.rar
-# }
+#http://sleeptight.isr.uc.pt/ISRUC_Sleep/
+download_isruc <- function(target){
+  
+  # Subgroups populations
+  pops <- list(c(1:100),c(1:8),c(1:10))
+  
+  for (subgroup in c(1:3)){
+    pop <- pops[[subgroup]]
+    dir <- paste0(target,subgroup,"/")
+    if(!dir.exists(dir)){
+      dir.create(dir)
+    }
+    subchars = paste(rep("I",subgroup),
+                     collapse = "")
+    url <- paste0(
+      "http://sleeptight.isr.uc.pt/",
+      "ISRUC_Sleep/ISRUC_Sleep/subgroup",
+      subchars,"/"
+    )
+    for (i in pop){
+      filename <- paste0(i,".rar")
+      filePath <- paste0(dir,filename)
+      if (!file.exists(filePath)){
+        furl <- paste0(url,i,".rar") 
+        utils::download.file(url = furl,
+                      destfile = filePath)
+        system(paste0("unrar x ",filePath,
+                      " ",dir))
+      }
+    }
+  }
+  
+}
 # 
 # #https://www.physionet.org/pn4/sleep-edfx/
 # #https://physionet.org/physiobank/database/sleep-edfx/
