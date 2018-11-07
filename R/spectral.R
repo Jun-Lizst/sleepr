@@ -65,12 +65,14 @@ hypnogram_band_powers <- function(record,
 #' @param channel channel to split and hyp.
 #' @param num_imfs numinfs
 #' @param labels lablssl
+#' @param butter butter
 #' @return a df.
 #' @export
 hypnogram_eemd <- function(record, 
                            channel,
                            num_imfs = 8, 
-                           labels = c("N3","N2","N1","REM","AWA")){
+                           labels = c("N3","N2","N1","REM","AWA"),
+                           butter = FALSE){
   # Rlibeemd::eemd(c3a2.period$signal,
   #                num_imfs = 8)
   sRate <- record[["channels"]][[channel]][["metadata"]][["sRate"]]
@@ -80,7 +82,12 @@ hypnogram_eemd <- function(record,
                                  sRate = sRate)
   eemddf <- data.frame()
   for(i in c(1:length(signal))){
-    eemd <- Rlibeemd::eemd(signal[[i]],num_imfs = num_imfs)
+    x <- signal[[i]]
+    if(butter != FALSE){
+      filt <- signal::butter(butter, 0.1)
+      x <- signal::filtfilt(filt, x)
+    }
+    eemd <- Rlibeemd::eemd(x,num_imfs = num_imfs)
     epdf <- data.frame(epoch = i)
     for(j in c(1:num_imfs)){
       epdft <- data.frame(x1 = mean(eemd[,j]),

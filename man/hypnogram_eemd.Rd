@@ -5,7 +5,7 @@
 \title{Compute EEMD mean,var,skew,kur}
 \usage{
 hypnogram_eemd(record, channel, num_imfs = 8, labels = c("N3", "N2",
-  "N1", "REM", "AWA"))
+  "N1", "REM", "AWA"), butter = FALSE)
 }
 \arguments{
 \item{record}{record.}
@@ -15,6 +15,8 @@ hypnogram_eemd(record, channel, num_imfs = 8, labels = c("N3", "N2",
 \item{num_imfs}{numinfs}
 
 \item{labels}{lablssl}
+
+\item{butter}{butter}
 }
 \value{
 a df.
