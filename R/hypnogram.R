@@ -1,10 +1,11 @@
 #' Draw a histogram with ggplot2.
 #'
 #' @param events events dataframe.
+#' @param labels hyp labels.
 #' @return a ggplot.
 #' @export
-plot_hypnogram <- function(events){
-  stages <- hypnogram(events)
+plot_hypnogram <- function(events, labels = c("N3","N2","N1","REM","AWA")){
+  stages <- hypnogram(events, labels)
   stages$begin <- as.POSIXct(stages$begin)
   stages$end <- as.POSIXct(stages$end)
   hypnogram <- ggplot2::ggplot(stages,ggplot2::aes_string(x="begin",y="event",group=1)) +

@@ -4,10 +4,12 @@
 \alias{plot_hypnogram}
 \title{Draw a histogram with ggplot2.}
 \usage{
-plot_hypnogram(events)
+plot_hypnogram(events, labels = c("N3", "N2", "N1", "REM", "AWA"))
 }
 \arguments{
 \item{events}{events dataframe.}
+
+\item{labels}{hyp labels.}
 }
 \value{
 a ggplot.
