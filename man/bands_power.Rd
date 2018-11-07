@@ -4,7 +4,7 @@
 \alias{bands_power}
 \title{Compute bands powers.}
 \usage{
-bands_power(x, Fs, bands, normalize)
+bands_power(x, Fs, bands, normalize, butter = FALSE)
 }
 \arguments{
 \item{x}{signal vector.}
@@ -14,6 +14,8 @@ bands_power(x, Fs, bands, normalize)
 \item{bands}{bands.}
 
 \item{normalize}{normalize.}
+
+\item{butter}{butter order or false.}
 }
 \value{
 a named vector with all bands powers.

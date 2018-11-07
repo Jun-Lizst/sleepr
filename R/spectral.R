@@ -4,9 +4,14 @@
 #' @param Fs Frequency.
 #' @param bands bands.
 #' @param normalize normalize.
+#' @param butter butter order or false.
 #' @return a named vector with all bands powers.
 #' @export
-bands_power <- function(x,Fs,bands,normalize){
+bands_power <- function(x,Fs,bands,normalize,butter = FALSE){
+  if(butter != FALSE){
+    filt <- signal::butter(butter, 0.1)
+    x <- signal::filtfilt(filt, x)
+  }
   powers <- c()
   for(band_label in names(bands)){
     power <- sum(eegkit::eegfft(x,Fs,bands[[band_label]][1],bands[[band_label]][2])$strength)
@@ -26,6 +31,7 @@ bands_power <- function(x,Fs,bands,normalize){
 #' @param bands bands. Default "delta","theta","alpha","beta", "gamma1", "denominator", "broadband".
 #' @param normalize normalize.
 #' @param labels labels.
+#' @param butter butter order
 #' @return a df.
 #' @export
 hypnogram_band_powers <- function(record,
@@ -36,7 +42,8 @@ hypnogram_band_powers <- function(record,
                                              beta = c(12,30),
                                              gamma1 = c(30,40)),
                                   normalize = c(4,40),
-                                  labels = c("N3","N2","N1","REM","AWA")){
+                                  labels = c("N3","N2","N1","REM","AWA"),
+                                  butter = FALSE){
   sRate <- record[["channels"]][[channel]][["metadata"]][["sRate"]]
   hypnogram <- hypnogram(record[["events"]],labels)
   signal <- sleepr::split_signal(signal = record[["channels"]][[channel]][["signal"]],
@@ -44,7 +51,7 @@ hypnogram_band_powers <- function(record,
                                  sRate = sRate)
   
   pw <- dplyr::bind_rows(lapply(signal,function(x){
-    as.list(sleepr::bands_power(x = x, Fs = sRate, bands = bands, normalize = normalize))
+    as.list(sleepr::bands_power(x = x, Fs = sRate, bands = bands, normalize = normalize,butter=butter))
   }))
   
   pw$stage <- hypnogram$event

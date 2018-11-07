@@ -18,6 +18,7 @@ Imports:
     eegkit,
     lubridate,
     Rlibeemd,
-    e1071
+    e1071,
+    signal
 Suggests: testthat
 RoxygenNote: 6.1.0
