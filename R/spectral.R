@@ -51,7 +51,7 @@ hypnogram_band_powers <- function(record,
                                  sRate = sRate)
   
   pw <- dplyr::bind_rows(lapply(signal,function(x){
-    as.list(sleepr::bands_power(x = x, Fs = sRate, bands = bands, normalize = normalize,butter=butter))
+    as.list(sleepr::bands_power(x = x, Fs = sRate, bands = bands, normalize = normalize, butter = butter))
   }))
   
   pw$stage <- hypnogram$event
