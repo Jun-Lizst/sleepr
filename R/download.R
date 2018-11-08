@@ -1,4 +1,7 @@
-#http://sleeptight.isr.uc.pt/ISRUC_Sleep/
+#' Download isruc db
+#'
+#' @param target target path.
+#' @export
 download_isruc <- function(target){
   
   # Subgroups populations
@@ -29,7 +32,6 @@ download_isruc <- function(target){
       }
     }
   }
-  
 }
 # 
 # #https://www.physionet.org/pn4/sleep-edfx/
