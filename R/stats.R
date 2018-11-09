@@ -5,12 +5,14 @@
 #' @param normalize Normalize band. Ex: c(0,40)
 #' @param eeg_channels potential EEG channel names.
 #' @param metadata read metadata or not.
+#' @param butter Butterworth order.
 #' @return df.
 #' @export
 compute_all_stats <- function(records,
                               bands,normalize,
                               eeg_channels = c("C3-A2","EEG Fpz-Cz","C3-M2"),
-                              metadata = TRUE){
+                              metadata = TRUE,
+                              butter = FALSE){
   df <- data.frame(stringsAsFactors = FALSE)
   for(record in records){
     l <- read_mdf(mdfPath = record,channels = eeg_channels,metadata = metadata)
@@ -24,7 +26,8 @@ compute_all_stats <- function(records,
             hypnogram_band_powers <- sleepr::hypnogram_band_powers(record = l,
                                                                    channel = eeg_channel,
                                                                    bands = bands,
-                                                                   normalize = normalize)
+                                                                   normalize = normalize,
+                                                                   butter = butter)
             df_record <- aggregate_band_powers(hypnogram_band_powers)
             df_record$eeg_channel <- eeg_channel
           }
