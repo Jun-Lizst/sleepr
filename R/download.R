@@ -32,6 +32,20 @@ download_isruc <- function(target){
       }
     }
   }
+  
+  for(i in c(1:3)){
+    subchars = paste(rep("I",i),
+                     collapse = "")
+    path <- paste0(target,i,"/metadata.xlsx")
+    url <- paste0("http://sleeptight.isr.uc.pt/",
+                  "ISRUC_Sleep/ISRUC_Sleep/",
+                  "Details/Details_subgroup_",
+                  subchars,"_Submission.xlsx")
+    if(!file.exists(path)){
+      download.file(url,destfile = path)
+    }
+  }
+  
 }
 # 
 # #https://www.physionet.org/pn4/sleep-edfx/
