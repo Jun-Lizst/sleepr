@@ -8,6 +8,7 @@
 #' @return a named vector with all bands powers.
 #' @export
 bands_power <- function(x,Fs,bands,normalize,butter = FALSE){
+  x[is.na(x)] <- 0
   if(butter != FALSE){
     filt <- signal::butter(butter, 0.1)
     x <- signal::filtfilt(filt, x)
