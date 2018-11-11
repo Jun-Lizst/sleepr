@@ -29,6 +29,48 @@ read_events_isruc <- function(dir, scoringNum)
   return(stages)
 }
 
+#' Read ISRUC metadata
+#'
+#' @param target ISRUC records directory.
+#' @return A dataframe of metadata.
+#' @export
+read_isruc_metadata <- function(target){
+  m1 <- readxl::read_xlsx(paste0(target,"1/metadata.xlsx"), skip=2) 
+  m1$subgroup = 1
+  m1$Subject <- as.character(m1$Subject)
+  m2 <- readxl::read_xlsx(paste0(target,"2/metadata.xlsx"),skip=2)
+  m2$subgroup = 2
+  m2$Age <- as.character(m2$Age)
+  m2 <- m2[!is.na(m2$Subject),]
+  m3 <- readxl::read_xlsx(paste0(target,"3/metadata.xlsx"), skip=2)
+  m3$subgroup = 3
+  m3$Subject <- as.character(m3$Subject)
+  m3$Age <- as.character(m3$Age)
+  metadata <- dplyr::bind_rows(m1,m2,m3)
+}
+
+#' Read all ISRUC sleep scorings (1)
+#'
+#' @param target ISRUC target.
+#' @return A dataframe of scored events.
+#' @export
+read_all_events_isruc <- function(target){
+  hypnograms <- data.frame()
+  for(subgroup in list.dirs(target, T, F)){
+    for(record in list.dirs(subgroup, T, F)){
+      if(length(list.dirs(record, T, F)) > 1){
+        record <- paste0(record,"/1")
+      }
+      hypnogram <- read_events_isruc(record, 1)
+      hypnogram$record <- record
+      hypnograms <- dplyr::bind_rows(hypnograms,
+                                     hypnogram)
+    }
+  }
+  return(hypnograms)
+}
+
+
 #' Read a Noxturnal events file (Unicode CSV format)
 #'
 #' @param path Noxturnal events file path.
