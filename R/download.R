@@ -1,4 +1,7 @@
-#http://sleeptight.isr.uc.pt/ISRUC_Sleep/
+#' Download isruc db
+#'
+#' @param target target path.
+#' @export
 download_isruc <- function(target){
   
   # Subgroups populations
@@ -27,6 +30,19 @@ download_isruc <- function(target){
         system(paste0("unrar x ",filePath,
                       " ",dir))
       }
+    }
+  }
+  
+  for(i in c(1:3)){
+    subchars = paste(rep("I",i),
+                     collapse = "")
+    path <- paste0(target,i,"/metadata.xlsx")
+    url <- paste0("http://sleeptight.isr.uc.pt/",
+                  "ISRUC_Sleep/ISRUC_Sleep/",
+                  "Details/Details_subgroup_",
+                  subchars,"_Submission.xlsx")
+    if(!file.exists(path)){
+      utils::download.file(url,destfile = path)
     }
   }
   

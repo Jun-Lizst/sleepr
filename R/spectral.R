@@ -8,6 +8,7 @@
 #' @return a named vector with all bands powers.
 #' @export
 bands_power <- function(x,Fs,bands,normalize,butter = FALSE){
+  x[is.na(x)] <- 0
   if(butter != FALSE){
     filt <- signal::butter(butter, 0.1)
     x <- signal::filtfilt(filt, x)
@@ -51,7 +52,7 @@ hypnogram_band_powers <- function(record,
                                  sRate = sRate)
   
   pw <- dplyr::bind_rows(lapply(signal,function(x){
-    as.list(sleepr::bands_power(x = x, Fs = sRate, bands = bands, normalize = normalize,butter=butter))
+    as.list(sleepr::bands_power(x = x, Fs = sRate, bands = bands, normalize = normalize, butter = butter))
   }))
   
   pw$stage <- hypnogram$event
