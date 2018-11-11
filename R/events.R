@@ -4,30 +4,28 @@
 #' @param scoringNum Scoring number in database.
 #' @return A dataframe of scored events.
 #' @export
-read_events_isruc <- function(dir,scoringNum){
-  xlsxPath <- list.files(dir,
-                         pattern = paste0("_",scoringNum,".xlsx"),
-                         full.names = TRUE)[1]
-  recPath <- list.files(dir,
-                        pattern = ".rec",
-                        full.names = TRUE)[1]
+read_events_isruc <- function(dir, scoringNum) 
+{
+  xlsxPath <- list.files(dir, pattern = paste0("_", scoringNum, 
+                                               ".xlsx"), full.names = TRUE)[1]
+  recPath <- list.files(dir, pattern = ".rec", full.names = TRUE)[1]
   headers <- edfReader::readEdfHeader(recPath)
   start <- headers$startTime
-
-  scoring <- readxl::read_xlsx(xlsxPath)
-  scoring <- scoring[!is.na(scoring$Epoch),]
-  scoring$begin <- as.numeric(start+(scoring$Epoch*30-30))
-  scoring$end <- scoring$begin+30
-
-  # Stages
-  stages <- scoring[,c("Stage","begin","end")]
-  colnames(stages)[colnames(stages)=="Stage"] <- "event"
+  scoring <- readxl::read_xlsx(xlsxPath, col_names = FALSE)[1:2]
+  if(scoring$X__1[1] == "Epoch"){
+    scoring <- scoring[-1,]
+  }
+  colnames(scoring) <- c("Epoch","Stage")
+  scoring$Epoch <- as.numeric(scoring$Epoch)
+  scoring <- scoring[!is.na(scoring$Epoch), ]
+  scoring$begin <- as.numeric(start + (scoring$Epoch * 30 - 30))
+  scoring$end <- scoring$begin + 30
+  stages <- scoring[, c("Stage", "begin", "end")]
+  colnames(stages)[colnames(stages) == "Stage"] <- "event"
   stages$event[stages$event == "R"] <- "REM"
   stages$event[stages$event == "W"] <- "AWA"
-  
-  stages$begin <- as.POSIXlt(stages$begin,origin= "1970-01-01 00:00.00 UTC")
-  stages$end <-  as.POSIXlt(stages$end,origin= "1970-01-01 00:00.00 UTC")
-
+  stages$begin <- as.POSIXct(stages$begin, origin = "1970-01-01 00:00.00 UTC")
+  stages$end <- as.POSIXct(stages$end, origin = "1970-01-01 00:00.00 UTC")
   return(stages)
 }
 
