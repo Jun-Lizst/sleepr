@@ -1075,7 +1075,7 @@ cycles_classic_count <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 cycles_begin_count <- function(events){
-  return(nrow(events[events$event == "cycle-BEGIN",]))
+  return(nrow(events[events$event == "cycle-BN",]))
 }
 
 #' cycles_rem_count
@@ -1108,7 +1108,7 @@ cycles_classic_duration <- function(events){
 #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 cycles_begin_duration <- function(events){
-  cycles <- events[events$event == "cycle-BEGIN",]
+  cycles <- events[events$event == "cycle-BN",]
   return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
 }
 
