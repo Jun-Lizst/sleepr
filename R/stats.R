@@ -1061,44 +1061,78 @@ rem_avg_duration <- function(events){
 
 # Cycles ----
 
+#' cycles_classic_count
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_classic_count <- function(events){
   return(nrow(events[events$event == "cycle-CLASSIC",]))
 }
 
+#' cycles_begin_count
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_begin_count <- function(events){
   return(nrow(events[events$event == "cycle-BEGIN",]))
 }
 
+#' cycles_rem_count
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_rem_count <- function(events){
   return(nrow(events[events$event == "cycle-REM",]))
 }
 
+#' cycles_end_count
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_end_count <- function(events){
   return(nrow(events[events$event == "cycle-EN",]))
 }
 
-# Cycles duration in minutes
+#' cycles_classic_duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_classic_duration <- function(events){
   cycles <- events[events$event == "cycle-CLASSIC",]
   return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
 }
 
-# Cycles duration in minutes
+#' cycles_begin_duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_begin_duration <- function(events){
   cycles <- events[events$event == "cycle-BEGIN",]
   return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
 }
 
+#' cycles_rem_duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_rem_duration <- function(events){
   cycles <- events[events$event == "cycle-REM",]
   return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
 }
 
+#' cycles_end_duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_end_duration <- function(events){
   cycles <- events[events$event == "cycle-EN",]
   return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
 }
 
+#' cycles_classic_avg_duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_classic_avg_duration <- function(events){
   duration <- cycles_classic_duration(events)
   count <- cycles_classic_count(events)
@@ -1109,6 +1143,10 @@ cycles_classic_avg_duration <- function(events){
   }
 }
 
+#' cycles_begin_avg_duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_begin_avg_duration <- function(events){
   duration <- cycles_begin_duration(events)
   count <- cycles_begin_count(events)
@@ -1119,6 +1157,10 @@ cycles_begin_avg_duration <- function(events){
   }
 }
 
+#' cycles_rem_avg_duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_rem_avg_duration <- function(events){
   duration <- cycles_rem_duration(events)
   count <- cycles_rem_count(events)
@@ -1129,6 +1171,10 @@ cycles_rem_avg_duration <- function(events){
   }
 }
 
+#' cycles_end_avg_duration
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
 cycles_end_avg_duration <- function(events){
   duration <- cycles_end_duration(events)
   count <- cycles_end_count(events)
