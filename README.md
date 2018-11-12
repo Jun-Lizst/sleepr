@@ -23,6 +23,9 @@ MDF uses binary files for signals and JSON for metadata.  Signals values are enc
 
 ![hypnogram](man/hypnogram.jpeg)
 
+![spectrogram](man/spectrogram.png)
+
+
 ### Statistics computing
 
 Various statistics can be computed from the polysomnographic data, signals and events. Durations are expressed in *minutes*, indexes in *hours*. 
@@ -82,50 +85,50 @@ These functions compute statistics based on stage scoring.
 #### Respiratory indexes
 
   * `ah_count`: Apnea and hypopnea count.
-  * `ah_hour`
-  * `ah_back`
-  * `ah_nonback`
-  * `ah_rem`
-  * `ah_nonrem`
+  * `ah_hour`: 
+  * `ah_back`:
+  * `ah_nonback`:
+  * `ah_rem`:
+  * `ah_nonrem`:
   
 #### Micro-arousals
 
-  * `ma_count`
-  * `ma_index`
-  * `ma_duration`
-  * `ma_n1_duration`
-  * `ma_n2_duration`
-  * `ma_n3_duration`
-  * `ma_rem_duration`
-  * `ma_n1_count`
-  * `ma_n2_count`
-  * `ma_n3_count`
-  * `ma_rem_count`
-  * `ma_n1_index`
-  * `ma_n2_index`
-  * `ma_n3_index`
-  * `ma_rem_index`
+  * `ma_count`:
+  * `ma_index`:
+  * `ma_duration`:
+  * `ma_n1_duration`:
+  * `ma_n2_duration`:
+  * `ma_n3_duration`:
+  * `ma_rem_duration`:
+  * `ma_n1_count`:
+  * `ma_n2_count`:
+  * `ma_n3_count`:
+  * `ma_rem_count`:
+  * `ma_n1_index`:
+  * `ma_n2_index`:
+  * `ma_n3_index`:
+  * `ma_rem_index`:
 
 #### Rapid eye movements
 
-  * `rem_count` Count of Rapid-Eye-Movements.
-  * `rem_index`
-  * `rem_avg_duration`
+  * `rem_count`: Count of Rapid-Eye-Movements.
+  * `rem_index`:
+  * `rem_avg_duration`:
   
 #### Cycles
 
-  * `cycles_classic_count`
-  * `cycles_begin_count`
-  * `cycles_end_count`
-  * `cycles_rem_count`
-  * `cycles_classic_duration`
-  * `cycles_begin_duration`
-  * `cycles_rem_duration`
-  * `cycles_end_duration`
-  * `cycles_classic_avg_duration`
-  * `cycles_begin_avg_duration`
-  * `cycles_rem_avg_duration`
-  * `cycles_end_avg_duration`
+  * `cycles_classic_count`:
+  * `cycles_begin_count`:
+  * `cycles_end_count`:
+  * `cycles_rem_count`:
+  * `cycles_classic_duration`:
+  * `cycles_begin_duration`:
+  * `cycles_rem_duration`:
+  * `cycles_end_duration`:
+  * `cycles_classic_avg_duration`:
+  * `cycles_begin_avg_duration`:
+  * `cycles_rem_avg_duration`:
+  * `cycles_end_avg_duration`:
 
 ## Package Testing
 
