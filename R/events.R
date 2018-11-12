@@ -188,7 +188,7 @@ read_events_sleepedfx <- function(path, update = TRUE){
 normalize_cycles <- function(events){
   cycles_labels <- list(
     c("Activity-CLASSICstart","Activity-CLASSICend"),
-    c("Activity-BEGINstart","Activity-BEGINend"),
+    c("Activity-BNstart","Activity-BNend"),
     c("Activity-REMstart","Activity-REMend"),
     c("Activity-ENstart","Activity-ENend")
   )
