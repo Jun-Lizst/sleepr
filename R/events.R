@@ -181,6 +181,10 @@ read_events_sleepedfx <- function(path, update = TRUE){
   return(events_final)
 }
 
+#' normalize_cycles
+#'
+#' @param events events
+#' @export
 normalize_cycles <- function(events){
   cycles_labels <- list(
     c("Activity-CLASSICstart","Activity-CLASSICend"),
