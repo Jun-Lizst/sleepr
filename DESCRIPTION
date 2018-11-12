@@ -19,6 +19,7 @@ Imports:
     lubridate,
     Rlibeemd,
     e1071,
-    signal
+    signal,
+    phonTools
 Suggests: testthat
 RoxygenNote: 6.1.0

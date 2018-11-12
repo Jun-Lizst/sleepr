@@ -95,6 +95,7 @@ compute_all_stats <- function(records,
       df_record$rem_avg_duration <- rem_avg_duration(e)
       
       # Cycles
+      
       df_record$cycles_classic_count <- cycles_classic_count(e)
       df_record$cycles_begin_count <- cycles_begin_count(e)
       df_record$cycles_rem_count <- cycles_rem_count(e)

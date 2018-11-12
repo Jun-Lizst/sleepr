@@ -58,3 +58,20 @@ split_signal <- function(signal,hypnogram,sRate){
   }
   return(splitted_signal)
 }
+
+#' Get spectrogram
+#'
+#' @param signal signal.
+#' @param sRate sRate.
+#' @param maxfreq maxfreq.
+#' @param windowlength windowlength.
+#' @param show show.
+#' @return list.
+#' @export
+plot_spectrogram <- function(signal, sRate, maxfreq = 20, windowlength = 2000, show = FALSE){
+  phonTools::spectrogram(signal, fs = sRate, windowlength = windowlength, maxfreq = maxfreq, show = show)
+}
+
+
+
+
