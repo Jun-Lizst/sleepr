@@ -31,7 +31,7 @@ MDF uses binary files for signals and JSON for metadata.  Signals values are enc
 
 A spectrogram visually represents the frenquencies spectrum of a signal. Spectrogram are widely used to visualize and analyse EEG.
 
-![spectrogram](man/spectrogram.png)
+![spectrogram](man/spectrogram.jpg)
 
 
 ### Statistics computing
