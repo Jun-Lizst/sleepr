@@ -21,7 +21,15 @@ MDF uses binary files for signals and JSON for metadata.  Signals values are enc
 
 ### Sleep visualization
 
+#### Hypnogram
+
+`plot_hypnogram()` function plots a hypnogram using `ggplot2`, higlighting `REM` sleep in red. The function takes as argument a dataframe containing labels, start and end times of events. AASM stages<sup>2</sup> with labels `AWA`,`REM`,`N1`,`N2`,`N3` by default. Labels can be redefined using the `labels` argument.
+
 ![hypnogram](man/hypnogram.jpeg)
+
+#### Spectrogram
+
+A spectrogram visually represents the frenquencies spectrum of a signal. Spectrogram are widely used to visualize and analyse EEG.
 
 ![spectrogram](man/spectrogram.png)
 
@@ -30,7 +38,7 @@ MDF uses binary files for signals and JSON for metadata.  Signals values are enc
 
 Various statistics can be computed from the polysomnographic data, signals and events. Durations are expressed in *minutes*, indexes in *hours*. 
 
-`compute_all_stats` function call all the following functions over a vector of records paths. It returns a dataframe with a line for each record. EEG bands can be specified at this point to the `bands` argument.
+`compute_all_stats()` function call all the following functions over a vector of records paths. It returns a dataframe with a line for each record. EEG bands can be specified at this point to the `bands` argument.
 
 ```R
 # Write record to disk from EDF to MDF
@@ -143,3 +151,5 @@ R CMD Rd2pdf . && mv ..pdf sleepr.pdf && rm -r .Rd2pdf*
 ## References
 
 1. P. Bouchequet, D. Jin, G. Solelhac, M. Chennaoui, D. Leger, [«*Morpheo Data Format (MDF), un nouveau format de données simple, robuste et performant pour stocker et analyser les enregistrements de sommeil*»](https://www.sciencedirect.com/science/article/pii/S1769449318301304), Médecine du Sommeil, vol. 15, n 1, p. 48‑49, march 2018.
+
+2. R.B. Berry, R. Brooks, C.E. Gamaldo, S.M. Harding, C.L. Marcus, B.V. Vaughn, [The AASM Manual for the Scoring of Sleep and Associated Events](https://aasm.org/clinical-resources/scoring-manual/), 2013.
