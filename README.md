@@ -93,17 +93,17 @@ These functions compute statistics based on stage scoring.
 #### Respiratory indexes
 
   * `ah_count`: Apnea and hypopnea count.
-  * `ah_hour`: 
-  * `ah_back`:
+  * `ah_hour`: Apnea and hypopnea index by hour.
+  * `ah_back`: 
   * `ah_nonback`:
   * `ah_rem`:
   * `ah_nonrem`:
   
 #### Micro-arousals
 
-  * `ma_count`:
-  * `ma_index`:
-  * `ma_duration`:
+  * `ma_count`: Micro-arousals count.
+  * `ma_index`: Micro-arousals index by hour.
+  * `ma_duration`: Total micro-arousals duration.
   * `ma_n1_duration`:
   * `ma_n2_duration`:
   * `ma_n3_duration`:
@@ -120,8 +120,8 @@ These functions compute statistics based on stage scoring.
 #### Rapid eye movements
 
   * `rem_count`: Count of Rapid-Eye-Movements.
-  * `rem_index`:
-  * `rem_avg_duration`:
+  * `rem_index`: Rapid-Eye-Movements index by hour.
+  * `rem_avg_duration`: Rapid-Eye-Movements average duration.
   
 #### Cycles
 
