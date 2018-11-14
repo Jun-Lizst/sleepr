@@ -29,7 +29,7 @@ MDF uses binary files for signals and JSON for metadata.  Signals values are enc
 
 #### Spectrogram
 
-A spectrogram visually represents the frenquencies spectrum of a signal. Spectrogram are widely used to visualize and analyse EEG.
+A spectrogram visually represents the frenquencies spectrum of a signal. Spectrogram are widely used to visualize and analyse EEG. `plot_spectrogram()` conveniently wrappers `phonTools` library `spectrogram` function to plot spectrograms.
 
 ![spectrogram](man/spectrogram.jpg)
 
