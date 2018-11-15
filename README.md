@@ -6,7 +6,7 @@ Sleep analysis with R.
 
 ## Installation
 
-Sleepr latest version can be directly installed from Github using the `devtools` package.
+SleepR latest version can be directly installed from Github using the `devtools` package.
 
 ```
 devtools::install_github("boupetch/sleepr")
@@ -32,7 +32,6 @@ MDF uses binary files for signals and JSON for metadata.  Signals values are enc
 A spectrogram visually represents the frenquencies spectrum of a signal. Spectrogram are widely used to visualize and analyse EEG. `plot_spectrogram()` conveniently wrappers `phonTools` library `spectrogram` function to plot spectrograms.
 
 ![spectrogram](man/spectrogram.jpg)
-
 
 ### Statistics computing
 
@@ -104,14 +103,14 @@ These functions compute statistics based on stage scoring.
   * `ma_count`: Micro-arousals count.
   * `ma_index`: Micro-arousals index by hour.
   * `ma_duration`: Total micro-arousals duration.
-  * `ma_n1_duration`:
-  * `ma_n2_duration`:
-  * `ma_n3_duration`:
-  * `ma_rem_duration`:
-  * `ma_n1_count`:
-  * `ma_n2_count`:
-  * `ma_n3_count`:
-  * `ma_rem_count`:
+  * `ma_n1_duration`: Total micro-arousals duration during N1.
+  * `ma_n2_duration`: Total micro-arousals duration during N2.
+  * `ma_n3_duration`: Total micro-arousals duration during N3.
+  * `ma_rem_duration`: Total micro-arousals duration during REM.
+  * `ma_n1_count`: Micro-arousals count during N1.
+  * `ma_n2_count`: Micro-arousals count during N2.
+  * `ma_n3_count`: Micro-arousals count during N3.
+  * `ma_rem_count`: Micro-arousals count during REM.
   * `ma_n1_index`:
   * `ma_n2_index`:
   * `ma_n3_index`:

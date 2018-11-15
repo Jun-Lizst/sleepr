@@ -59,6 +59,19 @@ split_signal <- function(signal,hypnogram,sRate){
   return(splitted_signal)
 }
 
+#' Split signal into epochs
+#'
+#' @param signal signal.
+#' @param sRate sRate sig.
+#' @param duration in seconds.
+#' @return list.
+#' @export
+split_epochs <- function(signal, sRate, duration = 30){
+  epoch_length <- sRate * duration
+  epochs <- split(signal, ceiling(seq_along(signal)/epoch_length))
+  return(epochs)
+}
+
 #' Get spectrogram
 #'
 #' @param signal signal.

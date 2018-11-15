@@ -4,7 +4,7 @@
 \alias{plot_spectrogram}
 \title{Get spectrogram}
 \usage{
-plot_spectrogram(signal, sRate, maxfreq = 20, windowlength = 2000,
+plot_spectrogram(signal, sRate, maxfreq = 25, windowlength = 2000,
   show = FALSE)
 }
 \arguments{
