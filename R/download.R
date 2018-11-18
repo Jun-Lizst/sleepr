@@ -47,7 +47,7 @@ download_isruc <- function(target){
   }
   
 }
-# 
+# https://www.physionet.org/pn4/sleep-edfx/SHA256SUMS
 # #https://www.physionet.org/pn4/sleep-edfx/
 # #https://physionet.org/physiobank/database/sleep-edfx/
 # download_sleepedfx <- function(path){
