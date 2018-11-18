@@ -47,12 +47,22 @@ download_isruc <- function(target){
   }
   
 }
-# https://www.physionet.org/pn4/sleep-edfx/SHA256SUMS
-# #https://www.physionet.org/pn4/sleep-edfx/
-# #https://physionet.org/physiobank/database/sleep-edfx/
-# download_sleepedfx <- function(path){
-#   
-# }
+
+#' Download Sleepedfx db
+#'
+#' @param path target path.
+#' @export
+download_sleepedfx <- function(path){
+  if(!dir.exists(path)) dir.create(path)
+  url <- "https://www.physionet.org/pn4/sleep-edfx/"
+  if(!file.exists(paste0(path,"/SHA256SUMS"))) utils::download.file(paste0(url,"SHA256SUMS"), destfile = paste0(path,"/SHA256SUMS"))
+  sha256 <- utils::read.table(paste0(path,"/SHA256SUMS"),header = FALSE,col.names = c("sha256","filename"),stringsAsFactors = F)
+  for(i in c(1:nrow(sha256))){
+    utils::download.file(url = paste0(url,sha256$filename[i]),
+                  destfile = paste0(path,"/",sha256$filename[i])
+      )
+  }
+}
 # 
 # #http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSubjects/
 # download_dreams <- function(path){
