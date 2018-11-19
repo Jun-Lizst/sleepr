@@ -172,7 +172,7 @@ read_events_sleepedfx <- function(path, update = TRUE){
   }
   
   if(update){
-    events_final$event[events_final$annotation == "N4"] <- "N3"
+    events_final$event[events_final$event == "N4"] <- "N3"
   }
   
   events_final$begin <- as.POSIXlt(events_final$begin,origin= "1970-01-01 00:00.00 UTC")
