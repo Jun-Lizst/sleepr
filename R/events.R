@@ -178,7 +178,7 @@ read_events_sleepedfx <- function(path, update = TRUE){
   events_final$begin <- as.POSIXlt(events_final$begin,origin= "1970-01-01 00:00.00 UTC")
   events_final$end <-  as.POSIXlt(events_final$end,origin= "1970-01-01 00:00.00 UTC")
   
-  return(events_final)
+  return(na.omit(events_final))
 }
 
 #' normalize_cycles
