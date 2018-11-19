@@ -1100,6 +1100,7 @@ cycles_end_count <- function(events){
 #' @export
 cycles_classic_duration <- function(events){
   cycles <- events[events$event == "cycle-CLASSIC",]
+  if(nrow(cycles) == 0) return(0)
   return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
 }
 
@@ -1109,6 +1110,7 @@ cycles_classic_duration <- function(events){
 #' @export
 cycles_begin_duration <- function(events){
   cycles <- events[events$event == "cycle-BN",]
+  if(nrow(cycles) == 0) return(0)
   return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
 }
 
@@ -1118,6 +1120,7 @@ cycles_begin_duration <- function(events){
 #' @export
 cycles_rem_duration <- function(events){
   cycles <- events[events$event == "cycle-REM",]
+  if(nrow(cycles) == 0) return(0)
   return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
 }
 
@@ -1127,6 +1130,7 @@ cycles_rem_duration <- function(events){
 #' @export
 cycles_end_duration <- function(events){
   cycles <- events[events$event == "cycle-EN",]
+  if(nrow(cycles) == 0) return(0)
   return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
 }
 

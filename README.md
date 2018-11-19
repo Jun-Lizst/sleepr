@@ -16,8 +16,24 @@ devtools::install_github("boupetch/sleepr")
 
 ### File manipulation
 
-In Sleepr, `write_mdf()` and `read_mdf()` functions are used to write and read records on disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format<sup>1</sup> (MDF). MDF is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
+In SleepR, `write_mdf()` and `read_mdf()` functions are used to write and read records on disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format<sup>1</sup> (MDF). MDF is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
 MDF uses binary files for signals and JSON for metadata.  Signals values are encoded by default in binary, 32 bits, little endian.
+
+### Data download
+
+SleepR can download open databases with simple function calls.
+
+#### ISRUC-SLEEP Dataset
+
+```
+download_isruc()
+```
+
+#### The Sleep-EDF Database [Expanded]
+
+```
+download_sleepedfx()
+```
 
 ### Sleep visualization
 
@@ -45,8 +61,8 @@ write_mdf("path/to/edf", "path/to/mdf")
 
 # Compute all stats from the record
 compute_all_stats("path/to/mdf", bands = list(
-  delta = c(0.5,3.5),theta = c(3.5,8),alpha = c(8,12),
-  beta = c(12,30),gamma1 = c(30,40),gamma2 = c(40,60)))
+  delta = c(0.5,3.5), theta = c(3.5,8), alpha = c(8,12),
+  beta = c(12,30), gamma1 = c(30,40), gamma2 = c(40,60)))
 ```
 
 #### Stages & scoring
