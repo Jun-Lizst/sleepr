@@ -178,7 +178,7 @@ read_events_sleepedfx <- function(path, update = TRUE){
   events_final$begin <- as.POSIXlt(events_final$begin,origin= "1970-01-01 00:00.00 UTC")
   events_final$end <-  as.POSIXlt(events_final$end,origin= "1970-01-01 00:00.00 UTC")
   
-  return(na.omit(events_final))
+  return(stats::na.omit(events_final))
 }
 
 #' normalize_cycles
@@ -216,4 +216,29 @@ normalize_cycles <- function(events){
     }
   }
   return(cycles)
+}
+
+#' Read Subjects DB AASM scoring
+#'
+#' @param record_id record_id
+#' @param path path.
+#' @return A dataframe of scored events.
+#' @export
+read_events_dreams_subjects <- function(record_id, path){
+  events_path <- paste0(path,"/","HypnogramAASM_",record_id,".txt")
+  edf_path <- paste0(path,"/",record_id,".edf")
+  startTime <- edfReader::readEdfHeader(edf_path)$startTime[1]
+  events <- utils::read.table(events_path,skip = 1,col.names = "event")
+  events$event[events$event == 5] <- "AWA"
+  events$event[events$event == 4] <- "REM"
+  events$event[events$event == 3] <- "N1"
+  events$event[events$event == 2] <- "N2"
+  events$event[events$event == 1] <- "N3"
+  events$event[events$event == 0] <- "Unknown"
+  events$event[events$event == -1] <- "Unknown"
+  events$event[events$event == -2] <- "Unknown"
+  events$event[events$event == -3] <- "Unknown"
+  events$begin <- startTime + (c(0:(nrow(events)-1))*5)
+  events$end <- startTime + 5
+  return(events)
 }

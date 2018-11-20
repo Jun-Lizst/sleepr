@@ -64,12 +64,19 @@ download_sleepedfx <- function(path){
   }
 }
 
-# 
-# #http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSubjects/
-#http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSubjects/
-#download_dreams_subjects <- function(path){
-
-#}
+#' Download Subjects db
+#'
+#' @param path target path.
+#' @export
+download_dreams_subjects <- function(path){
+  if(!dir.exists(path)) dir.create(path)
+  file_path <- paste0(path,"/DatabaseSubjects.rar")
+  if(!file.exists(file_path)){
+    utils::download.file(url = "http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSubjects/DatabaseSubjects.rar",
+                         destfile = file_path)
+  }
+  system(paste0("unrar x ",file_path," ",path))
+}
 # 
 # #https://physionet.org/physiobank/database/capslpdb/
 # download_capsleep <- function(path){
