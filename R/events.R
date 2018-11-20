@@ -239,6 +239,6 @@ read_events_dreams_subjects <- function(record_id, path){
   events$event[events$event == -2] <- "Unknown"
   events$event[events$event == -3] <- "Unknown"
   events$begin <- startTime + (c(0:(nrow(events)-1))*5)
-  events$end <- startTime + 5
+  events$end <- events$begin + 5
   return(events)
 }
