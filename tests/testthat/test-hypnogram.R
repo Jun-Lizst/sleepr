@@ -34,3 +34,10 @@ test_that("Splitting signals", {
   unlink("data/sample",recursive = TRUE)
 
 })
+
+test_that("Plot hypnogram", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  hypnogram <- hypnogram(events)
+  hypnogram <- plot_transitions(events)
+})
+

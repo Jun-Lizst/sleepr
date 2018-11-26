@@ -20,6 +20,7 @@ Imports:
     Rlibeemd,
     e1071,
     signal,
-    phonTools
+    phonTools,
+    visNetwork
 Suggests: testthat
 RoxygenNote: 6.1.0

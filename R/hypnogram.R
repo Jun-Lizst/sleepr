@@ -85,6 +85,60 @@ plot_spectrogram <- function(signal, sRate, maxfreq = 25, windowlength = 2000, s
   phonTools::spectrogram(signal, fs = sRate, windowlength = windowlength, maxfreq = maxfreq, show = show)
 }
 
-
-
-
+#' Get transitions graph
+#'
+#' @param hypnogram hypnogram
+#' @param height height
+#' @param width width
+#' @return list.
+#' @export
+plot_transitions <- function(hypnogram, height = "500px", width = "100%"){
+  
+  # Hypnogram
+  hypnogram <- hypnogram(hypnogram)
+  hypnogram$event <- as.character(hypnogram$event)
+  hypnogram_counts <- data.frame(table(hypnogram$event))
+  colnames(hypnogram_counts) <- c("event","count")
+  hypnogram <- merge(hypnogram,hypnogram_counts, by = "event")
+  hypnogram <- hypnogram[order(hypnogram$begin),]
+  hypnogram$event <- paste0(hypnogram$event," (",hypnogram$count,")")
+  #hypnogram$count <- NULL
+  hypnogram$nextstage <- c(hypnogram$event[-1],NA)
+  
+  transitions <- nrow(hypnogram[hypnogram$nextstage != hypnogram$event,c("nextstage","event")])
+  
+  # Nodes
+  nodes <- data.frame(id = 1:length(unique(hypnogram$event)), 
+                      group = unique(hypnogram$event), 
+                      stringsAsFactors = FALSE)
+  nodes$label <- nodes$group
+  nodes$shape = "circle"
+  nodes$event <- nodes$label
+  nodes <- merge(unique(hypnogram[,c("event","count")]),nodes)
+  nodes$event <- NULL
+  nodes$value <- nodes$count
+  
+  # Edges
+  edges <- hypnogram[hypnogram$nextstage != hypnogram$event,c("nextstage","event")]
+  colnames(edges) <- c("to","from")
+  edges$count = 1
+  edges <- stats::aggregate(count ~ from + to, data = edges, sum)
+  edges$group <- edges$to
+  edges <- merge(edges,nodes[,c("group","id")], by = "group")
+  edges$to <- edges$id
+  edges$id <- NULL
+  edges$group <- edges$from
+  edges <- merge(edges,nodes[,c("group","id")], by = "group")
+  edges$from <- edges$id
+  edges$id <- NULL
+  edges$group <- NULL
+  edgestotal <- stats::aggregate(count ~ from, data = edges, sum)
+  colnames(edgestotal) <- c("from","totalfrom")
+  edges <- merge(edges,edgestotal,by = "from")
+  edges$label <- round(edges$count/edges$totalfrom,digits=2)
+  edges$width <- edges$label*4
+  edges$arrows <- "to"
+  edges$length <- 500
+  visNetwork::visNetwork(nodes, edges, height = height, width = width)
+  
+}
