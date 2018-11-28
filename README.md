@@ -136,6 +136,19 @@ These functions compute statistics based on stage scoring.
   * `cycles_rem_avg_duration`:
   * `cycles_end_avg_duration`:
 
+### Events nomenclature
+
+SleepR uses the following nomenclature for annotated events:
+
+#### Stages
+
+  * AWA
+  * REM
+  * N1
+  * N2
+  * N3
+  
+
 ### Data download
 
 SleepR can download open databases with simple function calls.
