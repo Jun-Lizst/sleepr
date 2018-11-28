@@ -106,3 +106,21 @@ download_dreams_spindles <- function(path){
     }
   }
 }
+
+#' Download the CAP Sleep Database in the desired path. https://physionet.org/physiobank/database/capslpdb/
+#' @param path Path 
+#' @references MG Terzano, L Parrino, A Sherieri, R Chervin, S Chokroverty, C Guilleminault, M Hirshkowitz, M Mahowald, H Moldofsky, A Rosa, R Thomas, A Walters. Atlas, rules, and recording techniques for the scoring of cyclic alternating pattern (CAP) in human sleep. Sleep Med 2001 Nov; 2(6):537-553. Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet: Components of a New Research Resource for Complex Physiologic Signals. Circulation 101(23):e215-e220 [Circulation Electronic Pages; http://circ.ahajournals.org/cgi/content/full/101/23/e215]; 2000 (June 13).  
+#' @export
+download_capslpdb <- function(path){
+  if(!dir.exists(path)){
+    dir.create(path)
+  }
+  url <- "https://physionet.org/physiobank/database/capslpdb/"
+  if(!file.exists(paste0(path,"/SHA256SUMS"))) utils::download.file(paste0(url,"SHA256SUMS"), destfile = paste0(path,"/SHA256SUMS"))
+  sha256 <- utils::read.table(paste0(path,"/SHA256SUMS"),header = FALSE,col.names = c("sha256","filename"),stringsAsFactors = F)
+  for(i in c(1:nrow(sha256))){
+    utils::download.file(url = paste0(url,sha256$filename[i]),
+                         destfile = paste0(path,"/",sha256$filename[i])
+    )
+  }
+}
