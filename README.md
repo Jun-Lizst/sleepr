@@ -16,24 +16,7 @@ devtools::install_github("boupetch/sleepr")
 
 ### File manipulation
 
-In SleepR, `write_mdf()` and `read_mdf()` functions are used to write and read records on disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format<sup>1</sup> (MDF). MDF is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal and metadata storage. 
-MDF uses binary files for signals and JSON for metadata.
-
-### Data download
-
-SleepR can download open databases with simple function calls.
-
-#### ISRUC-SLEEP Dataset
-
-```
-download_isruc("./")
-```
-
-#### The Sleep-EDF Database [Expanded]
-
-```
-download_sleepedfx("./")
-```
+In SleepR, `write_mdf()` and `read_mdf()` functions are used to write and read records on disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format<sup>1</sup> (MDF). MDF is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal and metadata storage. MDF uses binary files for signals and JSON for metadata.
 
 ### Sleep visualization
 
@@ -153,6 +136,41 @@ These functions compute statistics based on stage scoring.
   * `cycles_rem_avg_duration`:
   * `cycles_end_avg_duration`:
 
+### Data download
+
+SleepR can download open databases with simple function calls.
+
+#### [ISRUC Sleep](https://sleeptight.isr.uc.pt/ISRUC_Sleep/)<sup>3</sup>
+
+A collection of sleep records from the [Institute for Systems and Robotics (ISR)](Institute for Systems and Robotics (ISR)) of the [University of Coimbra](http://www.uc.pt/), Portugal.
+
+```r
+download_isruc("./")
+```
+
+#### [The Sleep-EDF Database Expanded](https://physionet.org/pn4/sleep-edfx/)<sup>4</sup>
+
+61 polysomnograms hosted on Physionet<sup>5</sup>.
+
+```
+download_sleepedfx("./")
+```
+
+#### [Dreams Subjects](http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSubjects/)<sup>6</sup>
+
+20 whole-night PSG recordings coming from healthy subjects.
+
+```
+download_dreams_subjects("./")
+```
+
+#### [CAP Sleep Database](https://physionet.org/physiobank/database/capslpdb/)<sup>7</sup>
+
+A collection of 108 polysomnographic recordings registered at the Sleep Disorders Center of the Ospedale Maggiore of Parma, Italy and hosted on Physionet<sup>5</sup>.
+
+```
+download_capslpdb("./")
+```
 
 ## Package Testing
 
@@ -169,3 +187,14 @@ R CMD Rd2pdf . && mv ..pdf sleepr.pdf && rm -r .Rd2pdf*
 1. P. Bouchequet, D. Jin, G. Solelhac, M. Chennaoui, D. Leger, [«*Morpheo Data Format (MDF), un nouveau format de données simple, robuste et performant pour stocker et analyser les enregistrements de sommeil*»](https://www.sciencedirect.com/science/article/pii/S1769449318301304), Médecine du Sommeil, vol. 15, n 1, p. 48‑49, march 2018.
 
 2. R.B. Berry, R. Brooks, C.E. Gamaldo, S.M. Harding, C.L. Marcus, B.V. Vaughn, [The AASM Manual for the Scoring of Sleep and Associated Events](https://aasm.org/clinical-resources/scoring-manual/), 2013.
+
+3. Khalighi Sirvan, Teresa Sousa, José Moutinho Santos, and Urbano Nunes. “ISRUC-Sleep: A comprehensive public dataset for sleep researchers.“Computer methods and programs in biomedicine 124 (2016): 180-192.
+
+4. B Kemp, AH Zwinderman, B Tuk, HAC Kamphuisen, JJL Oberyé. [Analysis of a sleep-dependent neuronal feedback loop: the slow-wave microcontinuity of the EEG.](https://physionet.org/pn4/sleep-edfx/Papers/2000-Kemp---neurofeedback.pdf) IEEE-BME 47(9):1185-1194 (2000). 
+
+5. Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet: Components of a New Research Resource for Complex Physiologic Signals. Circulation 101(23):e215-e220 [Circulation Electronic Pages](http://circ.ahajournals.org/cgi/content/full/101/23/e215); 2000 (June 13).
+
+6. S. Devuyst, T. Dutoit, P. Stenuit, M. Kerkhofs, E. Stanus, ["Canceling ECG Artifacts in EEG using a Modified Independent Component Analysis Approach"](https://asp-eurasipjournals.springeropen.com/articles/10.1155/2008/747325), EURASIP Journal on Advances in Signal Processing, Volume 2008, Article ID 747325, Accepted 31 July 2008.
+
+7. MG Terzano, L Parrino, A Sherieri, R Chervin, S Chokroverty, C Guilleminault, M Hirshkowitz, M Mahowald, H Moldofsky, A Rosa, R Thomas, A Walters. [Atlas, rules, and recording techniques for the scoring of cyclic alternating pattern (CAP) in human sleep.](https://www.ncbi.nlm.nih.gov/pubmed/14592270) Sleep Med 2001 Nov; 2(6):537-553. 
+
