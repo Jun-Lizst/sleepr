@@ -2,12 +2,12 @@ context("Spectral functions")
 
 
 test_that("Compute spectral power bands", {
-  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/sample.edf")$startTime, origin = "1970-01-01")
+  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/subject1.edf")$startTime, origin = "1970-01-01")
   events <- data.frame(begin = c(startTime,startTime+30,startTime+60),
                   end = c(startTime+30,startTime+60,startTime+90),
                   event = c("N2","N2","REM"))
   events$event <- as.character(events$event)
-  write_mdf(edfPath = "data/sample.edf",
+  write_mdf(edfPath = "data/subject1.edf",
             mdfPath = "data/sample",
             events = events)
   bands_powers <- hypnogram_band_powers(
@@ -40,12 +40,12 @@ test_that("Compute spectral power bands", {
 
 
 test_that("Compute spectral power bands without REM", {
-  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/sample.edf")$startTime, origin = "1970-01-01")
+  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/subject1.edf")$startTime, origin = "1970-01-01")
   events <- data.frame(begin = c(startTime,startTime+30,startTime+60),
                        end = c(startTime+30,startTime+60,startTime+90),
                        event = c("N2","N2","N3"))
   events$event <- as.character(events$event)
-  write_mdf(edfPath = "data/sample.edf",
+  write_mdf(edfPath = "data/subject1.edf",
             mdfPath = "data/sample",
             events = events)
   bands <- list()
@@ -65,12 +65,12 @@ test_that("Compute spectral power bands without REM", {
 })
 
 test_that("Compute spectral power bands without NREM", {
-  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/sample.edf")$startTime, origin = "1970-01-01")
+  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/subject1.edf")$startTime, origin = "1970-01-01")
   events <- data.frame(begin = c(startTime,startTime+30,startTime+60),
                        end = c(startTime+30,startTime+60,startTime+90),
                        event = c("REM","REM","REM"))
   events$event <- as.character(events$event)
-  write_mdf(edfPath = "data/sample.edf",
+  write_mdf(edfPath = "data/subject1.edf",
             mdfPath = "data/sample",
             events = events)
   bands <- list()
@@ -90,12 +90,12 @@ test_that("Compute spectral power bands without NREM", {
 })
 
 test_that("Compute EEMD", {
-  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/sample.edf")$startTime, origin = "1970-01-01")
+  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/subject1.edf")$startTime, origin = "1970-01-01")
   events <- data.frame(begin = c(startTime,startTime+30,startTime+60),
                        end = c(startTime+30,startTime+60,startTime+90),
                        event = c("REM","REM","REM"))
   events$event <- as.character(events$event)
-  write_mdf(edfPath = "data/sample.edf",
+  write_mdf(edfPath = "data/subject1.edf",
             mdfPath = "data/sample",
             events = events)
   record <- read_mdf("data/sample",channels = "C3-M2")

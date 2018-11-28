@@ -3,7 +3,7 @@ context("Computing statistics")
 # Meta function ----
 
 test_that("Computing statistics from one record", {
-  write_mdf(edfPath = "data/sample.edf",
+  write_mdf(edfPath = "data/subject1.edf",
             mdfPath = "data/sample",
             events = read_events_noxturnal("data/noxturnal_events_example_unicode.csv"))
   stats <- compute_all_stats("data/sample",bands = list(delta = c(0.5,3.5),

@@ -18,12 +18,12 @@ test_that("Plotting a hypnogram without REM", {
 })
 
 test_that("Splitting signals", {
-  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/sample.edf")$startTime, origin = "1970-01-01")
+  startTime <- as.POSIXlt(edfReader::readEdfHeader("data/subject1.edf")$startTime, origin = "1970-01-01")
   events <- data.frame(begin = c(startTime,startTime+30,startTime+60),
                        end = c(startTime+30,startTime+60,startTime+90),
                        event = c("N2","N2","REM"))
   events$event <- as.character(events$event)
-  write_mdf(edfPath = "data/sample.edf",
+  write_mdf(edfPath = "data/subject1.edf",
             mdfPath = "data/sample",
             events = events)
   record <- read_mdf(mdfPath = "data/sample",channels = c("C3-M2"))

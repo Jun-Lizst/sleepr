@@ -16,8 +16,8 @@ devtools::install_github("boupetch/sleepr")
 
 ### File manipulation
 
-In SleepR, `write_mdf()` and `read_mdf()` functions are used to write and read records on disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format<sup>1</sup> (MDF). MDF is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal as long as metadata storage. 
-MDF uses binary files for signals and JSON for metadata.  Signals values are encoded by default in binary, 32 bits, little endian.
+In SleepR, `write_mdf()` and `read_mdf()` functions are used to write and read records on disk. Files are converted from the European Data Format (EDF) to Morpheo Data Format<sup>1</sup> (MDF). MDF is a simple, efficient and interoperable file format for biological timeseries. The format supports raw signal and metadata storage. 
+MDF uses binary files for signals and JSON for metadata.
 
 ### Data download
 
@@ -26,13 +26,13 @@ SleepR can download open databases with simple function calls.
 #### ISRUC-SLEEP Dataset
 
 ```
-download_isruc()
+download_isruc("./")
 ```
 
 #### The Sleep-EDF Database [Expanded]
 
 ```
-download_sleepedfx()
+download_sleepedfx("./")
 ```
 
 ### Sleep visualization
@@ -152,6 +152,7 @@ These functions compute statistics based on stage scoring.
   * `cycles_begin_avg_duration`:
   * `cycles_rem_avg_duration`:
   * `cycles_end_avg_duration`:
+
 
 ## Package Testing
 
