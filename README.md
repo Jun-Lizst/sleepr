@@ -53,6 +53,20 @@ threejs::scatterplot3js(powers$delta, powers$theta,
 
 <img src="man/powers.png" alt="spectral powers" width="402"/>
 
+#### Transitions graph
+
+```R
+record <- read_mdf("/Users/paul/Documents/sleep/mdf/isruc-1-89-1/")
+
+powers <- sleepr::hypnogram_band_powers(record = record,
+                                        channel = "C3-M2")
+
+sleepr::plot_transitions(record[["events"]])
+```
+
+<img src="man/transitions.png" alt="transitions graph" width="550"/>
+
+
 ### Statistics computing
 
 Various statistics can be computed from the polysomnographic data, signals and events. Durations are expressed in *minutes*, indexes in *hours*. 
