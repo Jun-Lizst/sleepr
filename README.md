@@ -32,6 +32,26 @@ A spectrogram visually represents the frenquencies spectrum of a signal. Spectro
 
 ![spectrogram](man/spectrogram.jpg)
 
+#### Spectral powers
+
+```R
+record <- read_mdf("mdf/isruc-1-89-1/")
+
+powers <- sleepr::hypnogram_band_powers(record = record,
+                                        channel = "C3-M2")
+powers$colors <- NA
+powers$colors[powers$stage == "AWA"] <- "#1D60E7"
+powers$colors[powers$stage == "REM"] <- "#D900F0"
+powers$colors[powers$stage == "N1"] <- "#FD9509"
+powers$colors[powers$stage == "N2"] <- "#F70007"
+powers$colors[powers$stage == "N3"] <- "#339F03"
+threejs::scatterplot3js(powers$delta, powers$theta,
+                        as.integer(powers$epoch), size = 0.25,
+                        color= powers$colors)
+```
+
+![spectral powers](man/powers.png)
+
 ### Statistics computing
 
 Various statistics can be computed from the polysomnographic data, signals and events. Durations are expressed in *minutes*, indexes in *hours*. 
@@ -92,10 +112,10 @@ These functions compute statistics based on stage scoring.
 
   * `ah_count`: Apnea and hypopnea count.
   * `ah_hour`: Apnea and hypopnea index by hour.
-  * `ah_back`: 
-  * `ah_nonback`:
-  * `ah_rem`:
-  * `ah_nonrem`:
+  * `ah_back`: Apnea and hypopnea count in back position.
+  * `ah_nonback`: Apnea and hypopnea count in non-back position.
+  * `ah_rem`: Apnea and hypopnea count during REM stages.
+  * `ah_nonrem`: Apnea and hypopnea count during NREM stages.
   
 #### Micro-arousals
 
@@ -110,10 +130,10 @@ These functions compute statistics based on stage scoring.
   * `ma_n2_count`: Micro-arousals count during N2.
   * `ma_n3_count`: Micro-arousals count during N3.
   * `ma_rem_count`: Micro-arousals count during REM.
-  * `ma_n1_index`:
-  * `ma_n2_index`:
-  * `ma_n3_index`:
-  * `ma_rem_index`:
+  * `ma_n1_index`: Micro-arousals index during N1.
+  * `ma_n2_index`: Micro-arousals index during N2.
+  * `ma_n3_index`: Micro-arousals index during N3.
+  * `ma_rem_index`: Micro-arousals index during REM.
 
 #### Rapid eye movements
 
@@ -123,18 +143,18 @@ These functions compute statistics based on stage scoring.
   
 #### Cycles
 
-  * `cycles_classic_count`:
-  * `cycles_begin_count`:
-  * `cycles_end_count`:
-  * `cycles_rem_count`:
-  * `cycles_classic_duration`:
-  * `cycles_begin_duration`:
-  * `cycles_rem_duration`:
-  * `cycles_end_duration`:
-  * `cycles_classic_avg_duration`:
-  * `cycles_begin_avg_duration`:
-  * `cycles_rem_avg_duration`:
-  * `cycles_end_avg_duration`:
+  * `cycles_classic_count`: Regular cycles count.
+  * `cycles_begin_count`: Starting cycles count.
+  * `cycles_end_count`: Ending cycles count.
+  * `cycles_rem_count`: REM cycles count.
+  * `cycles_classic_duration`: Regular cycles total duration.
+  * `cycles_begin_duration`: Starting cycles total duration.
+  * `cycles_rem_duration`: REM cycles total duration.
+  * `cycles_end_duration`: Ending cycles total duration.
+  * `cycles_classic_avg_duration`: Regular cycles average duration.
+  * `cycles_begin_avg_duration`: Starting cycles average duration.
+  * `cycles_rem_avg_duration`: REM cycles average duration.
+  * `cycles_end_avg_duration`: Ending cycles average duration.
 
 ### Events nomenclature
 
@@ -142,13 +162,12 @@ SleepR uses the following nomenclature for annotated events:
 
 #### Stages
 
-  * AWA
-  * REM
-  * N1
-  * N2
-  * N3
+  * `AWA`
+  * `REM`
+  * `N1`
+  * `N2`
+  * `N3`
   
-
 ### Data download
 
 SleepR can download open databases with simple function calls.
@@ -201,7 +220,7 @@ R CMD Rd2pdf . && mv ..pdf sleepr.pdf && rm -r .Rd2pdf*
 
 2. R.B. Berry, R. Brooks, C.E. Gamaldo, S.M. Harding, C.L. Marcus, B.V. Vaughn, [The AASM Manual for the Scoring of Sleep and Associated Events](https://aasm.org/clinical-resources/scoring-manual/), 2013.
 
-3. Khalighi Sirvan, Teresa Sousa, José Moutinho Santos, and Urbano Nunes. “ISRUC-Sleep: A comprehensive public dataset for sleep researchers.“Computer methods and programs in biomedicine 124 (2016): 180-192.
+3. Khalighi Sirvan, Teresa Sousa, José Moutinho Santos, and Urbano Nunes. [ISRUC-Sleep: A comprehensive public dataset for sleep researchers.](https://www.ncbi.nlm.nih.gov/pubmed/26589468) Computer methods and programs in biomedicine 124 (2016): 180-192.
 
 4. B Kemp, AH Zwinderman, B Tuk, HAC Kamphuisen, JJL Oberyé. [Analysis of a sleep-dependent neuronal feedback loop: the slow-wave microcontinuity of the EEG.](https://physionet.org/pn4/sleep-edfx/Papers/2000-Kemp---neurofeedback.pdf) IEEE-BME 47(9):1185-1194 (2000). 
 
