@@ -50,7 +50,7 @@ threejs::scatterplot3js(powers$delta, powers$theta,
                         color= powers$colors)
 ```
 
-![spectral powers](man/powers.png)
+![spectral powers](man/powers.png =804*708)
 
 ### Statistics computing
 
