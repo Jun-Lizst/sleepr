@@ -51,7 +51,7 @@ threejs::scatterplot3js(powers$delta, powers$theta,
 ```
 
 
-<img src="man/powers.png" alt="spectral powers" width="804"/>
+<img src="man/powers.png" alt="spectral powers" width="402"/>
 
 ### Statistics computing
 
