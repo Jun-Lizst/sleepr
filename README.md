@@ -56,7 +56,7 @@ threejs::scatterplot3js(powers$delta, powers$theta,
 #### Transitions graph
 
 ```R
-record <- read_mdf("/Users/paul/Documents/sleep/mdf/isruc-1-89-1/")
+record <- read_mdf("mdf/isruc-1-89-1/")
 
 powers <- sleepr::hypnogram_band_powers(record = record,
                                         channel = "C3-M2")
