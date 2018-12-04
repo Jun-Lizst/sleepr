@@ -1,9 +1,12 @@
-#' Write a MDF from an EDF file. MDF directory is erased if it already exists.
+#' Write a European Data Format (EDF) record file to disk using Morpheo Data Format (MDF) guidelines.
+#' Target directory is erased if it already exists. Signals are stored in binary file, 
+#' events and metadata in JavaScript Object Notation (JSON) files.
 #'
-#' @param edfPath EDF file path.
-#' @param mdfPath MDF path.
-#' @param channels Channels to write.
-#' @param events Events dataframe to write.
+#' @references P. Bouchequet, D. Jin, G. Solelhac, M. Chennaoui, D. Leger, "Morpheo Data Format (MDF), un nouveau format de données simple, robuste et performant pour stocker et analyser les enregistrements de sommeil", Médecine du Sommeil, vol. 15, n 1, p. 48‑49, march 2018.
+#' @param edfPath European Data Format (EDF) file path.
+#' @param mdfPath Morpheo Data Format (MDF) directory path.
+#' @param channels Vector of channels labels to write.
+#' @param events Events dataframe to write. Events dataframe. Dataframe must contain \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @export
 write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
   

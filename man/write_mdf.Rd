@@ -2,19 +2,26 @@
 % Please edit documentation in R/write.R
 \name{write_mdf}
 \alias{write_mdf}
-\title{Write a MDF from an EDF file. MDF directory is erased if it already exists.}
+\title{Write a European Data Format (EDF) record file to disk using Morpheo Data Format (MDF) guidelines.
+Target directory is erased if it already exists. Signals are stored in binary file, 
+events and metadata in JavaScript Object Notation (JSON) files.}
 \usage{
 write_mdf(edfPath, mdfPath, channels = c(NA), events = c())
 }
 \arguments{
-\item{edfPath}{EDF file path.}
+\item{edfPath}{European Data Format (EDF) file path.}
 
-\item{mdfPath}{MDF path.}
+\item{mdfPath}{Morpheo Data Format (MDF) directory path.}
 
-\item{channels}{Channels to write.}
+\item{channels}{Vector of channels labels to write.}
 
-\item{events}{Events dataframe to write.}
+\item{events}{Events dataframe to write. Events dataframe. Dataframe must contain \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
 }
 \description{
-Write a MDF from an EDF file. MDF directory is erased if it already exists.
+Write a European Data Format (EDF) record file to disk using Morpheo Data Format (MDF) guidelines.
+Target directory is erased if it already exists. Signals are stored in binary file, 
+events and metadata in JavaScript Object Notation (JSON) files.
+}
+\references{
+P. Bouchequet, D. Jin, G. Solelhac, M. Chennaoui, D. Leger, "Morpheo Data Format (MDF), un nouveau format de données simple, robuste et performant pour stocker et analyser les enregistrements de sommeil", Médecine du Sommeil, vol. 15, n 1, p. 48‑49, march 2018.
 }
