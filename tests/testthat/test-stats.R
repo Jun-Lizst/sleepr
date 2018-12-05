@@ -338,5 +338,9 @@ test_that("Cycles average duration", {
   expect_equal(round(cycles_end_avg_duration(events)), 61)
 })
 
+test_that("Cycles stats", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")
+  cycles_stats(events)
+})
 
 

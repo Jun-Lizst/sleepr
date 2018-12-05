@@ -1189,3 +1189,12 @@ cycles_end_avg_duration <- function(events){
     return(duration/count)
   }
 }
+
+#' Get cycles related stats
+#' 
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @export
+cycles_stats <- function(events){
+  stats <- c("cycles_classic_count" = nrow(events[events$event == "cycle-CLASSIC",]))
+  return(stats)
+}
