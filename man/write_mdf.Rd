@@ -6,16 +6,19 @@
 Target directory is erased if it already exists. Signals are stored in binary file, 
 events and metadata in JavaScript Object Notation (JSON) files.}
 \usage{
-write_mdf(edfPath, mdfPath, channels = c(NA), events = c())
+write_mdf(edfPath, mdfPath, channels = c(NA), events = c(),
+  endian = "little")
 }
 \arguments{
-\item{edfPath}{European Data Format (EDF) file path.}
+\item{edfPath}{character. European Data Format (EDF) file path.}
 
-\item{mdfPath}{Morpheo Data Format (MDF) directory path.}
+\item{mdfPath}{character. Morpheo Data Format (MDF) directory path.}
 
-\item{channels}{Vector of channels labels to write.}
+\item{channels}{character. Vector of channels labels to write.}
 
-\item{events}{Events dataframe to write. Events dataframe. Dataframe must contain \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
+\item{events}{dataframe. Events dataframe to write. Events dataframe. Dataframe must contain \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
+
+\item{endian}{character. Endianess. \code{"big"} or \code{"little"}. Defaults to \code{"little"}.}
 }
 \description{
 Write a European Data Format (EDF) record file to disk using Morpheo Data Format (MDF) guidelines.

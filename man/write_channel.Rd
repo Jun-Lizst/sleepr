@@ -2,21 +2,24 @@
 % Please edit documentation in R/write.R
 \name{write_channel}
 \alias{write_channel}
-\title{Write a channel, MDF style.}
+\title{Write a timeserie to disk using Morpheo Data Format (MDF) guidelines.}
 \usage{
 write_channel(channel, signals, headers, mdfPath, endian = "little")
 }
 \arguments{
-\item{channel}{Channel name.}
+\item{channel}{character. Channel name.}
 
-\item{signals}{signals list.}
+\item{signals}{list. European Data Format (EDF) signals list.}
 
-\item{headers}{headers.}
+\item{headers}{list. European Data Format (EDF) file headers.}
 
-\item{mdfPath}{mdf path}
+\item{mdfPath}{Morpheo Data Format (MDF) directory path.}
 
-\item{endian}{little or big.}
+\item{endian}{character. Endianess. \code{"big"} or \code{"little"}. Defaults to \code{"little"}.}
 }
 \description{
-Write a channel, MDF style.
+Write a timeserie to disk using Morpheo Data Format (MDF) guidelines.
+}
+\references{
+P. Bouchequet, D. Jin, G. Solelhac, M. Chennaoui, D. Leger, "Morpheo Data Format (MDF), un nouveau format de données simple, robuste et performant pour stocker et analyser les enregistrements de sommeil", Médecine du Sommeil, vol. 15, n 1, p. 48‑49, march 2018.
 }

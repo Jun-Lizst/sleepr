@@ -173,15 +173,22 @@ These functions compute statistics based on stage scoring.
 
 ### Events nomenclature
 
-SleepR uses the following nomenclature for annotated events:
+SleepR uses the following nomenclature for annotated events labels:
 
 #### Stages
 
-  * `AWA`
-  * `REM`
-  * `N1`
-  * `N2`
-  * `N3`
+  * `AWA`: Awake stage.
+  * `REM`: Rapid Eye Movement (REM) stage.
+  * `N1`: Non-REM (NREM) stage 1.
+  * `N2`: Non-REM (NREM) stage 2.
+  * `N3`: Non-REM (NREM) stage 2.
+
+#### Cycles
+
+  * `cycle-CLASSIC` A cycle which roughly follows the pattern: N1-N2-N3-R.
+  * `cycle-BN` The beginning of the night; a cycle which roughly follows the pattern: N1-N2-N3-W/1 (without REM).
+  * `cycle-EN` The end of the night; a cycle which roughly follows the pattern: N1-N2-R.
+  * `cycle-REM` A REM cycle.
   
 ### Data download
 

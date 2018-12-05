@@ -2,7 +2,7 @@
 % Please edit documentation in R/hypnogram.R
 \name{plot_hypnogram}
 \alias{plot_hypnogram}
-\title{Draw a histogram with ggplot2.}
+\title{Draw a hypnogram with ggplot2.}
 \usage{
 plot_hypnogram(events, labels = c("N3", "N2", "N1", "REM", "AWA"))
 }
@@ -15,5 +15,8 @@ plot_hypnogram(events, labels = c("N3", "N2", "N1", "REM", "AWA"))
 a ggplot.
 }
 \description{
-Draw a histogram with ggplot2.
+Draw a hypnogram with ggplot2.
+}
+\references{
+Silber MH, Ancoli-Israel S, Bonnet MH, Chokroverty S, Grigg-Damberger MM, et al. (2007). "The visual scoring of sleep in adults". Journal of Clinical Sleep Medicine. 3 (2): 121–31. PMID 17557422
 }

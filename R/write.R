@@ -3,12 +3,13 @@
 #' events and metadata in JavaScript Object Notation (JSON) files.
 #'
 #' @references P. Bouchequet, D. Jin, G. Solelhac, M. Chennaoui, D. Leger, "Morpheo Data Format (MDF), un nouveau format de données simple, robuste et performant pour stocker et analyser les enregistrements de sommeil", Médecine du Sommeil, vol. 15, n 1, p. 48‑49, march 2018.
-#' @param edfPath European Data Format (EDF) file path.
-#' @param mdfPath Morpheo Data Format (MDF) directory path.
-#' @param channels Vector of channels labels to write.
-#' @param events Events dataframe to write. Events dataframe. Dataframe must contain \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @param edfPath character. European Data Format (EDF) file path.
+#' @param mdfPath character. Morpheo Data Format (MDF) directory path.
+#' @param channels character. Vector of channels labels to write.
+#' @param events dataframe. Events dataframe to write. Events dataframe. Dataframe must contain \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @param endian character. Endianess. \code{"big"} or \code{"little"}. Defaults to \code{"little"}.
 #' @export
-write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
+write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c(), endian="little") {
   
   # Reset MDF directory
   if(dir.exists(mdfPath)){
@@ -35,7 +36,7 @@ write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
     }
     
     for(channel in edfchannels){
-      write_channel(channel, signals, headers, mdfPath)
+      write_channel(channel, signals, headers, mdfPath, endian = endian)
     }
   }
 
@@ -56,14 +57,14 @@ write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c()) {
   }
 }
 
-#' Write a channel, MDF style.
+#' Write a timeserie to disk using Morpheo Data Format (MDF) guidelines.
 #'
-#' @param channel Channel name.
-#' @param signals signals list.
-#' @param headers headers.
-#' @param mdfPath mdf path
-#' @param endian little or big.
-#' @export
+#' @references P. Bouchequet, D. Jin, G. Solelhac, M. Chennaoui, D. Leger, "Morpheo Data Format (MDF), un nouveau format de données simple, robuste et performant pour stocker et analyser les enregistrements de sommeil", Médecine du Sommeil, vol. 15, n 1, p. 48‑49, march 2018.
+#' @param channel character. Channel name.
+#' @param signals list. European Data Format (EDF) signals list.
+#' @param headers list. European Data Format (EDF) file headers.
+#' @param mdfPath Morpheo Data Format (MDF) directory path.
+#' @param endian character. Endianess. \code{"big"} or \code{"little"}. Defaults to \code{"little"}.
 write_channel <- function(channel, signals, headers, mdfPath, endian="little"){
   signal <- signals[[channel]]
   

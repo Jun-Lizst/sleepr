@@ -1,9 +1,10 @@
-#' Read a MDF
+#' Read a Morpheo Data Format (MDF) directory to a list.
 #'
-#' @param mdfPath [String] MDF path.
-#' @param channels [String] Channels to read.
-#' @param metadata [Boolean] Read or not the metadata.
-#' @return A (large) list.
+#' @references P. Bouchequet, D. Jin, G. Solelhac, M. Chennaoui, D. Leger, "Morpheo Data Format (MDF), un nouveau format de données simple, robuste et performant pour stocker et analyser les enregistrements de sommeil", Médecine du Sommeil, vol. 15, n 1, p. 48‑49, march 2018.
+#' @param mdfPath character. MDF path.
+#' @param channels character. Channels to read.
+#' @param metadata boolean. Read or not the metadata.
+#' @return A list.
 #' @export
 read_mdf <- function(mdfPath, channels = c(NA), metadata = TRUE) {
   

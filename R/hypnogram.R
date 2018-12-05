@@ -1,5 +1,6 @@
-#' Draw a histogram with ggplot2.
+#' Draw a hypnogram with ggplot2.
 #'
+#' @references Silber MH, Ancoli-Israel S, Bonnet MH, Chokroverty S, Grigg-Damberger MM, et al. (2007). "The visual scoring of sleep in adults". Journal of Clinical Sleep Medicine. 3 (2): 121–31. PMID 17557422
 #' @param events events dataframe.
 #' @param labels hyp labels.
 #' @return a ggplot.
