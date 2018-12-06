@@ -95,19 +95,7 @@ compute_all_stats <- function(records,
       df_record$rem_avg_duration <- rem_avg_duration(e)
       
       # Cycles
-      
-      df_record$cycles_classic_count <- cycles_classic_count(e)
-      df_record$cycles_begin_count <- cycles_begin_count(e)
-      df_record$cycles_rem_count <- cycles_rem_count(e)
-      df_record$cycles_end_count <- cycles_end_count(e)
-      df_record$cycles_classic_duration <- cycles_classic_duration(e)
-      df_record$cycles_begin_duration <- cycles_begin_duration(e)
-      df_record$cycles_rem_duration <- cycles_rem_duration(e)
-      df_record$cycles_end_duration <- cycles_end_duration(e)
-      df_record$cycles_classic_avg_duration <- cycles_classic_avg_duration(e)
-      df_record$cycles_begin_avg_duration <- cycles_begin_avg_duration(e)
-      df_record$cycles_rem_avg_duration <- cycles_rem_avg_duration(e)
-      df_record$cycles_end_avg_duration <- cycles_end_avg_duration(e)
+      df_record <- cbind(df_record, as.data.frame(as.list(cycles_stats(e))))
     }
       df <- dplyr::bind_rows(df,df_record)
        
@@ -1062,139 +1050,60 @@ rem_avg_duration <- function(events){
 
 # Cycles ----
 
-#' cycles_classic_count
+#' Get cycles related stats. Number of cycles, total duration, average duration.
 #' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return A named vector.
 #' @export
-cycles_classic_count <- function(events){
-  return(nrow(events[events$event == "cycle-CLASSIC",]))
-}
-
-#' cycles_begin_count
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_begin_count <- function(events){
-  return(nrow(events[events$event == "cycle-BN",]))
-}
-
-#' cycles_rem_count
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_rem_count <- function(events){
-  return(nrow(events[events$event == "cycle-REM",]))
-}
-
-#' cycles_end_count
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_end_count <- function(events){
-  return(nrow(events[events$event == "cycle-EN",]))
-}
-
-#' cycles_classic_duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_classic_duration <- function(events){
-  cycles <- events[events$event == "cycle-CLASSIC",]
-  if(nrow(cycles) == 0) return(0)
-  return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
-}
-
-#' cycles_begin_duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_begin_duration <- function(events){
-  cycles <- events[events$event == "cycle-BN",]
-  if(nrow(cycles) == 0) return(0)
-  return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
-}
-
-#' cycles_rem_duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_rem_duration <- function(events){
-  cycles <- events[events$event == "cycle-REM",]
-  if(nrow(cycles) == 0) return(0)
-  return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
-}
-
-#' cycles_end_duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_end_duration <- function(events){
-  cycles <- events[events$event == "cycle-EN",]
-  if(nrow(cycles) == 0) return(0)
-  return(sum(as.numeric(difftime(cycles$end,cycles$begin,units="min"))))
-}
-
-#' cycles_classic_avg_duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_classic_avg_duration <- function(events){
-  duration <- cycles_classic_duration(events)
-  count <- cycles_classic_count(events)
-  if (count == 0 || duration == 0){
-    return(0)
-  } else {
-    return(duration/count)
-  }
-}
-
-#' cycles_begin_avg_duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_begin_avg_duration <- function(events){
-  duration <- cycles_begin_duration(events)
-  count <- cycles_begin_count(events)
-  if (count == 0 || duration == 0){
-    return(0)
-  } else {
-    return(duration/count)
-  }
-}
-
-#' cycles_rem_avg_duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_rem_avg_duration <- function(events){
-  duration <- cycles_rem_duration(events)
-  count <- cycles_rem_count(events)
-  if (count == 0 || duration == 0){
-    return(0)
-  } else {
-    return(duration/count)
-  }
-}
-
-#' cycles_end_avg_duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_end_avg_duration <- function(events){
-  duration <- cycles_end_duration(events)
-  count <- cycles_end_count(events)
-  if (count == 0 || duration == 0){
-    return(0)
-  } else {
-    return(duration/count)
-  }
-}
-
-#' Get cycles related stats
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-cycles_stats <- function(events){
-  stats <- c("cycles_classic_count" = nrow(events[events$event == "cycle-CLASSIC",]))
-  return(stats)
+cycles_stats <- function(e){
+  
+  # Filtering cycles related events
+  cycles_classic <- e[e$event == "cycle-CLASSIC",]
+  cycles_begin <- e[e$event == "cycle-BN",]
+  cycles_end <- e[e$event == "cycle-EN",]
+  cycles_rem <- e[e$event == "cycle-REM",]
+  
+  # Number of cycles
+  stats <- c("cycles_classic_count" = nrow(cycles_classic))
+  stats <- c(stats, "cycles_begin_count" = nrow(cycles_begin))
+  stats <- c(stats, "cycles_end_count" = nrow(cycles_end))
+  stats <- c(stats, "cycles_rem_count" = nrow(cycles_rem))
+  
+  # Number of cycles
+  stats <- c(stats,"cycles_classic_duration" = ifelse(
+    nrow(cycles_classic) == 0, 0,
+    sum(as.numeric(difftime(cycles_classic$end,cycles_classic$begin,units="min")))
+  ))
+  stats <- c(stats,"cycles_begin_duration" = ifelse(
+    nrow(cycles_begin) == 0, 0,
+    sum(as.numeric(difftime(cycles_begin$end,cycles_begin$begin,units="min")))
+  ))
+  stats <- c(stats,"cycles_rem_duration" = ifelse(
+    nrow(cycles_rem) == 0, 0,
+    sum(as.numeric(difftime(cycles_rem$end,cycles_rem$begin,units="min")))
+  ))
+  stats <- c(stats,"cycles_end_duration" = ifelse(
+    nrow(cycles_end) == 0, 0,
+    sum(as.numeric(difftime(cycles_end$end,cycles_end$begin,units="min")))
+  ))
+  
+  stats <- c(stats, "cycles_classic_avg_duration" = ifelse(
+    stats["cycles_classic_count"] == 0 || stats["cycles_classic_duration"] == 0, 0,
+    stats["cycles_classic_count"]/stats["cycles_classic_duration"]
+  ))
+  
+  stats <- c(stats, "cycles_begin_avg_duration" = ifelse(
+    stats["cycles_begin_count"] == 0 || stats["cycles_begin_duration"] == 0, 0,
+    stats["cycles_begin_count"]/stats["cycles_begin_duration"]
+  ))
+  stats <- c(stats, "cycles_classic_end_duration" = ifelse(
+    stats["cycles_end_count"] == 0 || stats["cycles_end_duration"] == 0, 0,
+    stats["cycles_end_count"]/stats["cycles_end_duration"]
+  ))
+  stats <- c(stats, "cycles_rem_avg_duration" = ifelse(
+    stats["cycles_rem_count"] == 0 || stats["cycles_rem_duration"] == 0, 0,
+    stats["cycles_rem_count"]/stats["cycles_rem_duration"]
+  ))
+  
+  stats
 }

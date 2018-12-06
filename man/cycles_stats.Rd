@@ -2,13 +2,16 @@
 % Please edit documentation in R/stats.R
 \name{cycles_stats}
 \alias{cycles_stats}
-\title{Get cycles related stats}
+\title{Get cycles related stats. Number of cycles, total duration, average duration.}
 \usage{
-cycles_stats(events)
+cycles_stats(e)
 }
 \arguments{
-\item{events}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
+\item{e}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
+}
+\value{
+A named vector.
 }
 \description{
-Get cycles related stats
+Get cycles related stats. Number of cycles, total duration, average duration.
 }
