@@ -1048,6 +1048,24 @@ rem_avg_duration <- function(events){
   return(mean(as.numeric(difftime(events$end.x,events$begin.x,units="secs"))))
 }
 
+#' Get REM related stats.
+#' 
+#' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return A named vector.
+#' @export
+rem_stats <- function(e){
+  
+  if(!check_events_integrity(e)){ return(NA) }
+  
+  # Filtering REM rapid eye movements
+  rem_rem <- get_overlapping_events(e,
+                                    x = c("Rapide"),
+                                    y = c("REM"))
+  
+  # REM Stats
+  
+}
+
 # Cycles ----
 
 #' Get cycles related stats. Number of cycles, total duration, average duration.
@@ -1056,6 +1074,8 @@ rem_avg_duration <- function(events){
 #' @return A named vector.
 #' @export
 cycles_stats <- function(e){
+  
+  if(!check_events_integrity(e)){ return(NA) }
   
   # Filtering cycles related events
   cycles_classic <- e[e$event == "cycle-CLASSIC",]
