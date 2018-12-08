@@ -1061,6 +1061,8 @@ rem_stats <- function(e){
   rem_rem <- get_overlapping_events(e,
                                     x = c("Rapide"),
                                     y = c("REM"))
+  stats <- c("rem_count" = nrow(rem_rem))
+  
   
   # REM Stats
   
