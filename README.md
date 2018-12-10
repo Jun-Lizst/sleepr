@@ -51,7 +51,7 @@ threejs::scatterplot3js(powers$delta, powers$theta,
 ```
 
 
-<img src="man/powers.png" alt="spectral powers" width="402"/>
+<div align="center"><img src="man/powers.png" alt="spectral powers" width="402"/></div>
 
 #### Transitions graph
 
@@ -64,7 +64,7 @@ powers <- sleepr::hypnogram_band_powers(record = record,
 sleepr::plot_transitions(record[["events"]])
 ```
 
-<img src="man/transitions.png" alt="transitions graph" width="550"/>
+<div align="center"><img src="man/transitions.png" alt="transitions graph" width="550"/></div>
 
 
 ### Statistics computing
