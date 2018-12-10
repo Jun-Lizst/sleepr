@@ -230,6 +230,10 @@ A collection of 108 polysomnographic recordings registered at the Sleep Disorder
 download_capslpdb("./")
 ```
 
+## Examples
+
+[Sleepviewer.com](http://sleepviewer.com) is an online application to visualize sleep records from various open data sources. It uses SleepR to manage and process records.
+
 ## Package Testing
 
 Testing use [testthat](https://github.com/r-lib/testthat).
