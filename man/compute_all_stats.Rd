@@ -5,7 +5,8 @@
 \title{Call and compile all statistics functions in a dataframe.}
 \usage{
 compute_all_stats(records, bands, normalize, eeg_channels = c("C3-A2",
-  "EEG Fpz-Cz", "C3-M2"), metadata = TRUE, butter = FALSE)
+  "EEG Fpz-Cz", "C3-M2"), metadata = TRUE, butter = FALSE,
+  resampling = FALSE)
 }
 \arguments{
 \item{records}{record paths.}
@@ -19,6 +20,8 @@ compute_all_stats(records, bands, normalize, eeg_channels = c("C3-A2",
 \item{metadata}{read metadata or not.}
 
 \item{butter}{Butterworth order.}
+
+\item{resampling}{sRate to resample by.}
 }
 \value{
 df.

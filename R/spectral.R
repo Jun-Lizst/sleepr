@@ -33,6 +33,7 @@ bands_power <- function(x,Fs,bands,normalize,butter = FALSE){
 #' @param normalize normalize.
 #' @param labels labels.
 #' @param butter butter order
+#' @param resampling sRate to resample by.
 #' @return a df.
 #' @export
 hypnogram_band_powers <- function(record,
@@ -44,12 +45,23 @@ hypnogram_band_powers <- function(record,
                                              gamma1 = c(30,40)),
                                   normalize = c(4,40),
                                   labels = c("N3","N2","N1","REM","AWA"),
-                                  butter = FALSE){
+                                  butter = FALSE,
+                                  resampling = FALSE){
+  
   sRate <- record[["channels"]][[channel]][["metadata"]][["sRate"]]
   hypnogram <- hypnogram(record[["events"]],labels)
-  signal <- sleepr::split_signal(signal = record[["channels"]][[channel]][["signal"]],
+  signal <- record[["channels"]][[channel]][["signal"]]
+  
+  if(resampling != FALSE){
+    signal <- signal::resample(signal, 1,(sRate/resampling) )
+    sRate <- resampling
+  }
+  
+  signal <- sleepr::split_signal(signal = signal,
                                  hypnogram = hypnogram,
                                  sRate = sRate)
+  
+  
   
   pw <- dplyr::bind_rows(lapply(signal,function(x){
     as.list(sleepr::bands_power(x = x, Fs = sRate, bands = bands, normalize = normalize, butter = butter))

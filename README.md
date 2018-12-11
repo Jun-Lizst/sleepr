@@ -50,7 +50,6 @@ threejs::scatterplot3js(powers$delta, powers$theta,
                         color= powers$colors)
 ```
 
-
 <div align="center"><img src="man/powers.png" alt="spectral powers" width="402"/></div>
 
 #### Transitions graph
