@@ -89,6 +89,7 @@ write_channel <- function(channel, signals, headers, mdfPath, endian="little"){
       paste0("Signal ",channel," corrupted.")
     )
   }
+  
 }
 
 
