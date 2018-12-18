@@ -77,11 +77,6 @@ download_dreams_subjects <- function(path){
   }
   system(paste0("unrar x ",file_path," ",path))
 }
-# 
-# #https://physionet.org/physiobank/database/capslpdb/
-# download_capsleep <- function(path){
-#   
-# }
 
 #' Download the DREAMS Spindles database in the desired path. Check MD5 of the downloaded .rar file.
 #' See the DREAMS Spindles database  website for more details: <http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSpindles/> 
