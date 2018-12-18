@@ -1,8 +1,8 @@
 #' Read ISRUC sleep scoring
 #'
-#' @param dir ISRUC record directory.
+#' @param dir character, ISRUC record directory.
 #' @param scoringNum Scoring number in database.
-#' @return A dataframe of scored events.
+#' @return A dataframe of scored stages.
 #' @export
 read_events_isruc <- function(dir, scoringNum) 
 {

@@ -7,12 +7,12 @@
 read_events_isruc(dir, scoringNum)
 }
 \arguments{
-\item{dir}{ISRUC record directory.}
+\item{dir}{character, ISRUC record directory.}
 
 \item{scoringNum}{Scoring number in database.}
 }
 \value{
-A dataframe of scored events.
+A dataframe of scored stages.
 }
 \description{
 Read ISRUC sleep scoring

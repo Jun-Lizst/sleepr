@@ -92,10 +92,8 @@ compute_all_stats <- function(records,
       df_record$ma_n3_index <- ma_n3_index(e)
       df_record$ma_rem_index <- ma_rem_index(e)
       
-      # Rapid Eye Movements
-      df_record$rem_count <- rem_count(e)
-      df_record$rem_index <- rem_index(e)
-      df_record$rem_avg_duration <- rem_avg_duration(e)
+      # Rapid-Eye-Movements
+      df_record <- cbind(df_record, as.data.frame(as.list(rem_stats(e))))
       
       # Cycles
       df_record <- cbind(df_record, as.data.frame(as.list(cycles_stats(e))))
@@ -1012,47 +1010,16 @@ ma_rem_index <- function(events){
   return(ma_rem_count(events)/(rem_duration(events)/60))
 }
 
-# Rapid Eye Movements ----
+# Rapid-Eye-Movements ----
 
-#' REM count
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-rem_count <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  events <- get_overlapping_events(events,
-                                   x = c("Rapide"),
-                                   y = c("REM"))
-  return(nrow(events))
-}
-
-#' REM index
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-rem_index <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(rem_count(events)/(rem_duration(events)/60))
-}
-
-#' REM avg duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-rem_avg_duration <- function(events){
-  
-  if(!check_events_integrity(events)){ return(NA) }
-  events <- get_overlapping_events(events,
-                                   x = c("Rapide"),
-                                   y = c("REM"))
-  if(nrow(events) == 0){
-    return(0)
-  }
-  return(mean(as.numeric(difftime(events$end.x,events$begin.x,units="secs"))))
-}
-
-#' Get REM related stats.
-#' 
+#' Get Rapid-Eye-Movements. events related stats in a named vector.
+#' @description Filters events to keep only Rapid-Eye-Movements. occuring during Rapid-Eye-Movements. sleep stage, accoring to the American Academy of Sleep Medicine scoring guidelines.\cr\cr 
+#' Available statistics: 
+#' \describe{
+#'   \item{rem_count}{Count of Rapid-Eye-Movements.}
+#'   \item{rem_index}{Rapid-Eye-Movements index by hour.}
+#' }
+#' @references Berry RB, Brooks R, Gamaldo CE, Harding SM, Lloyd RM, Marcus CL and Vaughn BV for the American Academy of Sleep Medicine. The AASM Manual for the Scoring of Sleep and Associated Events: Rules, Terminology and Technical Specifications, Version 2.2. www.aasmnet.org. Darien, Illinois: American Academy of Sleep Medicine, 2015.
 #' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @return A named vector.
 #' @export
@@ -1064,11 +1031,24 @@ rem_stats <- function(e){
   rem_rem <- get_overlapping_events(e,
                                     x = c("Rapide"),
                                     y = c("REM"))
+  
+  # Filtering REM stages
+  rem_stages <- e[e$event == "REM", c("begin","end")]
+  rem_duration <- sum(as.numeric(difftime(rem_stages$end,rem_stages$begin,units="min")))
+  
+  # REM count
   stats <- c("rem_count" = nrow(rem_rem))
   
+  # REM index
+  rem_index <- nrow(rem_rem)/(rem_duration/60)
+  stats <- c(stats,"rem_count" = rem_index)
   
-  # REM Stats
+  # REM average duration
+  rem_avg_duration <- ifelse( nrow(rem_rem) == 0, NA,
+    mean(as.numeric(difftime(rem_rem$end.x,rem_rem$begin.x,units="secs"))))
+  stats <- c(stats,"rem_avg_duration" = rem_avg_duration)
   
+  stats
 }
 
 # Cycles ----

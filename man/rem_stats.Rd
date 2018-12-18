@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{rem_stats}
 \alias{rem_stats}
-\title{Get REM related stats.}
+\title{Get Rapid-Eye-Movements. events related stats in a named vector.}
 \usage{
 rem_stats(e)
 }
@@ -13,5 +13,13 @@ rem_stats(e)
 A named vector.
 }
 \description{
-Get REM related stats.
+Filters events to keep only Rapid-Eye-Movements. occuring during Rapid-Eye-Movements. sleep stage, accoring to the American Academy of Sleep Medicine scoring guidelines.\cr\cr 
+Available statistics: 
+\describe{
+  \item{rem_count}{Count of Rapid-Eye-Movements.}
+  \item{rem_index}{Rapid-Eye-Movements index by hour.}
+}
+}
+\references{
+Berry RB, Brooks R, Gamaldo CE, Harding SM, Lloyd RM, Marcus CL and Vaughn BV for the American Academy of Sleep Medicine. The AASM Manual for the Scoring of Sleep and Associated Events: Rules, Terminology and Technical Specifications, Version 2.2. www.aasmnet.org. Darien, Illinois: American Academy of Sleep Medicine, 2015.
 }
