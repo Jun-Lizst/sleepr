@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{rem_stats}
 \alias{rem_stats}
-\title{Get Rapid-Eye-Movements. events related stats in a named vector.}
+\title{Get Rapid-Eye-Movements events related stats in a named vector.}
 \usage{
 rem_stats(e)
 }
@@ -18,6 +18,7 @@ Available statistics:
 \describe{
   \item{rem_count}{Count of Rapid-Eye-Movements.}
   \item{rem_index}{Rapid-Eye-Movements index by hour.}
+  \item{rem_avg_duration}{Rapid-Eye-Movements average duration. Set to \code{NA} in the case no Rapid-Eye-Movements are found.}
 }
 }
 \references{

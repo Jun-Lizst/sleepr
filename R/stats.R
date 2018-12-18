@@ -1010,14 +1010,36 @@ ma_rem_index <- function(events){
   return(ma_rem_count(events)/(rem_duration(events)/60))
 }
 
+#' Get Micro-Arousals events related stats in a named vector.
+#' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return A named vector.
+#' @export
+ma_stats <- function(e){
+  
+  # Checking events integrity.
+  if(!check_events_integrity(e)){ return(NA) }
+  
+  # Filtering sleep Micro-Arousals.
+  ma <- get_overlapping_events(e,
+                               x = c("micro-arousal"),
+                               y = c("N1","N2","N3","REM"))
+  
+  # Micro-Arousals count.
+  stats <- c("ma_count" = nrow(ma))
+  # ma_index
+  # ma_duration
+  
+}
+
 # Rapid-Eye-Movements ----
 
-#' Get Rapid-Eye-Movements. events related stats in a named vector.
+#' Get Rapid-Eye-Movements events related stats in a named vector.
 #' @description Filters events to keep only Rapid-Eye-Movements. occuring during Rapid-Eye-Movements. sleep stage, accoring to the American Academy of Sleep Medicine scoring guidelines.\cr\cr 
 #' Available statistics: 
 #' \describe{
 #'   \item{rem_count}{Count of Rapid-Eye-Movements.}
 #'   \item{rem_index}{Rapid-Eye-Movements index by hour.}
+#'   \item{rem_avg_duration}{Rapid-Eye-Movements average duration. Set to \code{NA} in the case no Rapid-Eye-Movements are found.}
 #' }
 #' @references Berry RB, Brooks R, Gamaldo CE, Harding SM, Lloyd RM, Marcus CL and Vaughn BV for the American Academy of Sleep Medicine. The AASM Manual for the Scoring of Sleep and Associated Events: Rules, Terminology and Technical Specifications, Version 2.2. www.aasmnet.org. Darien, Illinois: American Academy of Sleep Medicine, 2015.
 #' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
@@ -1027,7 +1049,7 @@ rem_stats <- function(e){
   
   if(!check_events_integrity(e)){ return(NA) }
   
-  # Filtering REM rapid eye movements
+  # Filtering REM Rapid-Eye-Movements
   rem_rem <- get_overlapping_events(e,
                                     x = c("Rapide"),
                                     y = c("REM"))

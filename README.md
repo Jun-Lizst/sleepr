@@ -189,9 +189,10 @@ SleepR uses the following nomenclature for annotated events labels:
   * `cycle-EN` The end of the night; a cycle which roughly follows the pattern: N1-N2-R.
   * `cycle-REM` A REM cycle.
   
-#### Rapid Eye Movements
+#### Other events
 
   * `Rapide`
+  * `micro-arousal`
   
 ### Data download
 
