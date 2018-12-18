@@ -320,4 +320,10 @@ test_that("Cycles stats", {
   
 })
 
+test_that("Transition matrix", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")
+  transition_matrix(events)
+  
+})
+
 

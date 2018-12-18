@@ -4,10 +4,10 @@
 \alias{plot_transitions}
 \title{Get transitions graph}
 \usage{
-plot_transitions(hypnogram, height = "500px", width = "100\%")
+plot_transitions(e, height = "500px", width = "100\%")
 }
 \arguments{
-\item{hypnogram}{hypnogram}
+\item{e}{hypnogram}
 
 \item{height}{height}
 

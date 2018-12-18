@@ -1134,3 +1134,46 @@ cycles_stats <- function(e){
   
   stats
 }
+
+#' Computes sleep transition matrix from selected stages.
+#' @description Sleep transition matrix is the probability of next stage for a given stage.
+#' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @param l Stages labels. Defaults to \code{c("AWA", "N1", "N2", "N3", "REM")}
+#' @return A matrix.
+#' @export
+transition_matrix <- function(e, l = c("AWA", "N1", "N2", "N3", "REM")){
+  
+  if(!check_events_integrity(e)){ return(NA) }
+  
+  # Hypnogram
+  h <- hypnogram(e, labels = l)
+  h$event <- as.character(h$event)
+  
+  hc <- data.frame(table(h$event))
+  colnames(hc) <- c("event","count")
+  
+  h <- h[order(h$begin),]
+  
+  h$n <- c(h$event[-1],NA)
+  h$c <- 1
+  
+  c <- stats::aggregate(c ~ event + n, data = h, FUN = sum)
+  
+  c <- merge(c, hc, by = "event")
+  
+  c$p <- c$c/c$count
+  c <- c[,colnames(c)[!(colnames(c) %in% c("c", "count"))]]
+  
+  c <- stats::reshape(c, idvar = "event", timevar = "n", direction = "wide")
+  names(c) <- gsub("p.", "", names(c))
+  c[is.na(c)]  <- 0
+  row.names(c) <- c$event
+  c$event <- NULL
+  
+  c <- c[order(row.names(c)),colnames(c)[order(colnames(c))]]
+  
+  c <- as.matrix(c)  
+  
+  c
+  
+}

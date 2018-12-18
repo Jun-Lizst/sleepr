@@ -88,58 +88,54 @@ plot_spectrogram <- function(signal, sRate, maxfreq = 25, windowlength = 2000, s
 
 #' Get transitions graph
 #'
-#' @param hypnogram hypnogram
+#' @param e hypnogram
 #' @param height height
 #' @param width width
 #' @return list.
 #' @export
-plot_transitions <- function(hypnogram, height = "500px", width = "100%"){
+plot_transitions <- function(e, height = "500px", width = "100%"){
+  
+  if(!check_events_integrity(e)){ return(NA) }
   
   # Hypnogram
-  hypnogram <- hypnogram(hypnogram)
-  hypnogram$event <- as.character(hypnogram$event)
-  hypnogram_counts <- data.frame(table(hypnogram$event))
-  colnames(hypnogram_counts) <- c("event","count")
-  hypnogram <- merge(hypnogram,hypnogram_counts, by = "event")
-  hypnogram <- hypnogram[order(hypnogram$begin),]
-  hypnogram$event <- paste0(hypnogram$event," (",hypnogram$count,")")
-  #hypnogram$count <- NULL
-  hypnogram$nextstage <- c(hypnogram$event[-1],NA)
+  h <- hypnogram(e)
+  h$event <- as.character(h$event)
   
-  transitions <- nrow(hypnogram[hypnogram$nextstage != hypnogram$event,c("nextstage","event")])
+  hc <- data.frame(table(h$event))
+  colnames(hc) <- c("event","value")
   
-  # Nodes
-  nodes <- data.frame(id = 1:length(unique(hypnogram$event)), 
-                      group = unique(hypnogram$event), 
+  h <- merge(h,hc, by = "event")
+  h <- h[order(h$begin),]
+  
+  # nodes
+  nodes <- data.frame(id = 1:length(unique(h$event)),
+                      shape = "circle",
+                      event = unique(h$event),
                       stringsAsFactors = FALSE)
-  nodes$label <- nodes$group
-  nodes$shape = "circle"
-  nodes$event <- nodes$label
-  nodes <- merge(unique(hypnogram[,c("event","count")]),nodes)
-  nodes$event <- NULL
-  nodes$value <- nodes$count
+  nodes <- merge(unique(h[,c("event","value")]),nodes)
+  nodes$label <- paste0(nodes$event," (",nodes$value,")")
+  nodes$group <- nodes$label
+  nodes$value <- NULL
   
-  # Edges
-  edges <- hypnogram[hypnogram$nextstage != hypnogram$event,c("nextstage","event")]
-  colnames(edges) <- c("to","from")
-  edges$count = 1
-  edges <- stats::aggregate(count ~ from + to, data = edges, sum)
-  edges$group <- edges$to
-  edges <- merge(edges,nodes[,c("group","id")], by = "group")
-  edges$to <- edges$id
-  edges$id <- NULL
-  edges$group <- edges$from
-  edges <- merge(edges,nodes[,c("group","id")], by = "group")
+  # edges
+  h$n <- c(h$event[-1],NA)
+  h$c <- 1
+  c <- stats::aggregate(c ~ event + n, data = h, FUN = sum)
+  c <- merge(c, hc, by = "event")
+  c$p <- c$c/c$value
+  
+  edges <- c
+  edges$label <- round(edges$p, digits = 3)
+  edges <- merge(edges,nodes[,c("event","id")], by = "event")
   edges$from <- edges$id
   edges$id <- NULL
-  edges$group <- NULL
-  edgestotal <- stats::aggregate(count ~ from, data = edges, sum)
-  colnames(edgestotal) <- c("from","totalfrom")
-  edges <- merge(edges,edgestotal,by = "from")
-  edges$label <- round(edges$count/edges$totalfrom,digits=2)
-  edges$width <- edges$label*4
-  edges$arrows <- "to"
+  edges$event <- edges$n
+  edges <- merge(edges,nodes[,c("event","id")], by = "event")
+  edges$to <- edges$id
+  edges <- edges[,c("from","to","label")]
   edges$length <- 500
-  visNetwork::visNetwork(nodes, edges, height = height, width = width)
+  edges$width <- 2
+  edges$arrows <- "to"
   
+  visNetwork::visNetwork(nodes, edges, height = height, width = width)
 }

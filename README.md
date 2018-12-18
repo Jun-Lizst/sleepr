@@ -52,15 +52,32 @@ threejs::scatterplot3js(powers$delta, powers$theta,
 
 <div align="center"><img src="man/powers.png" alt="spectral powers" width="402"/></div>
 
-#### Transitions graph
+### Transitions
+
+#### Statistics
 
 ```R
-record <- read_mdf("mdf/isruc-1-89-1/")
+h <- hypnogram(read_mdf("mdf/1/89/",channels = NA)[["events"]])
 
-powers <- sleepr::hypnogram_band_powers(record = record,
-                                        channel = "C3-M2")
+tm <- transition_matrix(h)
 
-sleepr::plot_transitions(record[["events"]])
+knitr::kable(round(tm, digits=3))
+```
+
+|    |   AWA|    N1|    N2|    N3|   REM|
+|:---|-----:|-----:|-----:|-----:|-----:|
+|AWA | 0.911| 0.065| 0.019| 0.000| 0.002|
+|N1  | 0.149| 0.368| 0.391| 0.000| 0.092|
+|N2  | 0.052| 0.067| 0.810| 0.059| 0.011|
+|N3  | 0.029| 0.012| 0.047| 0.907| 0.006|
+|REM | 0.044| 0.088| 0.011| 0.000| 0.857|
+
+#### Plot
+
+```R
+h <- hypnogram(read_mdf("mdf/1/89/",channels = NA)[["events"]])
+
+sleepr::plot_transitions(h)
 ```
 
 <div align="center"><img src="man/transitions.png" alt="transitions graph" width="550"/></div>
