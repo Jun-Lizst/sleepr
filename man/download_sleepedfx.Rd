@@ -2,13 +2,20 @@
 % Please edit documentation in R/download.R
 \name{download_sleepedfx}
 \alias{download_sleepedfx}
-\title{Download Sleepedfx db}
+\title{Download the Expanded Sleep-EDF Database
+See the Expanded Sleep-EDF Database website for more details: <https://physionet.org/pn4/sleep-edfx/>}
 \usage{
 download_sleepedfx(path)
 }
 \arguments{
-\item{path}{target path.}
+\item{path}{character, path to download database.}
 }
 \description{
-Download Sleepedfx db
+Download the Expanded Sleep-EDF Database
+See the Expanded Sleep-EDF Database website for more details: <https://physionet.org/pn4/sleep-edfx/>
+}
+\references{
+B Kemp, AH Zwinderman, B Tuk, HAC Kamphuisen, JJL Oberyé. Analysis of a sleep-dependent neuronal feedback loop: the slow-wave microcontinuity of the EEG. IEEE-BME 47(9):1185-1194 (2000).
+
+Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet: Components of a New Research Resource for Complex Physiologic Signals. Circulation 101(23):e215-e220 [Circulation Electronic Pages; http://circ.ahajournals.org/cgi/content/full/101/23/e215]; 2000 (June 13).
 }

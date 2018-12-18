@@ -2,13 +2,18 @@
 % Please edit documentation in R/download.R
 \name{download_dreams_subjects}
 \alias{download_dreams_subjects}
-\title{Download Subjects db}
+\title{Download DREAMS Subjects database in the desired path.
+See the  website for more details: <http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSubjects/>}
 \usage{
 download_dreams_subjects(path)
 }
 \arguments{
-\item{path}{target path.}
+\item{path}{character, path to download database.}
 }
 \description{
-Download Subjects db
+Download DREAMS Subjects database in the desired path.
+See the  website for more details: <http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSubjects/>
+}
+\references{
+S. Devuyst, T. Dutoit, P. Stenuit, M. Kerkhofs, E. Stanus, "Canceling ECG Artifacts in EEG using a Modified Independent Component Analysis Approach", EURASIP Journal on Advances in Signal Processing, Volume 2008, Article ID 747325, Accepted 31 July 2008.
 }

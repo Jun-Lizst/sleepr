@@ -1,6 +1,7 @@
-#' Download isruc db
-#'
-#' @param target target path.
+#' Download the ISRUC-SLEEP Dataset in the desired path.
+#' See the ISRUC-SLEEP Dataset website for more details: <https://sleeptight.isr.uc.pt/ISRUC_Sleep/>
+#' @param target character, path to download database.
+#' @references Sirvan Khalighi, Teresa Sousa, Jose Moutinho Santos, Urbano Nunes, ISRUC-Sleep: a comprehensive public dataset for sleep researchers, Computer Methods and Programs in Biomedicine, Elsevier, 2015
 #' @export
 download_isruc <- function(target){
   
@@ -48,9 +49,11 @@ download_isruc <- function(target){
   
 }
 
-#' Download Sleepedfx db
-#'
-#' @param path target path.
+#' Download the Expanded Sleep-EDF Database
+#' See the Expanded Sleep-EDF Database website for more details: <https://physionet.org/pn4/sleep-edfx/>
+#' @param path character, path to download database.
+#' @references B Kemp, AH Zwinderman, B Tuk, HAC Kamphuisen, JJL Oberyé. Analysis of a sleep-dependent neuronal feedback loop: the slow-wave microcontinuity of the EEG. IEEE-BME 47(9):1185-1194 (2000). 
+#' @references Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet: Components of a New Research Resource for Complex Physiologic Signals. Circulation 101(23):e215-e220 [Circulation Electronic Pages; http://circ.ahajournals.org/cgi/content/full/101/23/e215]; 2000 (June 13). 
 #' @export
 download_sleepedfx <- function(path){
   if(!dir.exists(path)) dir.create(path)
@@ -64,9 +67,10 @@ download_sleepedfx <- function(path){
   }
 }
 
-#' Download Subjects db
-#'
-#' @param path target path.
+#' Download DREAMS Subjects database in the desired path.
+#' See the  website for more details: <http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSubjects/>
+#' @param path character, path to download database.
+#' @references S. Devuyst, T. Dutoit, P. Stenuit, M. Kerkhofs, E. Stanus, "Canceling ECG Artifacts in EEG using a Modified Independent Component Analysis Approach", EURASIP Journal on Advances in Signal Processing, Volume 2008, Article ID 747325, Accepted 31 July 2008.
 #' @export
 download_dreams_subjects <- function(path){
   if(!dir.exists(path)) dir.create(path)
@@ -78,9 +82,9 @@ download_dreams_subjects <- function(path){
   system(paste0("unrar x ",file_path," ",path))
 }
 
-#' Download the DREAMS Spindles database in the desired path. Check MD5 of the downloaded .rar file.
-#' See the DREAMS Spindles database  website for more details: <http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSpindles/> 
-#' @param path Path 
+#' Download the DREAMS Spindles database in the desired path. Checks MD5 of the downloaded .rar file.
+#' See the DREAMS Spindles database website for more details: <http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSpindles/> 
+#' @param path character, path to download database. 
 #' @references S. Devuyst et al., "Automatic Sleep Spindle Detection in Patients with Sleep Disorders," 2006 International Conference of the IEEE Engineering in Medicine and Biology Society, New York, NY, 2006, pp. 3883-3886. doi: 10.1109/IEMBS.2006.259298
 #' @export
 download_dreams_spindles <- function(path){
@@ -102,8 +106,9 @@ download_dreams_spindles <- function(path){
   }
 }
 
-#' Download the CAP Sleep Database in the desired path. https://physionet.org/physiobank/database/capslpdb/
-#' @param path Path 
+#' Download the CAP Sleep Database in the desired path. 
+#' See the CAP Sleep Database website for more details: <https://physionet.org/physiobank/database/capslpdb/>
+#' @param path character, path to download database.
 #' @references MG Terzano, L Parrino, A Sherieri, R Chervin, S Chokroverty, C Guilleminault, M Hirshkowitz, M Mahowald, H Moldofsky, A Rosa, R Thomas, A Walters. Atlas, rules, and recording techniques for the scoring of cyclic alternating pattern (CAP) in human sleep. Sleep Med 2001 Nov; 2(6):537-553. Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet: Components of a New Research Resource for Complex Physiologic Signals. Circulation 101(23):e215-e220 [Circulation Electronic Pages; http://circ.ahajournals.org/cgi/content/full/101/23/e215]; 2000 (June 13).  
 #' @export
 download_capslpdb <- function(path){
