@@ -92,11 +92,10 @@ compute_all_stats <- function(records,
       df_record$ma_n3_index <- ma_n3_index(e)
       df_record$ma_rem_index <- ma_rem_index(e)
       
-      # Rapid-Eye-Movements
+      # Stats
       df_record <- cbind(df_record, as.data.frame(as.list(rem_stats(e))))
-      
-      # Cycles
       df_record <- cbind(df_record, as.data.frame(as.list(cycles_stats(e))))
+      df_record <- cbind(df_record, as.data.frame(as.list(tm_stats(tm(e)))))
     }
       df <- dplyr::bind_rows(df,df_record)
        
@@ -1031,8 +1030,6 @@ ma_stats <- function(e){
   
 }
 
-# Rapid-Eye-Movements ----
-
 #' Get Rapid-Eye-Movements events related stats in a named vector.
 #' @description Filters events to keep only Rapid-Eye-Movements. occuring during Rapid-Eye-Movements. sleep stage, accoring to the American Academy of Sleep Medicine scoring guidelines.\cr\cr 
 #' Available statistics: 
@@ -1072,8 +1069,6 @@ rem_stats <- function(e){
   
   stats
 }
-
-# Cycles ----
 
 #' Get cycles related stats. Number of cycles, total duration, average duration.
 #' 
@@ -1136,12 +1131,12 @@ cycles_stats <- function(e){
 }
 
 #' Computes sleep transition matrix from selected stages.
-#' @description Sleep transition matrix is the probability of next stage for a given stage.
+#' @description Sleep transition matrix is the matrix containing probabilities of next stage transition for a given stage.
 #' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @param l Stages labels. Defaults to \code{c("AWA", "N1", "N2", "N3", "REM")}
 #' @return A matrix.
 #' @export
-transition_matrix <- function(e, l = c("AWA", "N1", "N2", "N3", "REM")){
+tm <- function(e, l = c("AWA", "N1", "N2", "N3", "REM")){
   
   if(!check_events_integrity(e)){ return(NA) }
   
@@ -1177,3 +1172,27 @@ transition_matrix <- function(e, l = c("AWA", "N1", "N2", "N3", "REM")){
   c
   
 }
+
+#' Flattens a transition matrix to a named vector.
+#' @description Flattens a transition matrix to a named vector to ensure stats functions consistency.
+#' @param tm A transition matrix.
+#' @return A named vector.
+#' @export
+tm_stats <- function(tm){
+  ftm <- as.data.frame(tm)
+  ftm$f <- row.names(ftm)
+  row.names(ftm) <- NULL
+  ftm <- stats::reshape(ftm,
+                 direction = "long",
+                 varying = list(names(ftm)[names(ftm) != "f"]),
+                 v.names = "t",
+                 idvar = "f",
+                 timevar = "p",
+                 times = names(ftm)[names(ftm) != "f"])
+  ftm$label <- gsub("\\.","-",paste0("transition_",row.names(ftm)))
+  r <- ftm$t
+  names(r) <- ftm$label
+  r
+}
+
+
