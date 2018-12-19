@@ -75,24 +75,8 @@ compute_all_stats <- function(records,
       df_record$ah_rem <- ah_rem(l[["events"]])
       df_record$ah_nonrem <- ah_nonrem(l[["events"]])
       
-      # Micro-arousals
-      df_record$ma_count <- ma_count(e)
-      df_record$ma_index <- ma_index(e)
-      df_record$ma_duration <- ma_duration(e)
-      df_record$ma_n1_duration <- ma_n1_duration(e)
-      df_record$ma_n2_duration <- ma_n2_duration(e)
-      df_record$ma_n3_duration <- ma_n3_duration(e)
-      df_record$ma_rem_duration <- ma_rem_duration(e)
-      df_record$ma_n1_count <- ma_n1_count(e)
-      df_record$ma_n2_count <- ma_n2_count(e)
-      df_record$ma_n3_count <- ma_n3_count(e)
-      df_record$ma_rem_count <- ma_rem_count(e)
-      df_record$ma_n1_index <- ma_n1_index(e)
-      df_record$ma_n2_index <- ma_n2_index(e)
-      df_record$ma_n3_index <- ma_n3_index(e)
-      df_record$ma_rem_index <- ma_rem_index(e)
-      
       # Stats
+      df_record <- cbind(df_record, as.data.frame(as.list(ma_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(rem_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(cycles_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(tm_stats(tm(e)))))
@@ -815,219 +799,62 @@ ah_nonrem <- function(events){
     )
 }
 
-# Oxygen saturation ----
 
-# Pulse ----
-
-# Quality ----
-
-# PLM ----
-
-# Micro-arousals ----
-
-#' Micro-arousals count
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_count <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(nrow(get_overlapping_events(events,
-                                     x = c("micro-arousal"),
-                                     y = c("N1","N2","N3","REM"))
-  ))
-}
-
-#' Micro-arousals index
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_index <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(ma_count(events)/(tts(events)/60))
-}
-
-#' Micro-arousals duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_duration <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  events <- get_overlapping_events(events,
-                                   x = c("micro-arousal"),
-                               y = c("N1","N2","N3","REM"))
-  if(nrow(events) == 0){
-    return(0)
-  } 
-  duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
-  return(duration)
-}
-
-#' Micro-arousals duration in n1
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_n1_duration <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  events <- get_overlapping_events(events,
-                                   x = c("micro-arousal"),
-                                   y = c("N1"))
-  if(nrow(events) == 0){
-    return(0)
-  } 
-  duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
-  return(duration)
-}
-
-#' Micro-arousals n2 duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_n2_duration <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  events <- get_overlapping_events(events,
-                                   x = c("micro-arousal"),
-                                   y = c("N2"))
-  if(nrow(events) == 0){
-    return(0)
-  } 
-  duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
-  return(duration)
-}
-
-#' Micro-arousals n3 duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_n3_duration <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  events <- get_overlapping_events(events,
-                                   x = c("micro-arousal"),
-                                   y = c("N3"))
-  if(nrow(events) == 0){
-    return(0)
-  } 
-  duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
-  return(duration)
-}
-
-#' Micro-arousals rem duration
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_rem_duration <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  events <- get_overlapping_events(events,
-                                   x = c("micro-arousal"),
-                                   y = c("REM"))
-  if(nrow(events) == 0){
-    return(0)
-  } 
-  duration <- sum(as.numeric(difftime(events$end.x,events$begin.x,units="mins")))
-  return(duration)
-}
-
-#' Micro-arousals n1 count
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_n1_count <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(nrow(get_overlapping_events(events,
-                                     x = c("micro-arousal"),
-                                     y = c("N1"))
-  ))
-}
-
-#' Micro-arousals m2 count
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_n2_count <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(nrow(get_overlapping_events(events,
-                                     x = c("micro-arousal"),
-                                     y = c("N2"))
-  ))
-}
-
-#' Micro-arousals n3 count
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_n3_count <- function(events){
-  return(nrow(get_overlapping_events(events,
-                                     x = c("micro-arousal"),
-                                     y = c("N3"))
-  ))
-}
-
-#' Micro-arousals remcount
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_rem_count <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(nrow(get_overlapping_events(events,
-                                     x = c("micro-arousal"),
-                                     y = c("REM"))
-  ))
-}
-
-#' Micro-arousals n1 index
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_n1_index <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(ma_n1_count(events)/(n1_duration(events)/60))
-}
-
-#' Micro-arousals n2 index
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_n2_index <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(ma_n2_count(events)/(n2_duration(events)/60))
-}
-
-#' Micro-arousals n3 index
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_n3_index <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(ma_n3_count(events)/(n3_duration(events)/60))
-}
-
-#' Micro-arousals rem index
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ma_rem_index <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(ma_rem_count(events)/(rem_duration(events)/60))
-}
 
 #' Get Micro-Arousals events related stats in a named vector.
 #' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @param ss sleep labels.
+#' @param l label.
 #' @return A named vector.
 #' @export
-ma_stats <- function(e){
+ma_stats <- function(e, ss = c("N1","N2","N3","REM"), l = paste0("Micro-","\u00E9","veil")){
   
   # Checking events integrity.
   if(!check_events_integrity(e)){ return(NA) }
   
   # Filtering sleep Micro-Arousals.
   ma <- get_overlapping_events(e,
-                               x = c("micro-arousal"),
-                               y = c("N1","N2","N3","REM"))
+                               x = c(l),
+                               y = ss)
   
   # Micro-Arousals count.
   stats <- c("ma_count" = nrow(ma))
-  # ma_index
-  # ma_duration
   
+  # Micro-Arousals index.
+  stats <- c(stats,"ma_idx" = 
+              as.numeric(stats["ma_count"]/(sum(as.numeric(difftime(e$end[e$event %in% ss],e$begin[e$event %in% ss],units="mins")))/60))
+               )
+  
+  # Micro-Arousals duration.
+  stats <- c(stats,"ma_duration" = 
+              sum(as.numeric(difftime(ma$end.x,ma$begin.x,units="mins")))
+  )
+  
+  # Stages related Micro-Arousals stats
+  for(s in ss){
+    
+    # Filtering sleep Micro-Arousals.
+    ma <- get_overlapping_events(e,
+                                 x = c(l),
+                                 y = s)
+    # Micro-Arousals count.
+    r <- nrow(ma)
+    names(r) <- paste0("ma_count_",s)
+    stats <- c(stats, r)
+    
+    # Micro-Arousals index.
+    r <- as.numeric(stats[paste0("ma_count_",s)]/(sum(as.numeric(difftime(e$end[e$event %in% s],e$begin[e$event %in% s],units="mins")))/60))
+    names(r) <- paste0("ma_idx_",s)
+    stats <- c(stats,r)
+    
+    # Micro-Arousals duration.
+    r <- sum(as.numeric(difftime(ma$end.x,ma$begin.x,units="mins")))
+    names(r) <- paste0("ma_duration_",s)
+    stats <- c(stats,r)
+    
+  }
+  
+  stats
 }
 
 #' Get Rapid-Eye-Movements events related stats in a named vector.
@@ -1189,10 +1016,15 @@ tm_stats <- function(tm){
                  idvar = "f",
                  timevar = "p",
                  times = names(ftm)[names(ftm) != "f"])
-  ftm$label <- gsub("\\.","-",paste0("transition_",row.names(ftm)))
+  ftm$label <- gsub("\\.","-",paste0("p_",row.names(ftm)))
   r <- ftm$t
   names(r) <- ftm$label
   r
 }
+
+# Oxygen saturation ----
+# Pulse ----
+# Quality ----
+# PLM ----
 
 

@@ -305,19 +305,17 @@ test_that("Snoring duration ratio", {
                                            event = character())),0)
 })
 
-# Respiratory indexes ----
-
 test_that("Apnea and hypnonea count", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")
   expect_equal(ah_count(events), 102)
 })
 
-# Cycles ----
-
 test_that("Cycles stats", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")
   cycles_stats(events)
-  
 })
 
-
+test_that("MA stats", {
+  events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  ma_stats(events)
+})

@@ -4,10 +4,15 @@
 \alias{ma_stats}
 \title{Get Micro-Arousals events related stats in a named vector.}
 \usage{
-ma_stats(e)
+ma_stats(e, ss = c("N1", "N2", "N3", "REM"), l = paste0("Micro-", "é",
+  "veil"))
 }
 \arguments{
 \item{e}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
+
+\item{ss}{sleep labels.}
+
+\item{l}{label.}
 }
 \value{
 A named vector.
