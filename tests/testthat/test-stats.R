@@ -305,10 +305,7 @@ test_that("Snoring duration ratio", {
                                            event = character())),0)
 })
 
-test_that("Apnea and hypnonea count", {
-  events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")
-  expect_equal(ah_count(events), 102)
-})
+
 
 test_that("Cycles stats", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")

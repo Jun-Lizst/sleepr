@@ -68,18 +68,14 @@ compute_all_stats <- function(records,
       df_record$tts_pos_right_pct <- tts_pos_right_pct(l[["events"]])
       df_record$tts_pos_nonback <- tts_pos_nonback(l[["events"]])
       df_record$tts_pos_nonback_pct <- tts_pos_nonback_pct(l[["events"]])
-      df_record$ah_count <- ah_count(l[["events"]])
-      df_record$ah_hour <- ah_hour(l[["events"]])
-      df_record$ah_back <- ah_back(l[["events"]])
-      df_record$ah_nonback <- ah_nonback(l[["events"]])
-      df_record$ah_rem <- ah_rem(l[["events"]])
-      df_record$ah_nonrem <- ah_nonrem(l[["events"]])
+
       
       # Stats
       df_record <- cbind(df_record, as.data.frame(as.list(ma_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(rem_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(cycles_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(tm_stats(tm(e)))))
+      df_record <- cbind(df_record, as.data.frame(as.list(resp_stats(e))))
     }
       df <- dplyr::bind_rows(df,df_record)
        
@@ -733,42 +729,7 @@ snoring_duration_pct <- function(events){
 
 # Respiratory indexes ----
 
-#' Apnea and Hypopnea count
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ah_count <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(nrow(events[events$event %in%
-                       c("A. Obstructive",
-                         paste0("Hypopn","\u00E9","e")),]))
-}
 
-#' Apnea and Hypopnea index
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-ah_hour <- function(events){
-  return(ah_count(events)/(tts(hypnogram(events))/60))
-}
-
-#' Apnea and Hypopnea on back
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ah_back <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(nrow(get_overlapping_events(events,c(paste0("Hypopn","\u00E9","e"),"A. Obstructive"),"back"))/(tts_pos_back(events)/60))
-}
-
-#' Apnea and Hypopnea non back
-#' 
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @export
-ah_nonback <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(nrow(get_overlapping_events(events,c(paste0("Hypopn","\u00E9","e"),"A. Obstructive"),
-                                     c("right","left","stomach")))/(tts_pos_nonback(events)/60))
-}
 
 #' Apnea and Hypopnea in rem
 #' 
@@ -800,6 +761,31 @@ ah_nonrem <- function(events){
 }
 
 
+resp_stats <- function(e, ss = c("N1","N2","N3","REM"), l = c("A. Obstructive", paste0("Hypopn","\u00E9","e"))){
+  
+  if(!check_events_integrity(e)){ return(NA) }
+  
+  # AH count
+  stats <- c("ah_count" = nrow(e[e$event %in% l,]))
+  
+  # AH idx
+  tts <- sum(as.numeric(difftime(e$end[e$event %in% ss], e$begin[e$event %in% ss], units="mins")))
+  stats <- c(stats, "ah_idx" = stats[["ah_count"]]/(tts/60))
+  
+  # AH idx back
+  stats <- c(stats, "ah_idx_back" = nrow(get_overlapping_events(e,l,"back"))/(get_overlapping_duration("back",ss,e)/60))
+  
+  # AH non back
+  stats <- c(stats, "ah_idx_nonback" = nrow(get_overlapping_events(e,l,c("right","left","stomach")))/(get_overlapping_duration(c("right","left","stomach"),ss,e)/60))
+  
+  # AH rem
+  stats <- c(stats, "ah_idx_rem" = nrow(get_overlapping_events(e,l,"REM"))/(get_overlapping_duration("REM",ss,e)/60))
+  
+  # AH nonrem
+  stats <- c(stats, "ah_idx_nrem" = nrow(get_overlapping_events(e,l,c("N1","N2","N3")))/(get_overlapping_duration(c("N1","N2","N3"),ss,e)/60))
+  
+  stats
+}
 
 #' Get Micro-Arousals events related stats in a named vector.
 #' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
