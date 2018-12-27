@@ -9,8 +9,11 @@ read_events_isruc <- function(dir, scoringNum)
   xlsxPath <- list.files(dir, pattern = paste0("_", scoringNum, 
                                                ".xlsx"), full.names = TRUE)[1]
   recPath <- list.files(dir, pattern = ".rec", full.names = TRUE)[1]
-  headers <- edfReader::readEdfHeader(recPath)
-  start <- headers$startTime
+  
+  if(is.na(recPath)){
+    start <- as.POSIXlt("1970-01-01 00:00.00 UTC")
+  } else { start <- edfReader::readEdfHeader(recPath)$startTime }
+  
   scoring <- readxl::read_xlsx(xlsxPath, col_names = FALSE)[1:2]
   if(scoring$X__1[1] == "Epoch"){
     scoring <- scoring[-1,]
@@ -81,10 +84,8 @@ read_events_noxturnal <- function(path){
   events <- tryCatch({
     utils::read.csv(path,
              fileEncoding = "UTF-8")
-  }, error = function(e){
-    utils::read.csv(path,
-             fileEncoding = "UTF-16")
-  }, warning = function(e){
+  }, error = function(e){ utils::read.csv(path, fileEncoding = "UTF-16") },
+  warning = function(e){
     utils::read.csv(path,
              fileEncoding = "UTF-16")
   }

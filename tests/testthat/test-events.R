@@ -15,7 +15,15 @@ test_that("Reading Dreams subjects events", {
   expect_equal(nrow(events), 5768)
 })
 
-# test_that("Reading ISRUC events", {
-#   events <- sleepr::read_events_isruc("data/isruc/",1)
-#   expect_equal(nrow(events), 852)
-# })
+test_that("Reading ISRUC events", {
+  e <- sleepr::read_events_isruc(dir = "data/isruc/1/1/", scoringNum = 1)
+  expect_equal(nrow(e), 880)
+  
+  e <- read_all_events_isruc(target = "data/isruc/")
+  expect_equal(nrow(e), 880)
+})
+
+test_that("Reading ISRUC metadata", {
+  m <- read_isruc_metadata("data/isruc/")
+  expect_equal(nrow(m), 126)
+})
