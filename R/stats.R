@@ -43,41 +43,16 @@ compute_all_stats <- function(records,
       }
       
       e <- l[["events"]]
-      df_record$rem_duration <- rem_duration(l[["events"]])
-      df_record$n1_duration <- n1_duration(l[["events"]])
-      df_record$n2_duration <- n2_duration(hypnogram(l[["events"]]))
-      df_record$n3_duration <- n3_duration(hypnogram(l[["events"]]))
-      df_record$awa_duration <- awa_duration(hypnogram(l[["events"]]))
-      df_record$tts <- tts(hypnogram(l[["events"]]))
-      df_record$rem_tts <- rem_tts(hypnogram(l[["events"]]))
-      df_record$n3_tts <- n3_tts(hypnogram(l[["events"]]))
-      df_record$n2_tts <- n2_tts(hypnogram(l[["events"]]))
-      df_record$n1_tts <- n1_tts(hypnogram(l[["events"]]))
-      df_record$tsp <- tsp(hypnogram(l[["events"]]))
-      df_record$sleep_efficiency <- sleep_efficiency(hypnogram(l[["events"]]))
-      df_record$sleep_latency <- sleep_latency(hypnogram(l[["events"]]))
-      df_record$rem_latency <- rem_latency(hypnogram(l[["events"]]))
-      df_record$waso <- waso(hypnogram(l[["events"]]))
-      #df_record$tts_pos_back <- tts_pos_back(l[["events"]])
-      # df_record$tts_pos_back_pct <- tts_pos_back_pct(l[["events"]])
-      # df_record$tts_pos_left <- tts_pos_left(l[["events"]])
-      # df_record$tts_pos_left_pct <- tts_pos_left_pct(l[["events"]])
-      # df_record$tts_pos_stomach <- tts_pos_stomach(l[["events"]])
-      # df_record$tts_pos_stomach_pct <- tts_pos_stomach_pct(l[["events"]])
-      # df_record$tts_pos_right <- tts_pos_right(l[["events"]])
-      # df_record$tts_pos_right_pct <- tts_pos_right_pct(l[["events"]])
-      # df_record$tts_pos_nonback <- tts_pos_nonback(l[["events"]])
-      # df_record$tts_pos_nonback_pct <- tts_pos_nonback_pct(l[["events"]])
-
-      
       # Stats
+      
+      df_record <- cbind(df_record, as.data.frame(as.list(stages_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(ma_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(rem_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(cycles_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(tm_stats(tm(e)))))
       df_record <- cbind(df_record, as.data.frame(as.list(resp_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(snoring_stats(e))))
-      
+      df_record <- cbind(df_record, as.data.frame(as.list(pos_stats(e))))
       
     }
       df <- dplyr::bind_rows(df,df_record)
@@ -172,274 +147,69 @@ check_events_integrity <- function(events){
   }
 }
 
-# Stages & scoring ----
-
-#' REM sleep duration in minutes.
+#' Get stages events related stats in a named vector.
 #'
-#' \code{rem_duration} sums up REM stages duration from an events dataframe to get total REM duration in minutes.
+#' \code{stages_stats} computes stages related stats.
 #'
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @return Total duration of REM sleep in minutes.
+#' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @return stages vector
 #' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("REM","REM")
-#' rem_duration(events)
+#' e <- data.frame(begin = as.POSIXlt(seq(from = 0, to = 30*10, by = 30),origin = "1970-01-01"))
+#' e$end <- as.POSIXlt(seq(from = 30, to = 30*11, by = 30), origin = "1970-01-01")
+#' e$event = c("AWA","N1","N2","N3","N3","REM","N2","REM","N2","REM","AWA")
+#' stages_stats(e)
 #' @export
-rem_duration <- function(events){
-  if(!check_events_integrity(events)){ return(0) }
-  events <- events[events$event == "REM", c("begin","end")]
-  return(sum(as.numeric(difftime(events$end,events$begin,units="min"))))
-}
-
-#' N1 sleep duration in minutes.
-#'
-#' \code{n1_duration} sums up N1 stages duration from an events dataframe to get total N1 duration in minutes.
-#'
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @return Total duration of N1 sleep in minutes.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N1","N1")
-#' n1_duration(events)
-#' @export
-n1_duration <- function(events){
-  if(!check_events_integrity(events)){ return(0) }
-  events <- events[events$event == "N1", c("begin","end")]
-  return(sum(as.numeric(difftime(events$end,events$begin,units="min"))))
-}
-
-#' N2 sleep duration in minutes.
-#'
-#' \code{n2_duration} up N2 stages duration from an events dataframe to get total N2 duration in minutes.
-#'
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @return total duration of N2 sleep in minutes.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N2","N2")
-#' n2_duration(events)
-#' @export
-n2_duration <- function(events){
-  if(!check_events_integrity(events)){ return(0) }
-  n2_events <- events[events$event == "N2", c("begin","end")]
-  return(sum(as.numeric(difftime(n2_events$end,n2_events$begin,units="mins"))))
-}
-
-#' N3 sleep duration in minutes.
-#'
-#' \code{n3_duration} sums up N3 stages duration from an events dataframe to get total N3 duration in minutes.
-#'
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @return total duration of N3 sleep in minutes.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N3","N3")
-#' n3_duration(events)
-#' @export
-n3_duration <- function(events){
-  if(!check_events_integrity(events)){ return(0) }
-  n3_events <- events[events$event == "N3", c("begin","end")]
-  return(sum(as.numeric(difftime(n3_events$end,n3_events$begin,units="mins"))))
-}
-
-#' Wake duration in minutes.
-#' 
-#' \code{awa_duration} sums up AWA stages duration from an events dataframe to get total AWA duration in minutes.
-#'
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @return total duration of AWA sleep in minutes.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("AWA","AWA")
-#' awa_duration(events)
-#' @export
-awa_duration <- function(events){
-  if(!check_events_integrity(events)){ return(0) }
-  awa_events <- events[events$event == "AWA", c("begin","end")]
-  return(sum(as.numeric(difftime(awa_events$end,awa_events$begin,units="mins"))))
-}
-
-#' Time To Sleep in minutes.
-#' 
-#' \code{tts} (Time To Sleep) sums up REM, N1, N2 and N3 stages duration from an events dataframe to get Time To Sleep duration in minutes.
-#'
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @return Time To Sleep (N1+N2+N3+REM durations) in minutes.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N1","REM")
-#' tts(events)
-#' @export
-tts <- function(events){
-  if(!check_events_integrity(events)){ return(0) }
-  events <- events[events$event %in% c("N1","N2","N3","REM"), c("begin","end")]
-  return(sum(as.numeric(difftime(events$end,events$begin,units="mins"))))
-}
-
-#' REM over TTS ratio.
-#' 
-#' Divides REM duration by TTS duration from an events dataframe.
-#'
-#' @param events Events dataframe. Must contain begin, end and events.
-#' @return REM over TTS durations ratio.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N1","REM")
-#' rem_tts(events)
-#' @export
-rem_tts <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(rem_duration(events)/tts(events))
-}
-
-#' Divides N3 duration by TTS duration from an events dataframe.
-#'
-#' @param events Events dataframe. Must contain begin, end and events.
-#' @return N3 over TTS durations ratio.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N3","REM")
-#' n3_tts(events)
-#' @export
-n3_tts <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(n3_duration(events)/tts(events))
-}
-
-#' Divides N2 duration by TTS duration from an events dataframe.
-#'
-#' @param events Events dataframe. Must contain begin, end and events.
-#' @return N2 over TTS durations ratio.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N3","N2")
-#' n2_tts(events)
-#' @export
-n2_tts <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(n2_duration(events)/tts(events))
-}
-
-#' Divides N1 duration by TTS duration from an events dataframe.
-#'
-#' @param events Events dataframe. Must contain begin, end and events.
-#' @return N1 over TTS durations ratio.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N3","N1")
-#' n1_tts(events)
-#' @export
-n1_tts <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(n1_duration(events)/tts(events))
-}
-
-#' Substracts the end time of the last element to the begin time of the first element to get the Total Sleep Period in minutes.
-#'
-#' @param events Events dataframe. Must contain begin, end and events.
-#' @return Total Sleep Period in minutes.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N3","N1")
-#' tsp(events)
-#' @export
-tsp <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(as.numeric(difftime(max(events$end),min(events$begin),units="mins")))
-}
-
-#' Divides the Time To Sleep (TTS) by the Total Sleep Period (TSP) to get the sleep efficiency ratio.
-#' 
-#' @param events Events dataframe. Must contain begin, end and events.
-#' @return sleep efficiency ratio.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N3","AWA")
-#' sleep_efficiency(events)
-#' @export
-sleep_efficiency <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(tts(events)/tsp(events))
-}
-
-#' Substracts the start time of the first sleep epoch (N1,N2,N3 or REM) to the start of the hypnogram.
-#' 
-#' @param events Events dataframe. Must contain begin, end and events.
-#' @return Sleep latency.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("AWA","N3")
-#' sleep_latency(events)
-#' @export
-sleep_latency <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  sleep <- events[events$event %in% c("N1","N2","N3","REM"),]
-  return(as.numeric(difftime(min(sleep$begin),min(events$begin),units="mins")))
-}
-
-#' REM Latency in minutes.
-#' 
-#' Substracts the start time of the first REM epoch to the start of the sleep onset to get the REM latency in minutes.
-#' 
-#' @param events Events dataframe. Must contain begin, end and events.
-#' @return REM Latency in minutes.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("AWA","REM")
-#' rem_latency(events)
-#' 
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("REM","REM")
-#' rem_latency(events)
-#' 
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N1","REM")
-#' rem_latency(events)
-#' @export
-rem_latency <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  rem <- events[events$event == "REM",]
-  return(as.numeric(difftime(min(rem$begin),min(events$begin),units="mins"))-sleep_latency(events))
-}
-
-#' Wake After Sleep Onset in minutes.
-#'
-#' \code{waso} substracts Time To Sleep (TTS) and sleep latency to the Total Sleep Period (TSP) to get the total Wake After Sleep Onset in minutes.
-#'
-#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @return Wake After Sleep Onset in minutes.
-#' @examples
-#' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#' events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#' events$event = c("N2","AWA")
-#' waso(events)
-#' @export
-waso <- function(events){
-  if(!check_events_integrity(events)){ return(NA) }
-  return(tsp(events)-sleep_latency(events)-tts(events))
-}
-
 stages_stats <- function(e){
   
   if(!check_events_integrity(e)){ return(NA) }
   
+  # Stages duration
+  r = c("rem_duration" = sum(as.numeric(difftime(e$end[e$event == "REM"],e$begin[e$event == "REM"],units="min"))))
+  r = c(r, "n1_duration" = sum(as.numeric(difftime(e$end[e$event == "N1"],e$begin[e$event == "N1"],units="min"))))
+  r = c(r, "n2_duration" = sum(as.numeric(difftime(e$end[e$event == "N2"],e$begin[e$event == "N2"],units="min"))))
+  r = c(r, "n3_duration" = sum(as.numeric(difftime(e$end[e$event == "N3"],e$begin[e$event == "N3"],units="min"))))
+  r = c(r, "awa_duration" = sum(as.numeric(difftime(e$end[e$event == "AWA"],e$begin[e$event == "AWA"],units="min"))))
   
+  # Time To Sleep (TTS)
+  r = c(r, "tts" = sum(as.numeric(difftime(e$end[e$event %in% c("N1", "N2", "N3", "REM")],e$begin[e$event  %in% c("N1", "N2", "N3", "REM")],units="min"))))
+  
+  # Time To Sleep (TTS) 
+  r = c(r, "rem_tts" = ifelse(r[["tts"]] == 0, 0, r[["rem_duration"]]/r[["tts"]]))
+  r = c(r, "n1_tts" = ifelse(r[["tts"]] == 0, 0, r[["n1_duration"]]/r[["tts"]]))
+  r = c(r, "n2_tts" = ifelse(r[["tts"]] == 0, 0, r[["n2_duration"]]/r[["tts"]]))
+  r = c(r, "n3_tts" = ifelse(r[["tts"]] == 0, 0, r[["n3_duration"]]/r[["tts"]]))
+  r = c(r, "awa_tts" = ifelse(r[["tts"]] == 0, 0, r[["awa_duration"]]/r[["tts"]]))
+  
+  # TSP Total Sleep Period
+  r = c(r, "tsp" = as.numeric(difftime(max(e$end), min(e$begin), units="mins")))
+  
+  # Sleep efficiency
+  r = c(r, "efficiency" = ifelse(r[["tsp"]] == 0, 0, r[["tts"]]/r[["tsp"]]))
+
+  # Latencies
+  sleep <- e[e$event %in% c("N1","N2","N3","REM"),]
+  if(nrow(sleep) > 0){
+    r = c(r, "latency" = as.numeric(difftime(min(sleep$begin),min(e$begin),units="mins")))
+  } else {
+    r = c(r, "latency" = NA)
+  }
+  
+  # Stages latencies
+  for(s in c("N1", "N2", "N3", "REM")){
+    
+    ss <- e[e$event == s,]
+    
+    if(nrow(ss) > 0){
+      start <- min(ss$begin)
+      
+      r[[paste0(tolower(s),"_latency")]] <- as.numeric(difftime(start, min(e$begin), units="mins")) - r[["latency"]]
+    }
+  }
+  
+  # WASO
+  r[["waso"]] <- r[["tsp"]] - r[["latency"]] - r[["tts"]]
+
+  r
 }
 
 
