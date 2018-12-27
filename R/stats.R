@@ -76,7 +76,7 @@ compute_all_stats <- function(records,
       df_record <- cbind(df_record, as.data.frame(as.list(cycles_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(tm_stats(tm(e)))))
       df_record <- cbind(df_record, as.data.frame(as.list(resp_stats(e))))
-      #df_record <- cbind(df_record, as.data.frame(as.list(snoring_stats(e))))
+      df_record <- cbind(df_record, as.data.frame(as.list(snoring_stats(e))))
       
       
     }
@@ -435,6 +435,13 @@ waso <- function(events){
   return(tsp(events)-sleep_latency(events)-tts(events))
 }
 
+stages_stats <- function(e){
+  
+  if(!check_events_integrity(e)){ return(NA) }
+  
+  
+}
+
 
 #' Get position g events related stats in a named vector.
 #'
@@ -530,11 +537,15 @@ snoring_stats <- function(e , ss = c("N1","N2","N3","REM")){
   stats <- c("snoring_count" = nrow(snorings))
   
   # snoring index
-  stats <- c("snoring_idx" = stats[["snoring_count"]]/(tts/60))
+  stats <- c(stats, "snoring_idx" = stats[["snoring_count"]]/(tts/60))
   
-  # snoring duration total in minutes
-  stats <- sum(as.numeric(difftime(snorings$end.x,snorings$begin.x,units="mins")))
-  
+  # Snoring duration total in minutes
+  if(stats[["snoring_count"]] > 0){
+    stats <- c(stats, "snoring_duration" = sum(as.numeric(difftime(snorings$end.x,snorings$begin.x,units="mins"))))
+  } else {
+    stats <- c(stats, "snoring_duration" = 0)
+  }
+
   stats
 }
 
