@@ -1,7 +1,5 @@
 context("Computing statistics")
 
-# Meta function ----
-
 test_that("Computing statistics from one record", {
   write_mdf(edfPath = "data/subject1.edf",
             mdfPath = "data/sample",
@@ -17,7 +15,7 @@ test_that("Computing statistics from one record", {
   unlink("data/sample", recursive = TRUE)
 })
 
-test_that("Testing events dataframe checking", {
+test_that("Testing events dataframe checking.", {
   
   e <- data.frame(begin = as.POSIXlt(seq(from = 0, to = 30*10, by = 30),origin = "1970-01-01"))
   e$end <- as.POSIXlt(seq(from = 30, to = 30*11, by = 30), origin = "1970-01-01")
@@ -25,8 +23,20 @@ test_that("Testing events dataframe checking", {
   
   
   expect_error(check_events(e[,c("end","event")]))
-  expect_error(check_events(e[,c("end","event")]))
-  expect_error(check_events(e[,c("end","event")]))
+  expect_error(check_events(e[,c("begin","event")]))
+  expect_error(check_events(e[,c("end","begin")]))
+  
+  e2 <- e
+  e2$begin <- as.character(e2$begin)
+  expect_error(check_events(e2))
+  
+  e2 <- e
+  e2$end <- as.character(e2$end)
+  expect_error(check_events(e2))
+  
+  e2 <- e
+  e2$event <- as.factor(e2$end)
+  expect_error(check_events(e2))
 })
 
 
