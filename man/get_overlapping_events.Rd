@@ -2,20 +2,20 @@
 % Please edit documentation in R/stats.R
 \name{get_overlapping_events}
 \alias{get_overlapping_events}
-\title{Filter events overlapping specified events.}
+\title{Filter x events overlapping y events.}
 \usage{
-get_overlapping_events(events, x, y)
+get_overlapping_events(e, x, y)
 }
 \arguments{
-\item{events}{Events.}
+\item{e}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
 
-\item{x}{Events labels overlapping.}
+\item{x}{Events labels overlapping y events.}
 
-\item{y}{Events labels to be overlapped.}
+\item{y}{Events labels overlapped by x events.}
 }
 \value{
 Dataframe of x events overlapping y events.
 }
 \description{
-Filter events overlapping specified events.
+Filter x events overlapping y events.
 }

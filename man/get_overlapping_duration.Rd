@@ -2,17 +2,17 @@
 % Please edit documentation in R/stats.R
 \name{get_overlapping_duration}
 \alias{get_overlapping_duration}
-\title{get_overlapping_duration}
+\title{Get the duration of x labels events overlapping y labels events.}
 \usage{
-get_overlapping_duration(label, stages, events)
+get_overlapping_duration(x, y, e)
 }
 \arguments{
-\item{label}{label}
+\item{x}{label}
 
-\item{stages}{stages}
+\item{y}{stages}
 
-\item{events}{events}
+\item{e}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
 }
 \description{
-get_overlapping_duration
+Get the duration of x labels events overlapping y labels events.
 }

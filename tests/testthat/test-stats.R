@@ -17,6 +17,22 @@ test_that("Computing statistics from one record", {
   unlink("data/sample", recursive = TRUE)
 })
 
+test_that("Testing events dataframe checking", {
+  
+  e <- data.frame(begin = as.POSIXlt(seq(from = 0, to = 30*10, by = 30),origin = "1970-01-01"))
+  e$end <- as.POSIXlt(seq(from = 30, to = 30*11, by = 30), origin = "1970-01-01")
+  e$event = c("AWA","N1","N2","N3","N3","REM","N2","REM","N2","REM","AWA")
+  
+  
+  expect_error(check_events(e[,c("end","event")]))
+  expect_error(check_events(e[,c("end","event")]))
+  expect_error(check_events(e[,c("end","event")]))
+})
+
+
+
+
+
 # Stages and scoring ----
 
 # test_that("REM duration", {

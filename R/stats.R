@@ -1,77 +1,12 @@
-#' Call and compile all statistics functions in a dataframe. 
+#' Filter x events overlapping y events.
 #'
-#' @param records record paths.
-#' @param bands EEG bands to use. Ex: list(delta = c(0.5,3.5), theta = c(3.5,8), alpha = c(8,12),beta = c(12,30))
-#' @param normalize Normalize band. Ex: c(0,40)
-#' @param eeg_channels potential EEG channel names.
-#' @param metadata read metadata or not.
-#' @param butter Butterworth order.
-#' @param resampling sRate to resample by.
-#' @return df.
-#' @export
-compute_all_stats <- function(records,
-                              bands,normalize,
-                              eeg_channels = c("C3-A2","EEG Fpz-Cz","C3-M2"),
-                              metadata = TRUE,
-                              butter = FALSE,
-                              resampling = FALSE){
-  df <- data.frame(stringsAsFactors = FALSE)
-  for(record in records){
-    l <- read_mdf(mdfPath = record,channels = eeg_channels,metadata = metadata)
-    df_record <- data.frame(stringsAsFactors = FALSE)
-    if(length(l) > 0){
-      for(eeg_channel in eeg_channels){
-        
-        if(nrow(df_record) == 0){
-          if(eeg_channel %in% names(l[["channels"]])){
-            
-            hypnogram_band_powers <- sleepr::hypnogram_band_powers(record = l,
-                                                                   channel = eeg_channel,
-                                                                   bands = bands,
-                                                                   normalize = normalize,
-                                                                   butter = butter,
-                                                                   resampling = resampling)
-            df_record <- aggregate_band_powers(hypnogram_band_powers)
-            df_record$eeg_channel <- eeg_channel
-          }
-        }
-      }
-      if(nrow(df_record) == 1){
-        df_record$record <- record
-      } else {
-        df_record <- data.frame(record <- record,stringsAsFactors = FALSE)
-      }
-      
-      e <- l[["events"]]
-      # Stats
-      
-      df_record <- cbind(df_record, as.data.frame(as.list(stages_stats(e))))
-      df_record <- cbind(df_record, as.data.frame(as.list(ma_stats(e))))
-      df_record <- cbind(df_record, as.data.frame(as.list(rem_stats(e))))
-      df_record <- cbind(df_record, as.data.frame(as.list(cycles_stats(e))))
-      df_record <- cbind(df_record, as.data.frame(as.list(tm_stats(tm(e)))))
-      df_record <- cbind(df_record, as.data.frame(as.list(resp_stats(e))))
-      df_record <- cbind(df_record, as.data.frame(as.list(snoring_stats(e))))
-      df_record <- cbind(df_record, as.data.frame(as.list(pos_stats(e))))
-      
-    }
-      df <- dplyr::bind_rows(df,df_record)
-       
-  }
-  return(df)
-    
-}
-
-
-#' Filter events overlapping specified events.
-#'
-#' @param events Events.
-#' @param x Events labels overlapping.
-#' @param y Events labels to be overlapped.
+#' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @param x Events labels overlapping y events.
+#' @param y Events labels overlapped by x events.
 #' @return Dataframe of x events overlapping y events.
-get_overlapping_events <- function(events, x, y){
-  x <- events[events$event %in% x,]
-  y <- events[events$event %in% y,]
+get_overlapping_events <- function(e, x, y){
+  x <- e[e$event %in% x,]
+  y <- e[e$event %in% y,]
   
   if(nrow(x) > 0 & nrow(y) > 0){
     x$dummy <- TRUE
@@ -89,14 +24,14 @@ get_overlapping_events <- function(events, x, y){
   }
 }
 
-#' get_overlapping_duration
+#' Get the duration of x labels events overlapping y labels events.
 #'
-#' @param label label
-#' @param stages stages
-#' @param events events
-get_overlapping_duration <- function(label, stages, events){
-  es <- events[events$event %in% label,] # [e]vents [s]ubset 
-  h <- hypnogram(events)
+#' @param x label
+#' @param y stages
+#' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+get_overlapping_duration <- function(x, y, e){
+  es <- e[e$event %in% x,] # [e]vents [s]ubset 
+  h <- hypnogram(e)
   td <- 0
   for(i in c(1:nrow(es))){
     ed <- 0
@@ -105,7 +40,7 @@ get_overlapping_duration <- function(label, stages, events){
              | (h$begin<=es[i,]$end & h$end>=es[i,]$end),]
     if(nrow(hes) > 0 & nrow(h) > 0){
       for(j in c(1:nrow(hes))){
-        if(hes$event[j] %in% stages){
+        if(hes$event[j] %in% y){
           hi <- lubridate::interval(hes$begin[j], hes$end[j])
           esi <- lubridate::interval(es$begin[i], es$end[i])
           ed <- ed + as.numeric(
@@ -120,30 +55,22 @@ get_overlapping_duration <- function(label, stages, events){
   return(td/60)
 }
 
-#' check_events_integrity
+#' check_events
 #'
-#' @param events events
-check_events_integrity <- function(events){
-  if(!("begin" %in% colnames(events))){
-    warning("Events dataframe must contain a 'begin' column.")
-    return(FALSE)
-  } else if(!("end" %in% colnames(events))){
-    warning("Events dataframe must contain a 'end' column.")
-    return(FALSE)
-  } else  if(!("event" %in% colnames(events))){
-    warning("Events dataframe must contain a 'event' column.")
-    return(FALSE)
-  } else if(!("POSIXt" %in% class(events$begin))){
-    warning("'begin' column must be a datetime.")
-    return(FALSE)
-  } else if(!("POSIXt" %in% class(events$end))){
-    warning("'end' column must be a datetime.")
-    return(FALSE)
-  } else if(!("character" %in% class(events$event))){
-    events$event <- as.character(events$event)
-    return(TRUE)
-  } else {
-    return(TRUE)
+#' @param e events
+check_events <- function(e){
+  if(!("begin" %in% colnames(e))){
+    stop("Events dataframe must contain a 'begin' column.")
+  } else if(!("end" %in% colnames(e))){
+    stop("Events dataframe must contain a 'end' column.")
+  } else  if(!("event" %in% colnames(e))){
+    stop("Events dataframe must contain a 'event' column.")
+  } else if(!("POSIXt" %in% class(e$begin))){
+    stop("'begin' column must be a datetime.")
+  } else if(!("POSIXt" %in% class(e$end))){
+    stop("'end' column must be a datetime.")
+  } else if(!("character" %in% class(e$event))){
+    stop("'events' column must be character type.")
   }
 }
 
@@ -161,7 +88,8 @@ check_events_integrity <- function(events){
 #' @export
 stages_stats <- function(e){
   
-  if(!check_events_integrity(e)){ return(NA) }
+  # Check events dataframe
+  check_events(e)
   
   # Stages duration
   r = c("rem_duration" = sum(as.numeric(difftime(e$end[e$event == "REM"],e$begin[e$event == "REM"],units="min"))))
@@ -228,7 +156,8 @@ stages_stats <- function(e){
 #' @export
 pos_stats <- function(e, ss = c("N1","N2","N3","REM")){
   
-  if(!check_events_integrity(e)){ return(NA) }
+  # Check events dataframe
+  check_events(e)
   
   tts <- sum(as.numeric(difftime(e$end[e$event %in% ss],e$begin[e$event %in% ss],units="mins")))
   
@@ -295,7 +224,8 @@ pos_stats <- function(e, ss = c("N1","N2","N3","REM")){
 #' @export
 snoring_stats <- function(e , ss = c("N1","N2","N3","REM")){
   
-  if(!check_events_integrity(e)){ return(NA) }
+  # Check events dataframe
+  check_events(e)
   
   snorings <- get_overlapping_events(e,
                                      x = c("Train de ronflements"),
@@ -327,7 +257,8 @@ snoring_stats <- function(e , ss = c("N1","N2","N3","REM")){
 #' @export
 resp_stats <- function(e, ss = c("N1","N2","N3","REM"), l = c("A. Obstructive", paste0("Hypopn","\u00E9","e"))){
   
-  if(!check_events_integrity(e)){ return(NA) }
+  # Check events dataframe
+  check_events(e)
   
   # Apnea and hypopnea count
   stats <- c("ah_count" = nrow(e[e$event %in% l,]))
@@ -359,8 +290,8 @@ resp_stats <- function(e, ss = c("N1","N2","N3","REM"), l = c("A. Obstructive", 
 #' @export
 ma_stats <- function(e, ss = c("N1","N2","N3","REM"), l = paste0("Micro-","\u00E9","veil")){
   
-  # Checking events integrity.
-  if(!check_events_integrity(e)){ return(NA) }
+  # Check events dataframe
+  check_events(e)
   
   # Filtering sleep Micro-Arousals.
   ma <- get_overlapping_events(e,
@@ -421,7 +352,8 @@ ma_stats <- function(e, ss = c("N1","N2","N3","REM"), l = paste0("Micro-","\u00E
 #' @export
 rem_stats <- function(e){
   
-  if(!check_events_integrity(e)){ return(NA) }
+  # Check events dataframe
+  check_events(e)
   
   # Filtering REM Rapid-Eye-Movements
   rem_rem <- get_overlapping_events(e,
@@ -454,7 +386,8 @@ rem_stats <- function(e){
 #' @export
 cycles_stats <- function(e){
   
-  if(!check_events_integrity(e)){ return(NA) }
+  # Check events dataframe
+  check_events(e)
   
   # Filtering cycles related events
   cycles_classic <- e[e$event == "cycle-CLASSIC",]
@@ -507,49 +440,6 @@ cycles_stats <- function(e){
   stats
 }
 
-#' Computes sleep transition matrix from selected stages.
-#' @description Sleep transition matrix is the matrix containing probabilities of next stage transition for a given stage.
-#' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' @param l Stages labels. Defaults to \code{c("AWA", "N1", "N2", "N3", "REM")}
-#' @return A matrix.
-#' @export
-tm <- function(e, l = c("AWA", "N1", "N2", "N3", "REM")){
-  
-  if(!check_events_integrity(e)){ return(NA) }
-  
-  # Hypnogram
-  h <- hypnogram(e, labels = l)
-  h$event <- as.character(h$event)
-  
-  hc <- data.frame(table(h$event))
-  colnames(hc) <- c("event","count")
-  
-  h <- h[order(h$begin),]
-  
-  h$n <- c(h$event[-1],NA)
-  h$c <- 1
-  
-  c <- stats::aggregate(c ~ event + n, data = h, FUN = sum)
-  
-  c <- merge(c, hc, by = "event")
-  
-  c$p <- c$c/c$count
-  c <- c[,colnames(c)[!(colnames(c) %in% c("c", "count"))]]
-  
-  c <- stats::reshape(c, idvar = "event", timevar = "n", direction = "wide")
-  names(c) <- gsub("p.", "", names(c))
-  c[is.na(c)]  <- 0
-  row.names(c) <- c$event
-  c$event <- NULL
-  
-  c <- c[order(row.names(c)),colnames(c)[order(colnames(c))]]
-  
-  c <- as.matrix(c)  
-  
-  c
-  
-}
-
 #' Flattens a transition matrix to a named vector.
 #' @description Flattens a transition matrix to a named vector to ensure stats functions consistency.
 #' @param tm A transition matrix.
@@ -572,10 +462,66 @@ tm_stats <- function(tm){
   r
 }
 
-# TODO ----
-# Oxygen saturation
-# Pulse
-# Quality
-# PLM
-
-
+#' Call and compile all statistics functions in a dataframe. 
+#'
+#' @param records record paths.
+#' @param bands EEG bands to use. Ex: list(delta = c(0.5,3.5), theta = c(3.5,8), alpha = c(8,12),beta = c(12,30))
+#' @param normalize Normalize band. Ex: c(0,40)
+#' @param eeg_channels potential EEG channel names.
+#' @param metadata read metadata or not.
+#' @param butter Butterworth order.
+#' @param resampling sRate to resample by.
+#' @return df.
+#' @export
+compute_all_stats <- function(records,
+                              bands,normalize,
+                              eeg_channels = c("C3-A2","EEG Fpz-Cz","C3-M2"),
+                              metadata = TRUE,
+                              butter = FALSE,
+                              resampling = FALSE){
+  df <- data.frame(stringsAsFactors = FALSE)
+  for(record in records){
+    l <- read_mdf(mdfPath = record,channels = eeg_channels,metadata = metadata)
+    df_record <- data.frame(stringsAsFactors = FALSE)
+    if(length(l) > 0){
+      for(eeg_channel in eeg_channels){
+        
+        if(nrow(df_record) == 0){
+          if(eeg_channel %in% names(l[["channels"]])){
+            
+            hypnogram_band_powers <- sleepr::hypnogram_band_powers(record = l,
+                                                                   channel = eeg_channel,
+                                                                   bands = bands,
+                                                                   normalize = normalize,
+                                                                   butter = butter,
+                                                                   resampling = resampling)
+            df_record <- aggregate_band_powers(hypnogram_band_powers)
+            df_record$eeg_channel <- eeg_channel
+          }
+        }
+      }
+      if(nrow(df_record) == 1){
+        df_record$record <- record
+      } else {
+        df_record <- data.frame(record <- record,stringsAsFactors = FALSE)
+      }
+      
+      e <- l[["events"]]
+      # Stats
+      
+      df_record <- cbind(df_record, as.data.frame(as.list(stages_stats(e))))
+      df_record <- cbind(df_record, as.data.frame(as.list(ma_stats(e))))
+      df_record <- cbind(df_record, as.data.frame(as.list(rem_stats(e))))
+      df_record <- cbind(df_record, as.data.frame(as.list(cycles_stats(e))))
+      df_record <- cbind(df_record, as.data.frame(as.list(tm_stats(tm(e)))))
+      df_record <- cbind(df_record, as.data.frame(as.list(resp_stats(e))))
+      df_record <- cbind(df_record, as.data.frame(as.list(snoring_stats(e))))
+      df_record <- cbind(df_record, as.data.frame(as.list(pos_stats(e))))
+      
+    }
+    df <- dplyr::bind_rows(df,df_record)
+    
+  }
+  return(df)
+  
+}
