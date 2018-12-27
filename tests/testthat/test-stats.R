@@ -9,7 +9,7 @@ test_that("Computing statistics from one record", {
                                                         alpha = c(8,12),
                                                         beta = c(12,30),
                                                         gamma1 = c(30,40)),
-                             normalize = c(0,40))
+                             normalize = c(0,40),butter = 7)
   expect_equal(nrow(stats), 1)
   #expect_equal(stats$tts_pos_nonback[1], 572.5)
   unlink("data/sample", recursive = TRUE)
@@ -35,127 +35,39 @@ test_that("Testing events dataframe checking.", {
   expect_error(check_events(e2))
   
   e2 <- e
-  e2$event <- as.factor(e2$end)
+  e2$event <- as.factor(e2$event)
   expect_error(check_events(e2))
 })
 
+test_that("stages stats", {
+  
+  e <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  
+  r <- stages_stats(e)
+  
+  expect_equal(r[["rem_duration"]],  124.5)
+  expect_equal(r[["n1_duration"]],  33)
+  expect_equal(r[["n2_duration"]],  233)
+  expect_equal(r[["n3_duration"]],  182)
+  expect_equal(r[["awa_duration"]],  106.5)
+  expect_equal(r[["tts"]],  572.5)
+  expect_equal(r[["rem_tts"]],  0.21746725)
+  expect_equal(r[["n1_tts"]], 0.05764192)
+  expect_equal(r[["n2_tts"]], 0.40698690)
+  expect_equal(r[["n3_tts"]], 0.31790393)
+  expect_equal(r[["awa_tts"]], 0.18602620)
+  expect_equal(r[["tsp"]], 748.5)
+  expect_equal(r[["efficiency"]], 0.76486306)
+  expect_equal(r[["latency"]], 54.5)
+  expect_equal(r[["n1_latency"]], 0)
+  expect_equal(r[["n2_latency"]], 4)
+  expect_equal(r[["n3_latency"]], 18)
+  expect_equal(r[["rem_latency"]], 107)
+  expect_equal(r[["waso"]], 121.5)
+  
+})
 
 
-
-
-# Stages and scoring ----
-
-# test_that("REM duration", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(rem_duration(events), 124.5)
-#   expect_warning(rem_duration(data.frame()))
-# })
-# 
-# test_that("N1 duration", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(n1_duration(events), 33)
-#   expect_warning(n1_duration(data.frame()))
-# })
-# 
-# test_that("N2 duration", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(n2_duration(events), 233)
-#   expect_warning(n2_duration(data.frame()))
-# })
-# 
-# test_that("N3 duration", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(n3_duration(events), 182)
-#   expect_warning(n3_duration(data.frame()))
-# })
-# 
-# test_that("AWA duration", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(awa_duration(events), 106.5)
-#   expect_warning(awa_duration(data.frame()))
-# })
-# 
-# test_that("Time To Sleep", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(tts(events), 572.5)
-#   expect_warning(tts(data.frame()))
-# })
-# 
-# test_that("REM TTS", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(round(rem_tts(events),digits = 3), 0.217)
-#   expect_warning(rem_tts(data.frame()))
-# })
-# 
-# test_that("N3 TTS", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(round(n3_tts(events),digits = 3), 0.318)
-#   expect_warning(n3_tts(data.frame()))
-# })
-# 
-# test_that("N2 TTS", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(round(n2_tts(events),digits = 3), 0.407)
-#   expect_warning(n2_tts(data.frame()))
-# })
-# 
-# test_that("N1 TTS", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(round(n1_tts(events),digits = 3), 0.058)
-#   expect_warning(n1_tts(data.frame()))
-# })
-# 
-# test_that("Total Sleep Period", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(tsp(events), 748.5)
-#   expect_warning(tsp(data.frame()))
-# })
-# 
-# test_that("Sleep Efficiency", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(round(sleep_efficiency(events),digits = 3), 0.765)
-#   expect_warning(sleep_efficiency(data.frame()))
-# })
-# 
-# test_that("Sleep latency", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(sleep_latency(events), 54.5)
-#   expect_warning(sleep_latency(data.frame()))
-# })
-# 
-# test_that("REM latency", {
-#   
-#   # Real record
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(rem_latency(events), 107)
-#   
-#   # Example 1
-#   events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#   events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#   events$event = c("AWA","REM")
-#   expect_equal(rem_latency(events), 0)
-#   
-#   # Example 2
-#   events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#   events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#   events$event = c("N1","REM")
-#   expect_equal(rem_latency(events), 0.5)
-#   
-#   # Example 2
-#   events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830),origin = "1970-01-01"))
-#   events$end <- as.POSIXlt(c(1536967830,1536967860), origin = "1970-01-01")
-#   events$event = c("REM","REM")
-#   expect_equal(rem_latency(events), 0)
-#   
-#   # Empty dataframe
-#   expect_warning(rem_latency(data.frame()))
-# })
-# 
-# test_that("Wake After Sleep Onset", {
-#   events <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
-#   expect_equal(waso(events), 121.5)
-#   expect_warning(waso(data.frame()))
-# })
 
 # Position & activity ----
 
