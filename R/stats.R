@@ -435,192 +435,6 @@ waso <- function(events){
   return(tsp(events)-sleep_latency(events)-tts(events))
 }
 
-#' # Position & activity ----
-#' 
-#' #' TTS duration in back position over TTS duration.
-#' #'
-#' #' \code{tts_pos_back_pct} computes the total time in back position during TTS over TTS duration.
-#' #'
-#' #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' #' @return TTS duration in back position over TTS
-#' #' @examples
-#' #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
-#' #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-#' #' events$event = c("N3","N3","back")
-#' #' tts_pos_back_pct(events)
-#' #' @export
-#' # tts_pos_back_pct <- function(events){
-#' #   if(!check_events_integrity(events)){
-#' #     return(NA)
-#' #     }
-#' #   tts_pos_back <- tts_pos_back(events)
-#' #   tts <- tts(events)
-#' #   if(tts_pos_back == 0 | tts == 0){
-#' #     return(0)
-#' #   } else {
-#' #     return(tts_pos_back/tts(events))
-#' #   }
-#' # }
-#' 
-#' #' TTS duration in left position in minutes.
-#' #'
-#' #' \code{tts_pos_left} computes the total time in left position during TTS in minutes.
-#' #'
-#' #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' #' @return TTS duration in left position.
-#' #' @examples
-#' #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
-#' #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-#' #' events$event = c("N3","N3","left")
-#' #' tts_pos_left(events)
-#' #' @export
-#' tts_pos_left <- function(events){
-#'   if(!check_events_integrity(events)){ return(NA) }
-#'   return(get_overlapping_duration("left",c("N1","N2","N3","REM"),events))
-#' }
-#' 
-#' #' TTS duration in left position over TTS duration.
-#' #'
-#' #' \code{tts_pos_back_pct} computes the total time in left position during TTS over TTS duration.
-#' #'
-#' #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' #' @return TTS duration in back position over TTS
-#' #' @examples
-#' #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
-#' #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-#' #' events$event = c("N3","N3","back")
-#' #' tts_pos_left_pct(events)
-#' #' @export
-#' tts_pos_left_pct <- function(events){
-#'   if(!check_events_integrity(events)){ return(NA) }
-#'   tts_pos_left <- tts_pos_left(events)
-#'   tts <- tts(events)
-#'   if(tts_pos_left == 0 | tts == 0){
-#'     return(0)
-#'   } else {
-#'     return(tts_pos_left/tts(events))
-#'   }
-#' }
-#' 
-#' #' TTS duration in stomach position in minutes.
-#' #'
-#' #' \code{tts_pos_stomach} computes the total time in stomach position during TTS in minutes.
-#' #'
-#' #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' #' @return TTS duration in stomach position.
-#' #' @examples
-#' #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
-#' #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-#' #' events$event = c("N3","N3","stomach")
-#' #' tts_pos_stomach(events)
-#' #' @export
-#' tts_pos_stomach <- function(events){
-#'   if(!check_events_integrity(events)){ return(NA) }
-#'   return(get_overlapping_duration("stomach",c("N1","N2","N3","REM"),events))
-#' }
-#' 
-#' #' TTS duration in stomach position over TTS duration.
-#' #'
-#' #' \code{tts_pos_back_pct} computes the total time in stomach position during TTS over TTS duration.
-#' #'
-#' #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' #' @return TTS duration in back position over TTS
-#' #' @examples
-#' #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
-#' #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-#' #' events$event = c("N3","N3","stomach")
-#' #' tts_pos_stomach_pct(events)
-#' #' @export
-#' tts_pos_stomach_pct <- function(events){
-#'   if(!check_events_integrity(events)){ return(NA) }
-#'   tts_pos_stomach <- tts_pos_stomach(events)
-#'   tts <- tts(events)
-#'   if(tts_pos_stomach == 0 | tts == 0){
-#'     return(0)
-#'   } else {
-#'     return(tts_pos_stomach/tts(events))
-#'   }
-#' }
-#' 
-#' #' TTS duration in right position in minutes.
-#' #'
-#' #' \code{tts_pos_right} computes the total time in right position during TTS in minutes.
-#' #'
-#' #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' #' @return TTS duration in right position.
-#' #' @examples
-#' #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
-#' #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-#' #' events$event = c("N3","N3","right")
-#' #' tts_pos_right(events)
-#' #' @export
-#' tts_pos_right <- function(events){
-#'   if(!check_events_integrity(events)){ return(NA) }
-#'   return(get_overlapping_duration("right",c("N1","N2","N3","REM"),events))
-#' }
-#' 
-#' #' TTS duration in right position over TTS duration.
-#' #'
-#' #' \code{tts_pos_right_pct} computes the total time in stomach position during TTS over TTS duration.
-#' #'
-#' #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' #' @return TTS duration in right position over TTS
-#' #' @examples
-#' #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
-#' #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-#' #' events$event = c("N3","N3","right")
-#' #' tts_pos_right_pct(events)
-#' #' @export
-#' tts_pos_right_pct <- function(events){
-#'   if(!check_events_integrity(events)){ return(NA) }
-#'   tts_pos_right <- tts_pos_right(events)
-#'   tts <- tts(events)
-#'   if(tts_pos_right == 0 | tts == 0){
-#'     return(0)
-#'   } else {
-#'     return(tts_pos_right/tts(events))
-#'   }
-#' }
-#' 
-#' #' TTS duration in non-back position in minutes.
-#' #'
-#' #' \code{tts_pos_nonback} computes the total time in non-back position during TTS in minutes.
-#' #'
-#' #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' #' @return TTS duration in non-back position.
-#' #' @examples
-#' #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
-#' #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-#' #' events$event = c("N3","N3","back")
-#' #' tts_pos_nonback(events)
-#' #' @export
-#' tts_pos_nonback <- function(events){
-#'   if(!check_events_integrity(events)){ return(NA) }
-#'   return(tts(hypnogram(events))-tts_pos_back(events))
-#' }
-#' 
-#' #' TTS duration in non-back position over TTS duration.
-#' #'
-#' #' \code{tts_pos_nonback_pct} computes the total time in non-back position during TTS over TTS duration.
-#' #'
-#' #' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
-#' #' @return TTS duration in non-back position over TTS
-#' #' @examples
-#' #' events <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
-#' #' events$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-#' #' events$event = c("N3","N3","back")
-#' #' tts_pos_right_pct(events)
-#' #' @export
-#' tts_pos_nonback_pct <- function(events){
-#'   if(!check_events_integrity(events)){ return(NA) }
-#'   tts_pos_nonback <- tts_pos_nonback(events)
-#'   tts <- tts(events)
-#'   if(tts_pos_nonback == 0 | tts == 0){
-#'     return(0)
-#'   } else {
-#'     return(tts_pos_nonback/tts(events))
-#'   }
-#' }
 
 #' Get position g events related stats in a named vector.
 #'
@@ -632,8 +446,8 @@ waso <- function(events){
 #' @examples
 #' e <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
 #' e$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-#' e$event = c("N3","N3","Train de ronflements")
-#' snoring_stats(e)
+#' e$event = c("N3","N3","back")
+#' pos_stats(e)
 #' @export
 pos_stats <- function(e, ss = c("N1","N2","N3","REM")){
   
@@ -644,17 +458,47 @@ pos_stats <- function(e, ss = c("N1","N2","N3","REM")){
   # Back
   stats <- c("tts_back" = get_overlapping_duration("back", ss ,e))
   
-  # if(stats[["tts_back"]] == 0 | tts == 0){
-  #   stats <- c("tts_back" =
-  # } else {
-  #   
-  # }
+  if(stats[["tts_back"]] == 0 | tts == 0){
+    stats <- c(stats, "tts_back_pct" = NA)
+  } else {
+    stats <- c(stats, "tts_back_pct" = stats[["tts_back"]]/tts)
+  }
   
   # Left
+  stats <- c(stats, "tts_left" = get_overlapping_duration("left", ss ,e))
   
-  # Right 
+  if(stats[["tts_left"]] == 0 | tts == 0){
+    stats <- c(stats, "tts_left_pct" = NA)
+  } else {
+    stats <- c(stats, "tts_left_pct" = stats[["tts_back"]]/tts)
+  }
   
-  # non back
+  # Right
+  stats <- c(stats, "tts_right" = get_overlapping_duration("right", ss ,e))
+  
+  if(stats[["tts_right"]] == 0 | tts == 0){
+    stats <- c(stats, "tts_right_pct" = NA)
+  } else {
+    stats <- c(stats, "tts_right_pct" = stats[["tts_right"]]/tts)
+  }
+  
+  # Stomach
+  stats <- c(stats, "tts_stomach" = get_overlapping_duration("stomach", ss ,e))
+  
+  if(stats[["tts_stomach"]] == 0 | tts == 0){
+    stats <- c(stats, "tts_stomach_pct" = NA)
+  } else {
+    stats <- c(stats, "tts_stomach_pct" = stats[["tts_stomach"]]/tts)
+  }
+  
+  # Non-back
+  stats <- c(stats, "tts_nonback" = get_overlapping_duration(c("right","stomach","left"), ss ,e))
+  
+  if(stats[["tts_nonback"]] == 0 | tts == 0){
+    stats <- c(stats, "tts_nonback_pct" = NA)
+  } else {
+    stats <- c(stats, "tts_nonback_pct" = stats[["tts_nonback"]]/tts)
+  }
   
   stats
 }
@@ -947,9 +791,10 @@ tm_stats <- function(tm){
   r
 }
 
-# Oxygen saturation ----
-# Pulse ----
-# Quality ----
-# PLM ----
+# TODO ----
+# Oxygen saturation
+# Pulse
+# Quality
+# PLM
 
 

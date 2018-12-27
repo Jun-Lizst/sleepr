@@ -207,6 +207,6 @@ Get position g events related stats in a named vector.
 \examples{
 e <- data.frame(begin = as.POSIXlt(c(1536967800,1536967830,1536967810),origin = "1970-01-01"))
 e$end <- as.POSIXlt(c(1536967830,1536967860,1536967820), origin = "1970-01-01")
-e$event = c("N3","N3","Train de ronflements")
-snoring_stats(e)
+e$event = c("N3","N3","back")
+pos_stats(e)
 }
