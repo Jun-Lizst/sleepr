@@ -14,6 +14,11 @@ download_dreams_spindles(path)
 Download the DREAMS Spindles database in the desired path. Checks MD5 of the downloaded .rar file.
 See the DREAMS Spindles database website for more details: \url{http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSpindles/}
 }
+\examples{
+\dontrun{
+download_dreams_spindles()
+}
+}
 \references{
 S. Devuyst et al., "Automatic Sleep Spindle Detection in Patients with Sleep Disorders," 2006 International Conference of the IEEE Engineering in Medicine and Biology Society, New York, NY, 2006, pp. 3883-3886. doi: 10.1109/IEMBS.2006.259298
 }

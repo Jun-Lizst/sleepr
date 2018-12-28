@@ -5,7 +5,7 @@
 \title{Download the Expanded Sleep-EDF Database
 See the Expanded Sleep-EDF Database website for more details: \url{https://physionet.org/pn4/sleep-edfx/}}
 \usage{
-download_sleepedfx(path)
+download_sleepedfx(path = "./")
 }
 \arguments{
 \item{path}{character, path to download database.}
@@ -13,6 +13,11 @@ download_sleepedfx(path)
 \description{
 Download the Expanded Sleep-EDF Database
 See the Expanded Sleep-EDF Database website for more details: \url{https://physionet.org/pn4/sleep-edfx/}
+}
+\examples{
+\dontrun{
+download_sleepedfx()
+}
 }
 \references{
 B Kemp, AH Zwinderman, B Tuk, HAC Kamphuisen, JJL Oberyé. Analysis of a sleep-dependent neuronal feedback loop: the slow-wave microcontinuity of the EEG. IEEE-BME 47(9):1185-1194 (2000).

@@ -5,7 +5,7 @@
 \title{Download the ISRUC-SLEEP Dataset in the desired path.
 See the ISRUC-SLEEP Dataset website for more details: \url{https://sleeptight.isr.uc.pt/ISRUC_Sleep/}}
 \usage{
-download_isruc(target)
+download_isruc(target = "./")
 }
 \arguments{
 \item{target}{character, path to download database.}
@@ -13,6 +13,11 @@ download_isruc(target)
 \description{
 Download the ISRUC-SLEEP Dataset in the desired path.
 See the ISRUC-SLEEP Dataset website for more details: \url{https://sleeptight.isr.uc.pt/ISRUC_Sleep/}
+}
+\examples{
+\dontrun{
+download_isruc()
+}
 }
 \references{
 Sirvan Khalighi, Teresa Sousa, Jose Moutinho Santos, Urbano Nunes, ISRUC-Sleep: a comprehensive public dataset for sleep researchers, Computer Methods and Programs in Biomedicine, Elsevier, 2015

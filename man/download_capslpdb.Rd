@@ -5,7 +5,7 @@
 \title{Download the CAP Sleep Database in the desired path. 
 See the CAP Sleep Database website for more details: \url{https://physionet.org/physiobank/database/capslpdb/}}
 \usage{
-download_capslpdb(path)
+download_capslpdb(path = "./")
 }
 \arguments{
 \item{path}{character, path to download database.}
@@ -13,6 +13,11 @@ download_capslpdb(path)
 \description{
 Download the CAP Sleep Database in the desired path. 
 See the CAP Sleep Database website for more details: \url{https://physionet.org/physiobank/database/capslpdb/}
+}
+\examples{
+\dontrun{
+download_capslpdb()
+}
 }
 \references{
 MG Terzano, L Parrino, A Sherieri, R Chervin, S Chokroverty, C Guilleminault, M Hirshkowitz, M Mahowald, H Moldofsky, A Rosa, R Thomas, A Walters. Atlas, rules, and recording techniques for the scoring of cyclic alternating pattern (CAP) in human sleep. Sleep Med 2001 Nov; 2(6):537-553. Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C-K, Stanley HE. PhysioBank, PhysioToolkit, and PhysioNet: Components of a New Research Resource for Complex Physiologic Signals. Circulation 101(23):e215-e220 [Circulation Electronic Pages; http://circ.ahajournals.org/cgi/content/full/101/23/e215]; 2000 (June 13).

@@ -5,7 +5,7 @@
 \title{Download DREAMS Subjects database in the desired path.
 See the  website for more details: <http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSubjects/>}
 \usage{
-download_dreams_subjects(path)
+download_dreams_subjects(path = "./")
 }
 \arguments{
 \item{path}{character, path to download database.}
@@ -13,6 +13,11 @@ download_dreams_subjects(path)
 \description{
 Download DREAMS Subjects database in the desired path.
 See the  website for more details: <http://www.tcts.fpms.ac.be/~devuyst/Databases/DatabaseSubjects/>
+}
+\examples{
+\dontrun{
+download_dreams_subjects()
+}
 }
 \references{
 S. Devuyst, T. Dutoit, P. Stenuit, M. Kerkhofs, E. Stanus, "Canceling ECG Artifacts in EEG using a Modified Independent Component Analysis Approach", EURASIP Journal on Advances in Signal Processing, Volume 2008, Article ID 747325, Accepted 31 July 2008.

@@ -2,24 +2,28 @@
 % Please edit documentation in R/spectral.R
 \name{bands_power}
 \alias{bands_power}
-\title{Compute bands powers.}
+\title{Compute bands powers from signal.
+Divides signal into frequency bands and performs Fast Fourier Transforms (FFT) to compute bands powers.}
 \usage{
-bands_power(x, Fs, bands, normalize, butter = FALSE)
+bands_power(x, Fs, bands = list(delta = c(0.5, 3.5), theta = c(3.5, 8),
+  alpha = c(8, 12), beta = c(12, 30), gamma1 = c(30, 40)),
+  butter = FALSE, normalize = NA)
 }
 \arguments{
-\item{x}{signal vector.}
+\item{x}{Vector containing signal.}
 
-\item{Fs}{Frequency.}
+\item{Fs}{Signal sample rate.}
 
-\item{bands}{bands.}
-
-\item{normalize}{normalize.}
+\item{bands}{List of frequency bands with lower and upper limits. Defaults to \code{list(delta = c(0.5,3.5), theta = c(3.5,8), alpha = c(8,12), beta = c(12,30), gamma1 = c(30,40))}}
 
 \item{butter}{butter order or false.}
+
+\item{normalize}{If set}
 }
 \value{
-a named vector with all bands powers.
+A named vector containing bands powers.
 }
 \description{
-Compute bands powers.
+Compute bands powers from signal.
+Divides signal into frequency bands and performs Fast Fourier Transforms (FFT) to compute bands powers.
 }

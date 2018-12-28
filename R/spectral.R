@@ -1,13 +1,20 @@
-#' Compute bands powers.
-#'
-#' @param x signal vector.
-#' @param Fs Frequency.
-#' @param bands bands.
-#' @param normalize normalize.
+#' Compute bands powers from signal.
+#' Divides signal into frequency bands and performs Fast Fourier Transforms (FFT) to compute bands powers.
+#' @param x Vector containing signal.
+#' @param Fs Signal sample rate.
+#' @param bands List of frequency bands with lower and upper limits. Defaults to \code{list(delta = c(0.5,3.5), theta = c(3.5,8), alpha = c(8,12), beta = c(12,30), gamma1 = c(30,40))}
+#' @param normalize If set 
 #' @param butter butter order or false.
-#' @return a named vector with all bands powers.
+#' @return A named vector containing bands powers.
 #' @export
-bands_power <- function(x,Fs,bands,normalize,butter = FALSE){
+bands_power <- function(x, Fs, 
+                        bands = list(delta = c(0.5,3.5),
+                                     theta = c(3.5,8),
+                                     alpha = c(8,12),
+                                     beta = c(12,30),
+                                     gamma1 = c(30,40)),
+                        butter = FALSE,
+                        normalize = NA){
   #x[is.na(x)] <- 0
   if(butter != FALSE){
     filt <- signal::butter(butter, 0.1)
@@ -22,7 +29,7 @@ bands_power <- function(x,Fs,bands,normalize,butter = FALSE){
     powers <- c(powers,power)
   }
   names(powers) <- names(bands)
-  return(powers)
+  powers
 }
 
 #' Compute bands powers from a full hypnogram.

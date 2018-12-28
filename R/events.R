@@ -1,4 +1,4 @@
-#' Read ISRUC sleep scoring
+#' Read ISRUC sleep scoring.
 #'
 #' @param dir character, ISRUC record directory.
 #' @param scoringNum Scoring number in database.
