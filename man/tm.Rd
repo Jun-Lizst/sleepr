@@ -2,7 +2,7 @@
 % Please edit documentation in R/hypnogram.R
 \name{tm}
 \alias{tm}
-\title{Computes sleep transition matrix from selected stages.}
+\title{Computes sleep stages transition matrix from selected stages.}
 \usage{
 tm(e, l = c("AWA", "N1", "N2", "N3", "REM"))
 }
@@ -15,5 +15,11 @@ tm(e, l = c("AWA", "N1", "N2", "N3", "REM"))
 A matrix.
 }
 \description{
-Sleep transition matrix is the matrix containing probabilities of next stage transition for a given stage.
+A sleep stages transition matrix contains the probabilities of next stage transition for a given stage.
+}
+\examples{
+e <- data.frame(begin = as.POSIXlt(seq(from = 0, to = 30*10, by = 30),origin = "1970-01-01"))
+e$end <- as.POSIXlt(seq(from = 30, to = 30*11, by = 30), origin = "1970-01-01")
+e$event = c("AWA","N1","N2","N3","N3","REM","N2","REM","N2","REM","AWA")
+tm(e)
 }

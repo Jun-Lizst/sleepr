@@ -2,7 +2,7 @@
 % Please edit documentation in R/hypnogram.R
 \name{split_epochs}
 \alias{split_epochs}
-\title{Split signal into epochs}
+\title{Split signal a signal vector into epochs.}
 \usage{
 split_epochs(signal, sRate, duration = 30)
 }
@@ -17,5 +17,5 @@ split_epochs(signal, sRate, duration = 30)
 list.
 }
 \description{
-Split signal into epochs
+Split signal a signal vector into epochs.
 }

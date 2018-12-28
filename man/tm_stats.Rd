@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats.R
 \name{tm_stats}
 \alias{tm_stats}
-\title{Flattens a transition matrix to a named vector.}
+\title{Flattens a stage transition matrix to a named vector.}
 \usage{
 tm_stats(tm)
 }

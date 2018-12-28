@@ -2,20 +2,26 @@
 % Please edit documentation in R/hypnogram.R
 \name{plot_transitions}
 \alias{plot_transitions}
-\title{Get transitions graph}
+\title{Plot a stages transition graph using the \code{visNetwork} package.}
 \usage{
 plot_transitions(e, height = "500px", width = "100\%")
 }
 \arguments{
-\item{e}{hypnogram}
+\item{e}{Events dataframe containing stages. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.}
 
-\item{height}{height}
+\item{height}{height in pct or px.}
 
-\item{width}{width}
+\item{width}{width.}
 }
 \value{
-list.
+A \code{visNetwork} \code{htmlWidget}.
 }
 \description{
-Get transitions graph
+\code{plot_transitions} uses the \code{visNetwork} package to plot a stages transition \code{htmlWidget} graph showing stages as nodes and probabilities on edges.
+}
+\examples{
+e <- data.frame(begin = as.POSIXlt(seq(from = 0, to = 30*10, by = 30),origin = "1970-01-01"))
+e$end <- as.POSIXlt(seq(from = 30, to = 30*11, by = 30), origin = "1970-01-01")
+e$event = c("AWA","N1","N2","N3","N3","REM","N2","REM","N2","REM","AWA")
+plot_transitions(e, height = "500px", width = "500px")
 }

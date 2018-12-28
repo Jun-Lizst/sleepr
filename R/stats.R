@@ -440,7 +440,7 @@ cycles_stats <- function(e){
   stats
 }
 
-#' Flattens a transition matrix to a named vector.
+#' Flattens a stage transition matrix to a named vector.
 #' @description Flattens a transition matrix to a named vector to ensure stats functions consistency.
 #' @param tm A transition matrix.
 #' @return A named vector.

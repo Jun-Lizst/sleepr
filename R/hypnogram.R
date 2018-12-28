@@ -60,7 +60,7 @@ split_signal <- function(signal,hypnogram,sRate){
   return(splitted_signal)
 }
 
-#' Split signal into epochs
+#' Split signal a signal vector into epochs.
 #'
 #' @param signal signal.
 #' @param sRate sRate sig.
@@ -73,25 +73,17 @@ split_epochs <- function(signal, sRate, duration = 30){
   return(epochs)
 }
 
-#' Get spectrogram
-#'
-#' @param signal signal.
-#' @param sRate sRate.
-#' @param maxfreq maxfreq.
-#' @param windowlength windowlength.
-#' @param show show.
-#' @return list.
-#' @export
-plot_spectrogram <- function(signal, sRate, maxfreq = 25, windowlength = 2000, show = FALSE){
-  phonTools::spectrogram(signal, fs = sRate, windowlength = windowlength, maxfreq = maxfreq, show = show)
-}
-
-#' Get transitions graph
-#'
-#' @param e hypnogram
-#' @param height height
-#' @param width width
-#' @return list.
+#' Plot a stages transition graph using the \code{visNetwork} package.
+#' @description \code{plot_transitions} uses the \code{visNetwork} package to plot a stages transition \code{htmlWidget} graph showing stages as nodes and probabilities on edges.
+#' @param e Events dataframe containing stages. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
+#' @param height height in pct or px.
+#' @param width width.
+#' @return A \code{visNetwork} \code{htmlWidget}.
+#' @examples 
+#' e <- data.frame(begin = as.POSIXlt(seq(from = 0, to = 30*10, by = 30),origin = "1970-01-01"))
+#' e$end <- as.POSIXlt(seq(from = 30, to = 30*11, by = 30), origin = "1970-01-01")
+#' e$event = c("AWA","N1","N2","N3","N3","REM","N2","REM","N2","REM","AWA")
+#' plot_transitions(e, height = "500px", width = "500px")
 #' @export
 plot_transitions <- function(e, height = "500px", width = "100%"){
   
@@ -108,7 +100,7 @@ plot_transitions <- function(e, height = "500px", width = "100%"){
   h <- merge(h,hc, by = "event")
   h <- h[order(h$begin),]
   
-  # nodes
+  # Nodes
   nodes <- data.frame(id = 1:length(unique(h$event)),
                       shape = "circle",
                       event = unique(h$event),
@@ -118,7 +110,7 @@ plot_transitions <- function(e, height = "500px", width = "100%"){
   nodes$group <- nodes$label
   nodes$value <- NULL
   
-  # edges
+  # Edges
   h$n <- c(h$event[-1],NA)
   h$c <- 1
   c <- stats::aggregate(c ~ event + n, data = h, FUN = sum)
@@ -141,11 +133,16 @@ plot_transitions <- function(e, height = "500px", width = "100%"){
   visNetwork::visNetwork(nodes, edges, height = height, width = width)
 }
 
-#' Computes sleep transition matrix from selected stages.
-#' @description Sleep transition matrix is the matrix containing probabilities of next stage transition for a given stage.
+#' Computes sleep stages transition matrix from selected stages.
+#' @description A sleep stages transition matrix contains the probabilities of next stage transition for a given stage.
 #' @param e Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event} (\code{character}) columns.
 #' @param l Stages labels. Defaults to \code{c("AWA", "N1", "N2", "N3", "REM")}
 #' @return A matrix.
+#' @examples
+#' e <- data.frame(begin = as.POSIXlt(seq(from = 0, to = 30*10, by = 30),origin = "1970-01-01"))
+#' e$end <- as.POSIXlt(seq(from = 30, to = 30*11, by = 30), origin = "1970-01-01")
+#' e$event = c("AWA","N1","N2","N3","N3","REM","N2","REM","N2","REM","AWA")
+#' tm(e)
 #' @export
 tm <- function(e, l = c("AWA", "N1", "N2", "N3", "REM")){
   
