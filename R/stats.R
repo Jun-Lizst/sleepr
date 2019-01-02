@@ -475,7 +475,7 @@ tm_stats <- function(tm){
 #' @export
 compute_all_stats <- function(records,
                               bands,normalize,
-                              eeg_channels = c("C3-A2","EEG Fpz-Cz","C3-M2"),
+                              eeg_channels = c("C3-A2","EEG Fpz-Cz","C3-M2","F4-M1"),
                               metadata = TRUE,
                               butter = FALSE,
                               resampling = FALSE){

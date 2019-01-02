@@ -18,7 +18,6 @@ test_that("Writing all channels and overwriting with events", {
   events.write <- jsonlite::read_json("data/sample/events.json",simplifyVector = TRUE)
   expect_equal(length(events.write), length(events))
   expect_equal(nrow(events.write), nrow(events))
-  unlink("data/sample",recursive = TRUE)
 })
 
 test_that("Do not write channels", {

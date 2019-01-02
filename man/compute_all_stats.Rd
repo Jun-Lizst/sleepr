@@ -5,7 +5,7 @@
 \title{Call and compile all statistics functions in a dataframe.}
 \usage{
 compute_all_stats(records, bands, normalize, eeg_channels = c("C3-A2",
-  "EEG Fpz-Cz", "C3-M2"), metadata = TRUE, butter = FALSE,
+  "EEG Fpz-Cz", "C3-M2", "F4-M1"), metadata = TRUE, butter = FALSE,
   resampling = FALSE)
 }
 \arguments{
