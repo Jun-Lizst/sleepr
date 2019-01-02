@@ -25,7 +25,7 @@ test_that("Do not write channels", {
             mdfPath = "data/sample",
             channels = c())
   expect_equal(length(list.dirs("data/sample")), 1)
-  unlink("data/sample",recursive = TRUE)
+  unlink("data/sample", recursive = TRUE)
 })
 
 test_that("Corrupted channel", {
@@ -39,13 +39,12 @@ test_that("Corrupted channel", {
 })
 
 test_that("Read file", {
-  expect_warning({
-    write_channel(channel = "Corrupted",
-                  signals = c(),
-                  headers = edfReader::readEdfSignals("data/subject1.edf"),
-                  mdfPath = "data/",
-                  endian = "little")
-  })
+  write_mdf(edfPath = "data/subject1.edf",
+            mdfPath = "data/sample",
+            channels = c(),
+            events = read_events_noxturnal("data/noxturnal_events_example_unicode.csv"))
+  r <- read_mdf("data/sample")
+  unlink("data/sample",recursive = TRUE)
 })
 
 

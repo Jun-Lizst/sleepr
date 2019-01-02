@@ -14,7 +14,11 @@ read_events_isruc <- function(dir, scoringNum = 1)
   
   if(is.na(recPath)){
     start <- as.POSIXlt("1970-01-01 00:00.00 UTC")
-  } else { start <- edfReader::readEdfHeader(recPath)$startTime }
+  } 
+  # nocov start
+  else { 
+    start <- edfReader::readEdfHeader(recPath)$startTime }
+  # nocov end
   
   scoring <- readxl::read_xlsx(xlsxPath, col_names = FALSE)[1:2]
   if(scoring$X__1[1] == "Epoch"){
