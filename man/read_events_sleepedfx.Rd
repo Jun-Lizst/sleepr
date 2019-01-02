@@ -4,10 +4,10 @@
 \alias{read_events_sleepedfx}
 \title{Read a SleepEDFX events file EDF+}
 \usage{
-read_events_sleepedfx(path, update = TRUE)
+read_events_sleepedfx(dir, update = TRUE)
 }
 \arguments{
-\item{path}{EDF+ path}
+\item{dir}{EDF+ path}
 
 \item{update}{merge N3 and N4 or not}
 }

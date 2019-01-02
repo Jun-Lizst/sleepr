@@ -2,20 +2,20 @@
 % Please edit documentation in R/hypnogram.R
 \name{split_signal}
 \alias{split_signal}
-\title{Split signal following hypnogram}
+\title{Split signal using hypnogram events.}
 \usage{
 split_signal(signal, hypnogram, sRate)
 }
 \arguments{
-\item{signal}{signal.}
+\item{signal}{Vector containing signal.}
 
 \item{hypnogram}{hypnogram df.}
 
-\item{sRate}{sRate sig.}
+\item{sRate}{Signal sample rate.}
 }
 \value{
 list.
 }
 \description{
-Split signal following hypnogram
+Split signal using hypnogram events.
 }

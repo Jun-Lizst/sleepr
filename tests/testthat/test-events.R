@@ -19,7 +19,7 @@ test_that("Reading ISRUC events", {
   e <- sleepr::read_events_isruc(dir = "data/isruc/1/1/", scoringNum = 1)
   expect_equal(nrow(e), 880)
   
-  e <- read_all_events_isruc(target = "data/isruc/")
+  e <- read_all_events_isruc("data/isruc/")
   expect_equal(nrow(e), 880)
 })
 

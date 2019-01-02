@@ -29,3 +29,14 @@ test_that("Do not write channels", {
   unlink("data/sample",recursive = TRUE)
 })
 
+test_that("Corrupted channel", {
+  expect_warning({
+    write_channel(channel = "Corrupted",
+                  signals = c(),
+                  headers = edfReader::readEdfSignals("data/subject1.edf"),
+                  mdfPath = "data/",
+                  endian = "little")
+  })
+})
+
+

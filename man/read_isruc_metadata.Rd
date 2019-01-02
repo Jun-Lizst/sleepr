@@ -2,16 +2,16 @@
 % Please edit documentation in R/events.R
 \name{read_isruc_metadata}
 \alias{read_isruc_metadata}
-\title{Read ISRUC metadata}
+\title{Read ISRUC-Sleep dataset records metadata.}
 \usage{
-read_isruc_metadata(target)
+read_isruc_metadata(dir)
 }
 \arguments{
-\item{target}{ISRUC records directory.}
+\item{dir}{ISRUC dataset directory.}
 }
 \value{
-A dataframe of metadata.
+A dataframe containing records metadata.
 }
 \description{
-Read ISRUC metadata
+Read all the subgroups XLSX metadata files and concatenates the dataframes into one.
 }
