@@ -69,7 +69,9 @@ read_all_events_isruc <- function(dir){
   for(subgroup in list.dirs(dir, T, F)){
     for(record in list.dirs(subgroup, T, F)){
       if(length(list.dirs(record, T, F)) > 1){
+        # nocov start
         record <- paste0(record,"/1")
+        # nocov end
       }
       hypnogram <- read_events_isruc(record, 1)
       hypnogram$record <- record
@@ -91,7 +93,12 @@ read_events_noxturnal <- function(dir){
   events <- tryCatch({
     utils::read.csv(dir,
              fileEncoding = "UTF-8")
-  }, error = function(e){ utils::read.csv(dir, fileEncoding = "UTF-16") },
+  }, 
+  # nocov start
+  error = function(e){ 
+    utils::read.csv(dir, fileEncoding = "UTF-16") 
+    },
+  # nocov end
   warning = function(e){
     utils::read.csv(dir,
              fileEncoding = "UTF-16")

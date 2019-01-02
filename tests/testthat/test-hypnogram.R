@@ -41,3 +41,7 @@ test_that("Plot hypnogram", {
   hypnogram <- plot_transitions(events)
 })
 
+test_that("Split epochs", {
+  split_epochs(seq(1,30*2,1), 1, duration = 30)
+})
+

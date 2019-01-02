@@ -43,7 +43,7 @@ test_that("Read file", {
             mdfPath = "data/sample",
             channels = c(),
             events = read_events_noxturnal("data/noxturnal_events_example_unicode.csv"))
-  r <- read_mdf("data/sample")
+  r <- read_mdf("data/sample",channels = c())
   unlink("data/sample",recursive = TRUE)
 })
 
