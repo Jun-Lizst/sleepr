@@ -2,9 +2,9 @@
 % Please edit documentation in R/events.R
 \name{read_events_isruc}
 \alias{read_events_isruc}
-\title{Read ISRUC sleep scoring}
+\title{Read scoring from the ISRUC-Sleep datasets.}
 \usage{
-read_events_isruc(dir, scoringNum)
+read_events_isruc(dir, scoringNum = 1)
 }
 \arguments{
 \item{dir}{character, ISRUC record directory.}
@@ -15,5 +15,8 @@ read_events_isruc(dir, scoringNum)
 A dataframe of scored stages.
 }
 \description{
-Read ISRUC sleep scoring
+Read a XLSX sleep stages scoring from  a ISRUC-Sleep dataset record directory.
+}
+\references{
+Sirvan Khalighi, Teresa Sousa, Jose Moutinho Santos, Urbano Nunes, ISRUC-Sleep: a comprehensive public dataset for sleep researchers, Computer Methods and Programs in Biomedicine, Elsevier, 2015
 }

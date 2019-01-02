@@ -1,17 +1,16 @@
 context("Computing statistics")
 
-test_that("Computing statistics from one record", {
+test_that("Computing statistics from records", {
   write_mdf(edfPath = "data/subject1.edf",
             mdfPath = "data/sample",
             events = read_events_noxturnal("data/noxturnal_events_example_unicode.csv"))
-  stats <- compute_all_stats("data/sample",bands = list(delta = c(0.5,3.5),
+  stats <- compute_all_stats(c("data/sample","data/sample"),bands = list(delta = c(0.5,3.5),
                                                         theta = c(3.5,8),
                                                         alpha = c(8,12),
                                                         beta = c(12,30),
                                                         gamma1 = c(30,40)),
                              normalize = c(0,40),butter = 7)
-  expect_equal(nrow(stats), 1)
-  #expect_equal(stats$tts_pos_nonback[1], 572.5)
+  expect_equal(nrow(stats), 2)
   unlink("data/sample", recursive = TRUE)
 })
 
@@ -39,7 +38,7 @@ test_that("Testing events dataframe checking.", {
   expect_error(check_events(e2))
 })
 
-test_that("stages stats", {
+test_that("Stages statistics", {
   
   e <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
   
@@ -65,7 +64,70 @@ test_that("stages stats", {
   expect_equal(r[["rem_latency"]], 107)
   expect_equal(r[["waso"]], 121.5)
   
+  # AWA only events
+  e <- e[e$event == "AWA",]
+  
+  r <- stages_stats(e)
+  
+  expect_equal(r[["rem_duration"]],  0)
+  expect_equal(r[["n1_duration"]],  0)
+  expect_equal(r[["n2_duration"]],  0)
+  expect_equal(r[["n3_duration"]],  0)
+  expect_equal(r[["awa_duration"]],  106.5)
+  expect_equal(r[["tts"]],  0)
+  expect_equal(r[["rem_tts"]],  0)
+  expect_equal(r[["n1_tts"]], 0)
+  expect_equal(r[["n2_tts"]], 0)
+  expect_equal(r[["n3_tts"]], 0)
+  expect_equal(r[["awa_tts"]], 0.)
+  expect_equal(r[["tsp"]], 748.5)
+  expect_equal(r[["efficiency"]], 0)
+  expect_true(is.na(r[["latency"]]))
+  expect_true(is.na(r[["waso"]]))
 })
+
+test_that("Position statistics", {
+  
+  e <- read_events_noxturnal("data/noxturnal_events_example_unicode_2.csv")
+  
+  r <- pos_stats(e)
+  
+  expect_equal(r[["tts_back"]], 123.3333333)
+  expect_equal(round(r[["tts_back_pct"]],digits = 3), 0.363)
+  expect_equal(r[["tts_left"]], 142.1666667)
+  expect_equal(round(r[["tts_left_pct"]],digits = 3), 0.419)
+  expect_equal(r[["tts_right"]], 69.0833333)
+  expect_equal(round(r[["tts_right_pct"]],digits = 3),  0.203)
+  expect_equal(r[["tts_stomach"]],  0)
+  expect_true(is.na(r[["tts_stomach_pct"]]))
+  expect_equal(r[["tts_nonback"]],  211.25)
+  expect_equal(r[["tts_nonback_pct"]],  0.6222386)
+  
+  e$event[e$event == "back"] <- "stomach"
+  
+  r <- pos_stats(e)
+  
+  expect_equal(r[["tts_back"]], 0)
+  expect_true(is.na(r[["tts_back_pct"]]))
+  expect_equal(r[["tts_left"]], 142.1666667)
+  expect_equal(round(r[["tts_left_pct"]],digits = 3), 0.419)
+  expect_equal(r[["tts_right"]], 69.0833333)
+  expect_equal(round(r[["tts_right_pct"]],digits = 3),  0.203)
+  expect_equal(r[["tts_stomach"]],  123.3333333)
+  expect_equal(round(r[["tts_stomach_pct"]],digits = 3),  0.363)
+  expect_equal(r[["tts_nonback"]],  334.5833333)
+  expect_equal(round(r[["tts_nonback_pct"]],digits = 3),  0.986)
+})
+
+test_that("Snoring stats", {
+  e <- read_events_noxturnal("data/noxturnal_events_example_unicode.csv")
+  e$event[e$event == "Micro-éveil"] <- "Train de ronflements"
+  r <- snoring_stats(e)
+  expect_equal(r[["snoring_count"]], 19)
+  expect_equal(round(r[["snoring_idx"]],digits = 3), 1.991)
+  expect_equal(round(r[["snoring_duration"]],digits = 3), 2.533)
+})
+
 
 test_that("Cycles stats", {
   events <- read_events_noxturnal("data/noxturnal_events_example_unicode_3.csv")

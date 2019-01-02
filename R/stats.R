@@ -176,7 +176,7 @@ pos_stats <- function(e, ss = c("N1","N2","N3","REM")){
   if(stats[["tts_left"]] == 0 | tts == 0){
     stats <- c(stats, "tts_left_pct" = NA)
   } else {
-    stats <- c(stats, "tts_left_pct" = stats[["tts_back"]]/tts)
+    stats <- c(stats, "tts_left_pct" = stats[["tts_left"]]/tts)
   }
   
   # Right

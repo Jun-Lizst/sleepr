@@ -4,10 +4,10 @@
 \alias{read_events_noxturnal}
 \title{Read a Noxturnal events file (Unicode CSV format)}
 \usage{
-read_events_noxturnal(path)
+read_events_noxturnal(dir)
 }
 \arguments{
-\item{path}{Noxturnal events file path.}
+\item{dir}{Noxturnal events file path.}
 }
 \value{
 A dataframe of scored events.

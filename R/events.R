@@ -1,10 +1,12 @@
-#' Read ISRUC sleep scoring.
-#'
+#' Read scoring from the ISRUC-Sleep datasets.
+#' 
+#' @description Read a XLSX sleep stages scoring from  a ISRUC-Sleep dataset record directory.
 #' @param dir character, ISRUC record directory.
 #' @param scoringNum Scoring number in database.
+#' @references Sirvan Khalighi, Teresa Sousa, Jose Moutinho Santos, Urbano Nunes, ISRUC-Sleep: a comprehensive public dataset for sleep researchers, Computer Methods and Programs in Biomedicine, Elsevier, 2015
 #' @return A dataframe of scored stages.
 #' @export
-read_events_isruc <- function(dir, scoringNum) 
+read_events_isruc <- function(dir, scoringNum = 1) 
 {
   xlsxPath <- list.files(dir, pattern = paste0("_", scoringNum, 
                                                ".xlsx"), full.names = TRUE)[1]
@@ -32,34 +34,35 @@ read_events_isruc <- function(dir, scoringNum)
   return(stages)
 }
 
-#' Read ISRUC metadata
+#' Read ISRUC-Sleep dataset records metadata.
 #'
-#' @param target ISRUC records directory.
-#' @return A dataframe of metadata.
+#' @description Read all the subgroups XLSX metadata files and concatenates the dataframes into one.
+#' @param dir ISRUC dataset directory.
+#' @return A dataframe containing records metadata.
 #' @export
-read_isruc_metadata <- function(target){
-  m1 <- readxl::read_xlsx(paste0(target,"1/metadata.xlsx"), skip=2) 
+read_isruc_metadata <- function(dir){
+  m1 <- readxl::read_xlsx(paste0(dir,"1/metadata.xlsx"), skip=2) 
   m1$subgroup = 1
   m1$Subject <- as.character(m1$Subject)
-  m2 <- readxl::read_xlsx(paste0(target,"2/metadata.xlsx"),skip=2)
+  m2 <- readxl::read_xlsx(paste0(dir,"2/metadata.xlsx"),skip=2)
   m2$subgroup = 2
   m2$Age <- as.character(m2$Age)
   m2 <- m2[!is.na(m2$Subject),]
-  m3 <- readxl::read_xlsx(paste0(target,"3/metadata.xlsx"), skip=2)
+  m3 <- readxl::read_xlsx(paste0(dir,"3/metadata.xlsx"), skip=2)
   m3$subgroup = 3
   m3$Subject <- as.character(m3$Subject)
   m3$Age <- as.character(m3$Age)
   metadata <- dplyr::bind_rows(m1,m2,m3)
 }
 
-#' Read all ISRUC sleep scorings (1)
+#' Read scoring from the ISRUC-Sleep datasets.
 #'
-#' @param target ISRUC target.
+#' @param dir ISRUC target.
 #' @return A dataframe of scored events.
 #' @export
-read_all_events_isruc <- function(target){
+read_all_events_isruc <- function(dir){
   hypnograms <- data.frame()
-  for(subgroup in list.dirs(target, T, F)){
+  for(subgroup in list.dirs(dir, T, F)){
     for(record in list.dirs(subgroup, T, F)){
       if(length(list.dirs(record, T, F)) > 1){
         record <- paste0(record,"/1")
@@ -76,17 +79,17 @@ read_all_events_isruc <- function(target){
 
 #' Read a Noxturnal events file (Unicode CSV format)
 #'
-#' @param path Noxturnal events file path.
+#' @param dir Noxturnal events file path.
 #' @return A dataframe of scored events.
 #' @export
-read_events_noxturnal <- function(path){
+read_events_noxturnal <- function(dir){
 
   events <- tryCatch({
-    utils::read.csv(path,
+    utils::read.csv(dir,
              fileEncoding = "UTF-8")
-  }, error = function(e){ utils::read.csv(path, fileEncoding = "UTF-16") },
+  }, error = function(e){ utils::read.csv(dir, fileEncoding = "UTF-16") },
   warning = function(e){
-    utils::read.csv(path,
+    utils::read.csv(dir,
              fileEncoding = "UTF-16")
   }
   )
@@ -140,13 +143,13 @@ read_events_noxturnal <- function(path){
 
 #' Read a SleepEDFX events file EDF+
 #'
-#' @param path EDF+ path
+#' @param dir EDF+ path
 #' @param update merge N3 and N4 or not
 #' @return A dataframe of scored events.
 #' @export
-read_events_sleepedfx <- function(path, update = TRUE){
+read_events_sleepedfx <- function(dir, update = TRUE){
   
-  h <- edfReader::readEdfHeader(path)
+  h <- edfReader::readEdfHeader(dir)
   s <- edfReader::readEdfSignals(h)
   events <- s[["annotations"]]
   events$begin <- events$onset + as.numeric(s[["startTime"]]) 

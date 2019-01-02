@@ -2,18 +2,18 @@
 % Please edit documentation in R/hypnogram.R
 \name{hypnogram}
 \alias{hypnogram}
-\title{Filter an events dataframe to keep hypnogram.}
+\title{Filter and reorder an events dataframe to keep only sleep stages related-events.}
 \usage{
 hypnogram(events, labels = c("N3", "N2", "N1", "REM", "AWA"))
 }
 \arguments{
-\item{events}{events dataframe.}
+\item{events}{Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event}}
 
-\item{labels}{events labels in data.}
+\item{labels}{Sleep stages labels. Defaults to \code{c("N3","N2","N1","REM","AWA")}.}
 }
 \value{
 hypnogram dataframe.
 }
 \description{
-Filter an events dataframe to keep hypnogram.
+Remove non-sleep stages events and reorder dataframe rows using the \code{begin} column.
 }

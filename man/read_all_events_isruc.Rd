@@ -2,16 +2,16 @@
 % Please edit documentation in R/events.R
 \name{read_all_events_isruc}
 \alias{read_all_events_isruc}
-\title{Read all ISRUC sleep scorings (1)}
+\title{Read scoring from the ISRUC-Sleep datasets.}
 \usage{
-read_all_events_isruc(target)
+read_all_events_isruc(dir)
 }
 \arguments{
-\item{target}{ISRUC target.}
+\item{dir}{ISRUC target.}
 }
 \value{
 A dataframe of scored events.
 }
 \description{
-Read all ISRUC sleep scorings (1)
+Read scoring from the ISRUC-Sleep datasets.
 }

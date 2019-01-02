@@ -1,9 +1,10 @@
 #' Draw a hypnogram with ggplot2.
 #'
+#' @description A hypnogram represents the stages of sleep as a function of time. \code{plot_hypnogram()} plot a hypnogram using the \code{ggplot2} library from stages sleep in an event dataframe. \code{REM} stage is higlighted in red.
 #' @references Silber MH, Ancoli-Israel S, Bonnet MH, Chokroverty S, Grigg-Damberger MM, et al. (2007). "The visual scoring of sleep in adults". Journal of Clinical Sleep Medicine. 3 (2): 121–31. PMID 17557422
-#' @param events events dataframe.
-#' @param labels hyp labels.
-#' @return a ggplot.
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event}
+#' @param labels Sleep stages labels. Defaults to \code{c("N3","N2","N1","REM","AWA")}.
+#' @return a ggplot object.
 #' @export
 plot_hypnogram <- function(events, labels = c("N3","N2","N1","REM","AWA")){
   stages <- hypnogram(events, labels)
@@ -25,10 +26,11 @@ plot_hypnogram <- function(events, labels = c("N3","N2","N1","REM","AWA")){
   return(hypnogram)
 }
 
-#' Filter an events dataframe to keep hypnogram.
+#' Filter and reorder an events dataframe to keep only sleep stages related-events.
 #'
-#' @param events events dataframe.
-#' @param labels events labels in data.
+#' @description Remove non-sleep stages events and reorder dataframe rows using the \code{begin} column.
+#' @param events Events dataframe. Dataframe must have \code{begin} (\code{POSIXt}), \code{end} (\code{POSIXt}) and \code{event}
+#' @param labels Sleep stages labels. Defaults to \code{c("N3","N2","N1","REM","AWA")}.
 #' @return hypnogram dataframe.
 #' @export
 hypnogram <- function(events, labels = c("N3","N2","N1","REM","AWA")){
@@ -38,11 +40,11 @@ hypnogram <- function(events, labels = c("N3","N2","N1","REM","AWA")){
   return(stages)
 }
 
-#' Split signal following hypnogram
+#' Split signal using hypnogram events.
 #'
-#' @param signal signal.
+#' @param signal Vector containing signal.
 #' @param hypnogram hypnogram df.
-#' @param sRate sRate sig.
+#' @param sRate Signal sample rate.
 #' @return list.
 #' @export
 split_signal <- function(signal,hypnogram,sRate){
