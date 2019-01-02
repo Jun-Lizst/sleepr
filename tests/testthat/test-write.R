@@ -38,4 +38,14 @@ test_that("Corrupted channel", {
   })
 })
 
+test_that("Read file", {
+  expect_warning({
+    write_channel(channel = "Corrupted",
+                  signals = c(),
+                  headers = edfReader::readEdfSignals("data/subject1.edf"),
+                  mdfPath = "data/",
+                  endian = "little")
+  })
+})
+
 

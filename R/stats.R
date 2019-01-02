@@ -500,14 +500,10 @@ compute_all_stats <- function(records,
           }
         }
       }
-      if(nrow(df_record) == 1){
-        df_record$record <- record
-      } else {
-        df_record <- data.frame(record <- record,stringsAsFactors = FALSE)
-      }
+      
+      df_record$record <- record
       
       e <- l[["events"]]
-      # Stats
       
       df_record <- cbind(df_record, as.data.frame(as.list(stages_stats(e))))
       df_record <- cbind(df_record, as.data.frame(as.list(ma_stats(e))))

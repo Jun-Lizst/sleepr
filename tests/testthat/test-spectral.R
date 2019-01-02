@@ -81,7 +81,7 @@ test_that("Compute spectral power bands without NREM", {
     record = read_mdf(mdfPath = "data/sample",
                       channels = c("C3-M2"),
                       metadata = FALSE),
-    channel = "C3-M2",bands = bands)
+    channel = "C3-M2",bands = bands,resampling = 100)
   bands_powers <- aggregate_band_powers(bands_powers)
   expect_equal(nrow(bands_powers), 1)
   expect_equal(length(colnames(bands_powers)), 40)
@@ -99,7 +99,7 @@ test_that("Compute EEMD", {
             mdfPath = "data/sample",
             events = events)
   record <- read_mdf("data/sample",channels = "C3-M2")
-  eemd <- hypnogram_eemd(record,"C3-M2")
+  eemd <- hypnogram_eemd(record,"C3-M2",butter = 7)
   expect_equal(length(colnames(eemd)), 33)
   expect_equal(nrow(eemd), 3)
   unlink("data/sample",recursive = TRUE)
