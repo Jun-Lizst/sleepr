@@ -22,7 +22,19 @@ write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c(), endian="
   for(edf in edfPath){
     # Read EDF
     headers <- edfReader::readEdfHeader(edf)
-    signals <- edfReader::readEdfSignals(headers)
+    
+    if (!is.null(channels)){ 
+      if (!is.na(channels)){
+      signals <- edfReader::readEdfSignals(headers,signals = channels)
+      } else {
+        signals <- edfReader::readEdfSignals(headers)
+        
+      }
+      
+      } else {
+      signals <- edfReader::readEdfSignals(headers)
+      
+    }
     
     # Write each channel
     edfchannels <- headers$sHeaders$label
