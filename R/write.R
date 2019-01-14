@@ -78,7 +78,21 @@ write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c(), endian="
 #' @param mdfPath Morpheo Data Format (MDF) directory path.
 #' @param endian character. Endianess. \code{"big"} or \code{"little"}. Defaults to \code{"little"}.
 write_channel <- function(channel, signals, headers, mdfPath, endian="little"){
+
   signal <- signals[[channel]]
+  
+  if (is.null(signal)){
+    tryCatch({
+      signal <- signals
+      },
+      error = function(e) {
+        warning(
+          paste0("Signal ",channel," corrupted.")
+        )
+      }
+    )
+   
+  }
   
   if (!is.null(signal)){
     
