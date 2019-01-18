@@ -23,7 +23,7 @@ write_mdf <- function(edfPath, mdfPath, channels = c(NA), events = c(), endian="
     # Read EDF
     headers <- edfReader::readEdfHeader(edf)
     
-    if (!is.null(channels)){ 
+    if (!is.null(channels) & length(edfPath == 1)){ 
       if (!is.na(channels)){
       signals <- edfReader::readEdfSignals(headers,signals = channels)
       } else {
